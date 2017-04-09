@@ -3,6 +3,7 @@ unit Commands;
 interface
 
 uses
+  CommandRegistry,
   HttpServerCommand;
 
 type

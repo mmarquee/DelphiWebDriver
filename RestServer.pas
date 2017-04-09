@@ -3,7 +3,6 @@ unit RestServer;
 interface
 
 uses
-  Unit2,
   HttpServerCommand,
   IdHTTPServer, IdContext, IdHeaderList, IdCustomHTTPServer,
   classes,

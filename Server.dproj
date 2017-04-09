@@ -72,6 +72,11 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <VerInfo_Release>1</VerInfo_Release>
+        <VerInfo_Locale>2057</VerInfo_Locale>
+        <VerInfo_Build>99</VerInfo_Build>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.99;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -95,10 +100,11 @@
             <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="RestServer.pas"/>
-        <DCCReference Include="HttpServerCommand.pas"/>
+        <DCCReference Include="CommandRegistry.pas"/>
         <DCCReference Include="Commands.pas"/>
         <DCCReference Include="Session.pas"/>
-        <DCCReference Include="Unit2.pas"/>
+        <DCCReference Include="HttpServerCommand.pas"/>
+        <DCCReference Include="ResourceProcessing.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

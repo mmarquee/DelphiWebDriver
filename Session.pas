@@ -29,7 +29,9 @@ type
 implementation
 
 uses
+  ResourceProcessing,
   JSON,
+  System.Types,
   System.SysUtils,
   System.StrUtils,
   System.JSON.Types,
@@ -58,12 +60,9 @@ begin
     try
       requestObj := jsonObj.Get('desiredCapabilities').JsonValue;
 
-   //   if (requestObj as TJsonObject).TryGetValue('args') then
-        self.FArgs := (requestObj as TJsonObject).Get('args').JsonValue.Value;
-     // if (requestObj as TJsonObject).TryGetValue('app') then
-        self.FApp := (requestObj as TJsonObject).Get('app').JsonValue.Value;
-    //  if (requestObj as TJsonObject).TryGetValue('platformName') then
-        self.FPlatform := (requestObj as TJsonObject).Get('platformName').JsonValue.Value;
+      (requestObj as TJsonObject).TryGetValue<String>('args', self.FArgs);
+      (requestObj as TJsonObject).TryGetValue<String>('app', self.FApp);
+      (requestObj as TJsonObject).TryGetValue<String>('platformName', self.FPlatform);
     finally
       jsonObj.Free;
     end;
@@ -140,14 +139,14 @@ begin
   Builder
     .BeginObject
         .BeginObject('build')
-          .Add('version', 'John')
-          .Add('revision', 'Doe')
+          .Add('version', GetModuleVersion)
+          .Add('revision', GetAppRevision)
           .Add('time', 2.1)
         .EndObject
         .BeginObject('os')
           .Add('arch', OSArchitectureToString(TOSVersion.Architecture))
           .Add('name', TOSVersion.Name)
-          .Add('verison', IntToStr(TOSVersion.Major) + '.' + IntToStr(TOSVersion.Minor))
+          .Add('version', IntToStr(TOSVersion.Major) + '.' + IntToStr(TOSVersion.Minor))
         .EndObject
     .EndObject;
 
