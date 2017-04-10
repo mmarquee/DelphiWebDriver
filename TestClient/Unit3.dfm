@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 0
   Top = 0
   Caption = 'Form3'
-  ClientHeight = 421
+  ClientHeight = 598
   ClientWidth = 744
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,7 +13,7 @@ object Form3: TForm3
   OldCreateOrder = False
   DesignSize = (
     744
-    421)
+    598)
   PixelsPerInch = 96
   TextHeight = 13
   object ListBox1: TListBox
@@ -114,5 +114,23 @@ object Form3: TForm3
     Caption = 'Error'
     TabOrder = 10
     OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 8
+    Top = 456
+    Width = 75
+    Height = 25
+    Caption = 'Click OK'
+    TabOrder = 11
+    OnClick = Button9Click
+  end
+  object Button10: TButton
+    Left = 8
+    Top = 487
+    Width = 75
+    Height = 25
+    Caption = 'Click Cancel'
+    TabOrder = 12
+    OnClick = Button10Click
   end
 end

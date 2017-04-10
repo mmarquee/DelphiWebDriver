@@ -46,6 +46,8 @@ begin
 
   FCommand:= THttpServerCommand.Create(AOwner);
 
+
+
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);
   //FCommand.Commands.Register('GET', '/session/(.*)/screenshot', TGetScreenshotCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/window_handle', TUnimplementedCommand);
@@ -54,6 +56,7 @@ begin
 
   FCommand.Commands.Register('GET', '/status', TStatusCommand);
 
+  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts', TSessionTimeoutsCommand);
 

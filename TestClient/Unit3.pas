@@ -19,6 +19,8 @@ type
     Button6: TButton;
     Button7: TButton;
     Button8: TButton;
+    Button9: TButton;
+    Button10: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -28,6 +30,8 @@ type
     procedure Button6Click(Sender: TObject);
     procedure Button7Click(Sender: TObject);
     procedure Button8Click(Sender: TObject);
+    procedure Button9Click(Sender: TObject);
+    procedure Button10Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -144,6 +148,13 @@ begin
   StaticText1.Caption := FSessionId;
 end;
 
+procedure TForm3.Button10Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := post('session/' + self.FSessionId + '/element/Button2/click', '');
+end;
+
 procedure TForm3.Button1Click(Sender: TObject);
 var
   result : String;
@@ -206,6 +217,14 @@ var
   result : String;
 begin
   result := get('error/' + self.FSessionId + '/window_handle');
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button9Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := post('session/' + self.FSessionId + '/element/Button1/click', '');
   listBox1.Items.add(result);
 end;
 

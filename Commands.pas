@@ -37,6 +37,12 @@ type
   end;
 
 type
+  TClickElementCommand = class(TRESTCommand)
+  public
+    procedure Execute; override;
+  end;
+
+type
   TSessionTimeoutsCommand = class(TRESTCommand)
   public
     procedure Execute; override;
@@ -104,6 +110,11 @@ end;
 procedure TUnimplementedCommand.Execute;
 begin
   Error(501);
+end;
+
+procedure TClickElementCommand.Execute;
+begin
+
 end;
 
 initialization
