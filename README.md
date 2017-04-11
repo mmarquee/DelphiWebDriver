@@ -9,14 +9,14 @@ Essentially a proof of concept / futile excerise.
 |--------	|---------------------------------------------------	|             |
 | GET    	| /status                                           	| Functional  |
 | POST   	| /session                                          	| Functional  |
-| GET           | /session/:sessionId                                   | Functional  |
-| GET    	| /session/:sessionId/title                           	| In Progress |
-| GET           | /session/:sessionId/element/:id                       | In Progress |
-| GET           | /session/:sessionId/screenshot                        | Initial     |
-| POST          | /session/:sessionId/element/:id/click                 | In Progress*|
-| POST          | /session/:sessionId/timeouts/implicit_wait            | In Progress |
-| POST          | /session/:sessionId/timeouts                          | In Progress |
-| GET           | /sessions                                             | In Progress |
+| GET     | /session/:sessionId                                 | Functional  |
+| GET    	| /session/:sessionId/title                         	| In Progress |
+| GET     | /session/:sessionId/element/:id                     | In Progress |
+| GET     | /session/:sessionId/screenshot                      | Initial     |
+| POST    | /session/:sessionId/element/:id/click               | In Progress |
+| POST    | /session/:sessionId/timeouts/implicit_wait          | In Progress |
+| POST    | /session/:sessionId/timeouts                        | In Progress |
+| GET     | /sessions                                           | In Progress |
 
 NOTE: /session/:sessionId/element/:id/click is functional for TButton controls
 
