@@ -133,4 +133,22 @@ object Form3: TForm3
     TabOrder = 12
     OnClick = Button10Click
   end
+  object Button11: TButton
+    Left = 89
+    Top = 456
+    Width = 75
+    Height = 25
+    Caption = 'Click Error'
+    TabOrder = 13
+    OnClick = Button11Click
+  end
+  object Button12: TButton
+    Left = 170
+    Top = 456
+    Width = 75
+    Height = 25
+    Caption = 'Click Error'
+    TabOrder = 14
+    OnClick = Button12Click
+  end
 end

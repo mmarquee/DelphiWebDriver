@@ -9,9 +9,9 @@ uses
 type
   TRESTCommandClass = class of TRESTCommand;
   //THttpServerCommand= class;
-  TRESTCommandREG= class;
+  TRESTCommandREG = class;
 
-  TRESTCommand=class
+  TRESTCommand = class
   private
     FParams: TStringList;
     FContext: TIdContext;
@@ -36,21 +36,25 @@ type
     property ResponseInfo: TIdHTTPResponseInfo read FResponseInfo;
     property Params: TStringList read FParams;
     property StreamContents : String read FStreamContents;
+    property Reg: TRESTCommandREG read FReg;
   end;
 
-  TRESTCommandREG=class
+  TRESTCommandREG = class
   public
     FTYPE: String;
     FPATH: String;
     FCommand: TRESTCommandClass;
-    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass);
+    FHost: TComponent;
+    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass; AHost: TComponent); overload;
+    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;
   end;
 
   THttpServerCommandRegister=class(TComponent)
   private
     FList: TObjectList<TRESTCommandREG>;
   public
-    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass);
+    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;
+    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass; AHost: TComponent); overload;
     constructor Create(AOwner: TComponent); override;
     function isUri(AURI: String; AMask: String; AParams: TStringList): boolean;
     function FindCommand(ACommand: String; AURI: String; Params: TStringList): TRESTCommandREG;
@@ -110,9 +114,15 @@ begin
 end;
 
 procedure THttpServerCommandRegister.Register(ATYPE, APATH: String;
+  ACommand: TRESTCommandClass; AHost: TComponent);
+begin
+  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand, AHost));
+end;
+
+procedure THttpServerCommandRegister.Register(ATYPE, APATH: String;
   ACommand: TRESTCommandClass);
 begin
-  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand));
+  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand, nil));
 end;
 
 { TRESTCommandREG }
@@ -120,9 +130,18 @@ end;
 constructor TRESTCommandREG.Create(ATYPE, APATH: String;
   ACommand: TRESTCommandClass);
 begin
-  FTYPE:= AType;
-  FPATH:= APATH;
-  FCommand:= ACommand;
+  FTYPE := AType;
+  FPATH := APATH;
+  FCommand := ACommand;
+end;
+
+constructor TRESTCommandREG.Create(ATYPE, APATH: String;
+  ACommand: TRESTCommandClass; AHost: TComponent);
+begin
+  FTYPE := AType;
+  FPATH := APATH;
+  FCommand := ACommand;
+  FHost := AHost;
 end;
 
 { TRESTCommand }

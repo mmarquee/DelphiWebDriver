@@ -1,7 +1,7 @@
 object Form1: TForm1
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = 'This is Form1 - The Hosting Form'
   ClientHeight = 745
   ClientWidth = 1095
   Color = clBtnFace
@@ -164,8 +164,6 @@ object Form1: TForm1
         Text = 'Statusbar Text'
         Width = 50
       end>
-    ExplicitTop = 657
-    ExplicitWidth = 723
   end
   object ComboBox1: TComboBox
     Left = 24
@@ -219,7 +217,6 @@ object Form1: TForm1
     Height = 344
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 14
-    ExplicitHeight = 275
     ColWidths = (
       64
       64
@@ -318,7 +315,6 @@ object Form1: TForm1
     Height = 62
     Align = alTop
     TabOrder = 21
-    ExplicitWidth = 723
     object Panel7: TPanel
       Left = 1
       Top = 1
@@ -380,7 +376,6 @@ object Form1: TForm1
       BevelOuter = bvNone
       Caption = 'Panel8'
       TabOrder = 1
-      ExplicitLeft = 432
       object ToolBar2: TToolBar
         Left = 0
         Top = 0
@@ -435,6 +430,7 @@ object Form1: TForm1
     Top = 68
     Width = 366
     Height = 583
+    Anchors = [akLeft, akTop, akRight, akBottom]
     ItemHeight = 13
     TabOrder = 23
   end
@@ -481,7 +477,7 @@ object Form1: TForm1
     Left = 184
     Top = 576
     Bitmap = {
-      494C01010A0018002C0040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010A001800340040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000000010000C000000001002000000000000000
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

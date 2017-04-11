@@ -21,6 +21,8 @@ type
     Button8: TButton;
     Button9: TButton;
     Button10: TButton;
+    Button11: TButton;
+    Button12: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -32,6 +34,8 @@ type
     procedure Button8Click(Sender: TObject);
     procedure Button9Click(Sender: TObject);
     procedure Button10Click(Sender: TObject);
+    procedure Button11Click(Sender: TObject);
+    procedure Button12Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -153,6 +157,22 @@ var
   result : String;
 begin
   result := post('session/' + self.FSessionId + '/element/Button2/click', '');
+end;
+
+procedure TForm3.Button11Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := post('session/' + self.FSessionId + '/element/ButtonNotThere/click', '');
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button12Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := Get('session/' + self.FSessionId + '/title');
+  listBox1.Items.add(result);
 end;
 
 procedure TForm3.Button1Click(Sender: TObject);

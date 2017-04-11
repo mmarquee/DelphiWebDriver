@@ -187,8 +187,9 @@ end;
 
 procedure TForm1.CreateServer(port: word);
 begin
-  FRestServer := TRestServer.Create(nil);
+  FRestServer := TRestServer.Create(self);
   FRestServer.OnLogMessage := LogMessage;
+
   FRestServer.Start(port);
 end;
 
