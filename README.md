@@ -6,7 +6,7 @@ Essentially a proof of concept / futile excerise.
 ## Currently Supported APIs
 
 | HTTP   	| Path                                              	| Status      |
-|--------	|---------------------------------------------------	|             |
+| ---	| ---	| --- |
 | GET    	| /status                                           	| Functional  |
 | POST   	| /session                                          	| Functional  |
 | GET     | /session/:sessionId                                 | Functional  |
