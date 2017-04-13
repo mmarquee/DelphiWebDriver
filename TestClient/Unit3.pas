@@ -23,6 +23,8 @@ type
     Button10: TButton;
     Button11: TButton;
     Button12: TButton;
+    Button13: TButton;
+    Button14: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -36,9 +38,17 @@ type
     procedure Button10Click(Sender: TObject);
     procedure Button11Click(Sender: TObject);
     procedure Button12Click(Sender: TObject);
+    procedure Button13Click(Sender: TObject);
+    procedure DeleteClick(Sender: TObject);
+    procedure Button14Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
+
+    function Get(const resource: String): string;
+    function Delete(const resource: String): string;
+    function Post(const resource: String; const parameters: String): string;
+    function Sanitize(value: String): String;
   public
     { Public declarations }
   end;
@@ -58,7 +68,7 @@ uses
 
 {$R *.dfm}
 
-function Sanitize(value: String): String;
+function TForm3.Sanitize(value: String): String;
 begin
   value := StringReplace(value,#$A,'',[rfReplaceAll]);
   value := StringReplace(value,#$D,'',[rfReplaceAll]);
@@ -66,7 +76,7 @@ begin
   result := value;
 end;
 
-function Post(const resource: String; const parameters: String): string;
+function TForm3.Post(const resource: String; const parameters: String): string;
 var
   lHTTP: TIdHTTP;
   val : String;
@@ -87,7 +97,7 @@ begin
   end;
 end;
 
-function Delete(const resource: String): string;
+function TForm3.Delete(const resource: String): string;
 var
   lHTTP: TIdHTTP;
 begin
@@ -99,7 +109,7 @@ begin
   end;
 end;
 
-function Get(const resource: String): string;
+function TForm3.Get(const resource: String): string;
 var
   lHTTP: TIdHTTP;
 begin
@@ -175,6 +185,22 @@ begin
   listBox1.Items.add(result);
 end;
 
+procedure TForm3.Button13Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := get('session/' + self.FSessionId + '/element/AutomatedEdit1/text');
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button14Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := Delete('session/ieueihflkjflkjfhe76rj');
+  listBox1.Items.add(result);
+end;
+
 procedure TForm3.Button1Click(Sender: TObject);
 var
   result : String;
@@ -186,8 +212,28 @@ end;
 procedure TForm3.Button2Click(Sender: TObject);
 var
   result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
 begin
-  result := post('session/' + self.FSessionId + '/timeouts', '');
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('type', 'implicit')
+       .Add('ms', '200')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/timeouts', parameters);
   listBox1.Items.add(result);
 end;
 
@@ -245,6 +291,14 @@ var
   result : String;
 begin
   result := post('session/' + self.FSessionId + '/element/Button1/click', '');
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.DeleteClick(Sender: TObject);
+var
+  result : String;
+begin
+  result := Delete('session/' + self.FSessionId);
   listBox1.Items.add(result);
 end;
 

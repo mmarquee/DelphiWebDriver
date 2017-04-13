@@ -10,9 +10,6 @@ uses
   System.SysUtils;
 
 type
-  TOnLogMessage = procedure (const msg: String) of Object;
-
-type
   TRestServer = Class
   strict private
     FCommand: THttpServerCommand;
@@ -21,9 +18,12 @@ type
   private
     procedure OnCommandGet(AContext: TIdContext;
       ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
+
+    //procedure OnCommandOther(ACommand, AData, AVersion, Thread);
+
     procedure CreatePostStream(AContext: TIdContext; AHeaders: TIdHeaderList;
       var VPostStream: TStream);
-    procedure LogMessage(msg: String);
+    procedure LogMessage(const msg: String);
   public
     constructor Create(AOwner: TComponent);
     procedure Start(port: word);
@@ -46,6 +46,7 @@ begin
 
   FCommand:= THttpServerCommand.Create(AOwner);
 
+  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand, AOwner);
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);
   //FCommand.Commands.Register('GET', '/session/(.*)/screenshot', TGetScreenshotCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/window_handle', TUnimplementedCommand);
@@ -59,7 +60,10 @@ begin
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts', TSessionTimeoutsCommand);
 
-  FCommand.Commands.Register('POST', '/session', TPostSessionCommand);
+  FCommand.Commands.Register('POST', '/session', TCreateSessionCommand);
+
+  // Not sure deletes work!
+  FCommand.Commands.Register('DELETE', '/session/(.*)', TDeleteSessionCommand);
 
   // Just as an example
 //  FCommand.Commands.Register('DELETE', '/session/:sessionId', TUnimplementedCommand);
@@ -75,7 +79,7 @@ FCommand.Commands.Register('GET', '/session/:sessionId/window_handles', TGetWind
 
 etc.
 *)
-
+  FCommand.OnLogMessage := FOnLogMessage;
 
   FHttpServer := TIdHTTPServer.Create(AOwner);
 end;
@@ -87,7 +91,7 @@ begin
   VPostStream := TStringStream.Create;
 end;
 
-procedure TRestServer.LogMessage(msg: String);
+procedure TRestServer.LogMessage(const msg: String);
 begin
   if assigned(FOnLogMessage) then
     OnLogMessage(msg);
@@ -105,20 +109,27 @@ begin
   LogMessage(ARequestInfo.Command + ' ' +  ARequestInfo.uri + ' ' + ARequestInfo.Version);
   LogMessage('Accept-Encoding: ' + ARequestInfo.AcceptEncoding);
   LogMessage('Connection: ' + ARequestInfo.Connection);
-  LogMessage('Content-Length:' + Inttostr(ARequestInfo.ContentLength));
-  LogMessage('Content-Type:' + ARequestInfo.ContentType);
-  LogMessage('Host:' + ARequestInfo.Host);
+  LogMessage('Content-Length: ' + Inttostr(ARequestInfo.ContentLength));
+  LogMessage('Content-Type: ' + ARequestInfo.ContentType);
+  LogMessage('Host: ' + ARequestInfo.Host);
   LogMessage(ARequestInfo.UserAgent);
 
   LogMessage(ARequestInfo.Params.CommaText);
 
   FCommand.CommandGet(AContext, ARequestInfo, AResponseInfo);
+
+  LogMessage('');
+  LogMessage('Response: ' + IntToStr(AResponseInfo.ResponseNo));
+//  LogMessage('Content-Length:' + Inttostr(AResponseInfo.ContentLength));
+  LogMessage('Content-Type: ' + AResponseInfo.ContentType);
+  LogMessage(AResponseInfo.ContentText);
 end;
 
 procedure TRestServer.Start(port: word);
 begin
   FHttpServer.DefaultPort := port;
   FHttpServer.OnCommandGet := OnCommandGet;
+  FHttpServer.OnCommandOther := OnCommandGet;
   FHttpServer.OnCreatePostStream := CreatePostStream;
   FHttpServer.Active := True;
 end;

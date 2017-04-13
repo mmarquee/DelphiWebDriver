@@ -14,16 +14,18 @@ type
     FApp: String;
     FPlatform: String;
 
-    function GetSessionDetails: String;
+    FTimeouts: Integer;
 
   public
     function GetStatus: String;
+    function GetSessionDetails: String;
 
     function GetSession: String;
-    function CreateNewSession(const request: String): String;
-    function GetSessions: String;
 
-    constructor Create;
+    property Uid: TGUID read FGuid write FGuid;
+    property Timeouts: Integer write FTimeouts;
+
+    constructor Create(const request: String);
   end;
 
 implementation
@@ -41,10 +43,6 @@ uses
 { TSession }
 
 constructor TSession.Create;
-begin
-end;
-
-function TSession.CreateNewSession(const request: String): String;
 var
   jsonObj : TJSONObject;
   requestObj : TJSONValue;
@@ -55,7 +53,6 @@ begin
   else
   begin
     // Decode the incoming JSON and see what we have
-
     jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(request),0) as TJSONObject;
     try
       requestObj := jsonObj.Get('desiredCapabilities').JsonValue;
@@ -66,8 +63,6 @@ begin
     finally
       jsonObj.Free;
     end;
-
-    result := GetSessionDetails;
   end;
 end;
 
@@ -79,25 +74,24 @@ var
   StringBuilder: TStringBuilder;
 
 begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
 
-    StringBuilder := TStringBuilder.Create;
-    StringWriter := TStringWriter.Create(StringBuilder);
-    Writer := TJsonTextWriter.Create(StringWriter);
-    Writer.Formatting := TJsonFormatting.Indented;
-    Builder := TJSONObjectBuilder.Create(Writer);
+  Builder
+    .BeginObject()
+      .Add('sessionID', GUIDToString(FGuid))
+      .Add('status', 0)
+      .BeginObject('value')
+        .Add('app', self.FApp)
+        .Add('args', self.FArgs)
+        .Add('platformName', self.FPlatform)
+      .EndObject
+    .EndObject;
 
-    Builder
-      .BeginObject()
-        .Add('sessionID', GUIDToString(FGuid))
-        .BeginObject('desiredCapabilities')        // Check this
-          .Add('app', self.FApp)
-          .Add('args', self.FArgs)
-          .Add('platformName', self.FPlatform)
-        .EndObject
-      .EndObject;
-
-    result := StringBuilder.ToString;
-
+  result := StringBuilder.ToString;
 end;
 
 function OSArchitectureToString(arch: TOSVersion.TArchitecture): String;
@@ -110,11 +104,6 @@ begin
     else
       result := 'Unknown';
   end;
-end;
-
-function TSession.GetSessions: String;
-begin
-  result := GetSessionDetails; (*AsList*)
 end;
 
 function TSession.GetSession: String;

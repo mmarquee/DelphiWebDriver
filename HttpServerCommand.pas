@@ -8,21 +8,34 @@ uses
   System.SysUtils, classes;
 
 type
-  THttpServerCommand = class (TComponent)
-  private
+  TOnLogMessage = procedure (const msg: String) of Object;
+
+type
+  THttpServerCommand = class(TComponent)
+  strict private
+    FOnLogMessage: TOnLogMessage;
     FCommands: THttpServerCommandRegister;
+  private
     function FindCommand(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo): boolean;
     procedure SendError(ACmd: TRESTCommandREG;AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo;  E: Exception);
+    procedure LogMessage(const msg: String);
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure CommandGet(AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo);
     property Commands: THttpServerCommandRegister read FCommands;
+    property OnLogMessage: TOnLogMessage read FOnLogMessage write FOnLogMessage;
   end;
 
 implementation
 
 { THttpServerCommand }
+
+procedure THttpServerCommand.LogMessage(const msg: String);
+begin
+  if assigned(FOnLogMessage) then
+    OnLogMessage(msg);
+end;
 
 function THttpServerCommand.FindCommand(AContext: TIdContext;
   ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo): boolean;
@@ -40,6 +53,7 @@ begin
       cmd := cmdReg.FCommand.create;
       try
         cmd.Start(cmdReg, AContext, ARequestInfo, AResponseInfo, Params);
+        LogMessage(cmd.StreamContents);
         cmd.Execute;
       finally
         cmd.Free;

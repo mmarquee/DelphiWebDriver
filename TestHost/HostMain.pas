@@ -89,6 +89,7 @@ type
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
+    Button3: TButton;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
@@ -99,6 +100,7 @@ type
     procedure ToolButton7Click(Sender: TObject);
     procedure LinkLabel1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
+    procedure Button3Click(Sender: TObject);
   private
     { Private declarations }
     FRestServer : TRestServer;
@@ -124,6 +126,11 @@ end;
 procedure TForm1.Button2Click(Sender: TObject);
 begin
   ShowMessage ('Cancelled');
+end;
+
+procedure TForm1.Button3Click(Sender: TObject);
+begin
+  ShowMessage(self.caption);
 end;
 
 procedure TForm1.Exit1Click(Sender: TObject);

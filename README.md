@@ -17,7 +17,7 @@ Essentially a proof of concept / futile excerise.
 | POST    | /session/:sessionId/timeouts/implicit_wait          | In Progress |
 | POST    | /session/:sessionId/timeouts                        | In Progress |
 | GET     | /sessions                                           | In Progress |
+| DELETE  | /session/:sessionId                                 | Functional  |
 
-NOTE: /session/:sessionId/element/:id/click is functional for TButton controls
-
+NOTE: Functional here means it has been at least partially implemented in both a host and a test client
 

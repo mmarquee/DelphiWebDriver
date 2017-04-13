@@ -104,7 +104,7 @@ object Form3: TForm3
     Height = 25
     Caption = 'Delete Session'
     TabOrder = 9
-    OnClick = Button7Click
+    OnClick = DeleteClick
   end
   object Button8: TButton
     Left = 544
@@ -147,8 +147,26 @@ object Form3: TForm3
     Top = 456
     Width = 75
     Height = 25
-    Caption = 'Click Error'
+    Caption = 'Title'
     TabOrder = 14
     OnClick = Button12Click
+  end
+  object Button13: TButton
+    Left = 170
+    Top = 487
+    Width = 75
+    Height = 25
+    Caption = 'Text'
+    TabOrder = 15
+    OnClick = Button13Click
+  end
+  object Button14: TButton
+    Left = 413
+    Top = 417
+    Width = 75
+    Height = 25
+    Caption = 'Delete Invalid'
+    TabOrder = 16
+    OnClick = Button14Click
   end
 end

@@ -73,7 +73,7 @@ object Form1: TForm1
     Top = 174
     Width = 289
     Height = 193
-    ActivePage = TabSheet2
+    ActivePage = TabSheet1
     TabOrder = 3
     object TabSheet1: TTabSheet
       Caption = 'First Tab'
@@ -214,7 +214,7 @@ object Form1: TForm1
     Left = 329
     Top = 174
     Width = 386
-    Height = 344
+    Height = 279
     Anchors = [akLeft, akTop, akRight, akBottom]
     TabOrder = 14
     ColWidths = (
@@ -231,8 +231,8 @@ object Form1: TForm1
       24)
   end
   object AutomatedMaskEdit1: TAutomatedMaskEdit
-    Left = 344
-    Top = 407
+    Left = 189
+    Top = 496
     Width = 120
     Height = 21
     EditMask = '!99/99/00;1;_'
@@ -242,7 +242,7 @@ object Form1: TForm1
   end
   object RichEdit1: TRichEdit
     Left = 328
-    Top = 455
+    Top = 459
     Width = 387
     Height = 108
     Font.Charset = ANSI_CHARSET
@@ -434,6 +434,15 @@ object Form1: TForm1
     ItemHeight = 13
     TabOrder = 23
   end
+  object Button3: TButton
+    Left = 248
+    Top = 576
+    Width = 75
+    Height = 25
+    Caption = 'Get Title'
+    TabOrder = 24
+    OnClick = Button3Click
+  end
   object MainMenu1: TMainMenu
     Left = 24
     Top = 39
@@ -477,7 +486,7 @@ object Form1: TForm1
     Left = 184
     Top = 576
     Bitmap = {
-      494C01010A001800340040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010A001800380040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000000010000C000000001002000000000000000
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
