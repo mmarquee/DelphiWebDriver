@@ -94,106 +94,29 @@ uses
   System.JSON.Builders,
   Session;
 
-var
-//  ActiveSession: TSession;
-  Sessions: TObjectList<TSession>;
+Type
+  TSessions = class
+  strict private
+    FSessions: TObjectList<TSession>;
+  public
+    constructor Create;
+    destructor Destroy;
 
-function GetSession(sessionId: String): TSession;
-var
-  i : integer;
-
-begin
-  // Probably a better way of doing this!
-  result := nil;
-
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if Sessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      result := Sessions[i];
-      break;
-    end;
+    function GetSession(sessionId: String): TSession;
+    function GetSessionStatus(sessionId: String): String;
+    procedure DeleteSession(sessionId: String);
+    procedure Add(session: TSession);
+    function SetSessionTimeouts(sessionId: String; ms: integer): String;
+    function Count: Integer;
   end;
 
-  if result = nil then
-    raise Exception.create('Cannot find session');
-end;
-
-function SetSessionTimeouts(sessionId: String; ms: integer): String;
 var
-  i : integer;
-  found : boolean;
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
-
-begin
-  found := false;
-
-  // Probably a better way of doing this!
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if Sessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      // Dodgy
-      found := true;
-      Sessions[i].Timeouts := ms;
-      break;
-    end;
-  end;
-
-  if not found then
-    raise Exception.create('Cannot find session');
-
-  // Construct reply
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject()
-      .Add('sessionID', sessionId)
-      .Add('status', 0)
-    .EndObject;
-
-  result := StringBuilder.ToString;
-end;
-
-function GetSessionStatus(sessionId: String) : String;
-begin
-  result := GetSession(sessionId).GetStatus;
-end;
-
-procedure DeleteSession(sessionId: String);
-var
-  i : integer;
-  found : boolean;
-begin
-  found := false;
-
-  // Probably a better way of doing this!
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if Sessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      // Dodgy
-      found := true;
-      Sessions.Delete(i);
-      break;
-    end;
-  end;
-
-  if not found then
-    raise Exception.create('Cannot find session');
-end;
+  Sessions: TSessions;
 
 procedure TStatusCommand.Execute;
 begin
   try
-    ResponseJSON(GetSessionStatus(self.Params[1]));
+    ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
   except on e: Exception do
     Error(404);
   end;
@@ -231,7 +154,7 @@ begin
     jsonObj.Free;
   end;
 
-  ResponseJSON(SetSessionTimeouts(self.Params[1], StrToInt(value)));
+  ResponseJSON(Sessions.SetSessionTimeouts(self.Params[1], StrToInt(value)));
 end;
 
 procedure TPostImplicitWaitCommand.Execute;
@@ -247,7 +170,7 @@ end;
 procedure TGetSessionCommand.Execute;
 begin
   try
-    ResponseJSON(GetSessionStatus(self.Params[1]));
+    ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
   except on e: Exception do
     Error(404);
   end;
@@ -256,7 +179,7 @@ end;
 procedure TGetSessionsCommand.Execute;
 begin
   // No longer correct, needs to be a json array
-  ResponseJSON(GetSessionStatus(self.Params[1]));
+  ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
 end;
 
 procedure TUnimplementedCommand.Execute;
@@ -311,16 +234,132 @@ begin
   try
     // Need to delete it!
     //ResponseJSON(GetSessionStatus(self.Params[1]));
-    DeleteSession(self.Params[1]);
+    Sessions.DeleteSession(self.Params[1]);
 
   except on e: Exception do
     Error(404);
   end;
 end;
 
-initialization
-  Sessions:= TObjectList<TSession>.create;
+{ TSessions }
 
+constructor TSessions.Create;
+begin
+  inherited;
+  FSessions:= TObjectList<TSession>.create;
+end;
+
+destructor TSessions.Destroy;
+begin
+  FSessions.Free;
+  inherited;
+end;
+
+function TSessions.GetSession(sessionId: String): TSession;
+var
+  i : integer;
+
+begin
+  // Probably a better way of doing this!
+  result := nil;
+
+  for i := 0 to Sessions.Count -1 do
+  begin
+    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    begin
+      result := FSessions[i];
+      break;
+    end;
+  end;
+
+  if result = nil then
+    raise Exception.create('Cannot find session');
+end;
+
+function TSessions.SetSessionTimeouts(sessionId: String; ms: integer): String;
+var
+  i : integer;
+  found : boolean;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+
+begin
+  found := false;
+
+  // Probably a better way of doing this!
+  for i := 0 to Sessions.Count -1 do
+  begin
+    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    begin
+      // Dodgy
+      found := true;
+      FSessions[i].Timeouts := ms;
+      break;
+    end;
+  end;
+
+  if not found then
+    raise Exception.create('Cannot find session');
+
+  // Construct reply
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject()
+      .Add('sessionID', sessionId)
+      .Add('status', 0)
+    .EndObject;
+
+  result := StringBuilder.ToString;
+end;
+
+function TSessions.GetSessionStatus(sessionId: String) : String;
+begin
+  result := GetSession(sessionId).GetStatus;
+end;
+
+function TSessions.Count: Integer;
+begin
+  result := FSessions.Count;
+end;
+
+procedure TSessions.Add(session: TSession);
+begin
+  FSessions.Add(session);
+end;
+
+procedure TSessions.DeleteSession(sessionId: String);
+var
+  i : integer;
+  found : boolean;
+begin
+  found := false;
+
+  // Probably a better way of doing this!
+  for i := 0 to Sessions.Count -1 do
+  begin
+    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    begin
+      // Dodgy
+      found := true;
+      FSessions.Delete(i);
+      break;
+    end;
+  end;
+
+  if not found then
+    raise Exception.create('Cannot find session');
+end;
+
+initialization
+//  Sessions:= TObjectList<TSession>.create;
+  Sessions := TSessions.Create;
 finalization
   Sessions.Free;
 
