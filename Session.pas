@@ -17,9 +17,7 @@ type
     FTimeouts: Integer;
 
   public
-    function GetStatus: String;
     function GetSessionDetails: String;
-
     function GetSession: String;
 
     property Uid: TGUID read FGuid write FGuid;
@@ -66,6 +64,11 @@ begin
   end;
 end;
 
+function TSession.GetSession: String;
+begin
+  result := GetSessionDetails;
+end;
+
 function TSession.GetSessionDetails: String;
 var
   Builder: TJSONObjectBuilder;
@@ -89,54 +92,6 @@ begin
         .Add('args', self.FArgs)
         .Add('platformName', self.FPlatform)
       .EndObject
-    .EndObject;
-
-  result := StringBuilder.ToString;
-end;
-
-function OSArchitectureToString(arch: TOSVersion.TArchitecture): String;
-begin
-  case arch of
-    arIntelX86: result := 'Intel X86';
-    arIntelX64: result := 'Intel X64';
-    arArm64: result := 'ARM 64';
-    arArm32: result := 'ARM 32';
-    else
-      result := 'Unknown';
-  end;
-end;
-
-function TSession.GetSession: String;
-begin
-  result := GetSessionDetails;
-end;
-
-function TSession.GetStatus: String;
-var
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
-
-begin
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject
-        .BeginObject('build')
-          .Add('version', GetModuleVersion)
-          .Add('revision', GetAppRevision)
-          .Add('time', 2.1)
-        .EndObject
-        .BeginObject('os')
-          .Add('arch', OSArchitectureToString(TOSVersion.Architecture))
-          .Add('name', TOSVersion.Name)
-          .Add('version', IntToStr(TOSVersion.Major) + '.' + IntToStr(TOSVersion.Minor))
-        .EndObject
     .EndObject;
 
   result := StringBuilder.ToString;

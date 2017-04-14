@@ -81,7 +81,7 @@ type
 implementation
 
 uses
-  generics.collections,
+  Sessions,
   Vcl.Forms,
   Vcl.stdctrls,
   System.Classes,
@@ -93,22 +93,6 @@ uses
   System.JSON.Writers,
   System.JSON.Builders,
   Session;
-
-Type
-  TSessions = class
-  strict private
-    FSessions: TObjectList<TSession>;
-  public
-    constructor Create;
-    destructor Destroy;
-
-    function GetSession(sessionId: String): TSession;
-    function GetSessionStatus(sessionId: String): String;
-    procedure DeleteSession(sessionId: String);
-    procedure Add(session: TSession);
-    function SetSessionTimeouts(sessionId: String; ms: integer): String;
-    function Count: Integer;
-  end;
 
 var
   Sessions: TSessions;
@@ -158,8 +142,24 @@ begin
 end;
 
 procedure TPostImplicitWaitCommand.Execute;
+var
+  jsonObj : TJSONObject;
+  requestType: String;
+  value: String;
+
 begin
-  ResponseJSON('{''TPostImplicitWaitCommand'':''ok''}');
+  // Set timeout for the session
+
+  // Decode the incoming JSON and see what we have
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(self.StreamContents),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<String>('type', requestType);
+    (jsonObj as TJsonObject).TryGetValue<String>('ms', value);
+  finally
+    jsonObj.Free;
+  end;
+
+  ResponseJSON(Sessions.SetSessionImplicitTimeouts(self.Params[1], StrToInt(value)));
 end;
 
 procedure TGetElementCommand.Execute;
@@ -239,122 +239,6 @@ begin
   except on e: Exception do
     Error(404);
   end;
-end;
-
-{ TSessions }
-
-constructor TSessions.Create;
-begin
-  inherited;
-  FSessions:= TObjectList<TSession>.create;
-end;
-
-destructor TSessions.Destroy;
-begin
-  FSessions.Free;
-  inherited;
-end;
-
-function TSessions.GetSession(sessionId: String): TSession;
-var
-  i : integer;
-
-begin
-  // Probably a better way of doing this!
-  result := nil;
-
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      result := FSessions[i];
-      break;
-    end;
-  end;
-
-  if result = nil then
-    raise Exception.create('Cannot find session');
-end;
-
-function TSessions.SetSessionTimeouts(sessionId: String; ms: integer): String;
-var
-  i : integer;
-  found : boolean;
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
-
-begin
-  found := false;
-
-  // Probably a better way of doing this!
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      // Dodgy
-      found := true;
-      FSessions[i].Timeouts := ms;
-      break;
-    end;
-  end;
-
-  if not found then
-    raise Exception.create('Cannot find session');
-
-  // Construct reply
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject()
-      .Add('sessionID', sessionId)
-      .Add('status', 0)
-    .EndObject;
-
-  result := StringBuilder.ToString;
-end;
-
-function TSessions.GetSessionStatus(sessionId: String) : String;
-begin
-  result := GetSession(sessionId).GetStatus;
-end;
-
-function TSessions.Count: Integer;
-begin
-  result := FSessions.Count;
-end;
-
-procedure TSessions.Add(session: TSession);
-begin
-  FSessions.Add(session);
-end;
-
-procedure TSessions.DeleteSession(sessionId: String);
-var
-  i : integer;
-  found : boolean;
-begin
-  found := false;
-
-  // Probably a better way of doing this!
-  for i := 0 to Sessions.Count -1 do
-  begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
-    begin
-      // Dodgy
-      found := true;
-      FSessions.Delete(i);
-      break;
-    end;
-  end;
-
-  if not found then
-    raise Exception.create('Cannot find session');
 end;
 
 initialization
