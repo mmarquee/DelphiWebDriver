@@ -21,17 +21,11 @@ Essentially a proof of concept / futile excerise.
 
 NOTE: Functional here means it has been at least partially implemented in both a host and a test client
 
-{::comment}
-I wonder if this is a comment
-{:/comment}
+## To been implemented
 
-{::comment}
-| HTTP   	| Path                                              	|
-|--------	|---------------------------------------------------	|
-| GET    	| /status                                           	|
-| POST   	| /session                                          	|
+| HTTP | Path |
+| --- | --- |
 | GET    	| /sessions                                         	|
-| DELETE 	| /session/:sessionId                               	|
 | POST   	| /session/:sessionId/appium/app/launch             	|
 | POST   	| /session/:sessionId/appium/app/close              	|
 | POST   	| /session/:sessionId/back                          	|
@@ -65,8 +59,6 @@ I wonder if this is a comment
 | GET    	| /session/:sessionId/orientation                   	|
 | GET    	| /session/:sessionId/screenshot                    	|
 | GET    	| /session/:sessionId/source                        	|
-| POST   	| /session/:sessionId/timeouts                      	|
-| POST   	| /session/:sessionId/timeouts/implicit_wait        	|
 | GET    	| /session/:sessionId/title                         	|
 | POST   	| /session/:sessionId/touch/click                   	|
 | POST   	| /session/:sessionId/touch/doubleclick             	|
@@ -87,4 +79,4 @@ I wonder if this is a comment
 | POST   	| /session/:sessionId/window/:windowHandle/maximize 	|
 | GET    	| /session/:sessionId/window_handle                 	|
 | GET    	| /session/:sessionId/window_handles                	|
-{:/comment}
+
