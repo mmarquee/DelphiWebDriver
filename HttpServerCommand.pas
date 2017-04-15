@@ -3,6 +3,7 @@ unit HttpServerCommand;
 interface
 
 uses
+  vcl.forms,
   IdContext, IdCustomHTTPServer,
   CommandRegistry,
   System.SysUtils, classes;
@@ -54,7 +55,7 @@ begin
       try
         cmd.Start(cmdReg, AContext, ARequestInfo, AResponseInfo, Params);
         LogMessage(cmd.StreamContents);
-        cmd.Execute;
+        cmd.Execute(self.Owner as TForm);     // Again with the TForm
       finally
         cmd.Free;
       end;
@@ -86,7 +87,7 @@ end;
 
 constructor THttpServerCommand.Create(AOwner: TComponent);
 begin
-  inherited;
+  inherited Create(AOwner);
   FCommands:= THttpServerCommandRegister.Create(self);
 end;
 

@@ -169,4 +169,13 @@ object Form3: TForm3
     TabOrder = 16
     OnClick = Button14Click
   end
+  object Button15: TButton
+    Left = 251
+    Top = 456
+    Width = 75
+    Height = 25
+    Caption = 'Get Window'
+    TabOrder = 17
+    OnClick = Button15Click
+  end
 end

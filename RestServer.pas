@@ -3,6 +3,7 @@ unit RestServer;
 interface
 
 uses
+  Vcl.Forms,
   HttpServerCommand,
   IdHTTPServer, IdContext, IdHeaderList, IdCustomHTTPServer,
   classes,
@@ -12,6 +13,7 @@ uses
 type
   TRestServer = Class
   strict private
+    FOwner: TComponent;
     FCommand: THttpServerCommand;
     FHttpServer : TIdHTTPServer;
     FOnLogMessage: TOnLogMessage;
@@ -44,19 +46,22 @@ constructor TRestServer.Create(AOwner: TComponent);
 begin
   inherited Create;
 
+  FOwner := AOwner;
+
   FCommand:= THttpServerCommand.Create(AOwner);
 
-  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand, AOwner);
+  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);
   //FCommand.Commands.Register('GET', '/session/(.*)/screenshot', TGetScreenshotCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/window_handle', TUnimplementedCommand);
+  FCommand.Commands.Register('GET', '/session/(.*)/window', TGetWindowCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/title', TGetTitleCommand);
   FCommand.Commands.Register('GET', '/session/(.*)', TGetSessionCommand);
   FCommand.Commands.Register('GET', '/sessions', TGetSessionsCommand);
 
   FCommand.Commands.Register('GET', '/status', TStatusCommand);
 
-  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand, AOwner);
+  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts', TSessionTimeoutsCommand);
 

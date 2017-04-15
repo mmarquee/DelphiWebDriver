@@ -25,6 +25,7 @@ type
     Button12: TButton;
     Button13: TButton;
     Button14: TButton;
+    Button15: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -41,6 +42,7 @@ type
     procedure Button13Click(Sender: TObject);
     procedure DeleteClick(Sender: TObject);
     procedure Button14Click(Sender: TObject);
+    procedure Button15Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -198,6 +200,14 @@ var
   result : String;
 begin
   result := Delete('session/ieueihflkjflkjfhe76rj');
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button15Click(Sender: TObject);
+var
+  result : String;
+begin
+  result := Get('session/' + self.FSessionId + '/window');
   listBox1.Items.add(result);
 end;
 

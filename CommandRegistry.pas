@@ -3,12 +3,12 @@
 interface
 
 uses
+  Vcl.forms,
   classes, IdContext, IdCustomHTTPServer, generics.collections,
   System.SysUtils;
 
 type
   TRESTCommandClass = class of TRESTCommand;
-  //THttpServerCommand= class;
   TRESTCommandREG = class;
 
   TRESTCommand = class
@@ -25,7 +25,7 @@ type
     constructor Create;
 
     procedure Start(AReg: TRESTCommandREG; AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo; AParams: TStringList);
-    procedure Execute; virtual;
+    procedure Execute(AOwner: TForm); virtual;
 
     procedure ResponseJSON(Json: String);
     procedure Error(code: integer);
@@ -44,17 +44,15 @@ type
     FTYPE: String;
     FPATH: String;
     FCommand: TRESTCommandClass;
-    FHost: TComponent;
-    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass; AHost: TComponent); overload;
-    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;
+    FHost: TForm; // TComponent;
+    constructor Create(ATYPE:String; APATH: String; ACommand: TRESTCommandClass);
   end;
 
   THttpServerCommandRegister=class(TComponent)
   private
     FList: TObjectList<TRESTCommandREG>;
   public
-    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;
-    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass; AHost: TComponent); overload;
+    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass);
     constructor Create(AOwner: TComponent); override;
     function isUri(AURI: String; AMask: String; AParams: TStringList): boolean;
     function FindCommand(ACommand: String; AURI: String; Params: TStringList): TRESTCommandREG;
@@ -114,34 +112,18 @@ begin
 end;
 
 procedure THttpServerCommandRegister.Register(ATYPE, APATH: String;
-  ACommand: TRESTCommandClass; AHost: TComponent);
-begin
-  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand, AHost));
-end;
-
-procedure THttpServerCommandRegister.Register(ATYPE, APATH: String;
   ACommand: TRESTCommandClass);
 begin
-  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand, nil));
+  FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand));
 end;
 
 { TRESTCommandREG }
 
-constructor TRESTCommandREG.Create(ATYPE, APATH: String;
-  ACommand: TRESTCommandClass);
+constructor TRESTCommandREG.Create(ATYPE, APATH: String; ACommand: TRESTCommandClass);
 begin
   FTYPE := AType;
   FPATH := APATH;
   FCommand := ACommand;
-end;
-
-constructor TRESTCommandREG.Create(ATYPE, APATH: String;
-  ACommand: TRESTCommandClass; AHost: TComponent);
-begin
-  FTYPE := AType;
-  FPATH := APATH;
-  FCommand := ACommand;
-  FHost := AHost;
 end;
 
 { TRESTCommand }
@@ -188,7 +170,7 @@ begin
   inherited;
 end;
 
-procedure TRESTCommand.Execute;
+procedure TRESTCommand.Execute(AOwner: TForm);
 begin
 
 end;

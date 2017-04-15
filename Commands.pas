@@ -3,86 +3,93 @@ unit Commands;
 interface
 
 uses
+  Vcl.Forms,
   CommandRegistry,
   HttpServerCommand;
 
 type
   TUnimplementedCommand = class(TRestCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TDeleteSessionCommand = class(TRestCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TStatusCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TGetTextCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TCreateSessionCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TGetSessionsCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TGetSessionCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TClickElementCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TGetTitleCommand = class(TRestCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TSessionTimeoutsCommand = class(TRESTCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TPostImplicitWaitCommand = class(TRestCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
   end;
 
 type
   TGetElementCommand = class(TRestCommand)
   public
-    procedure Execute; override;
+    procedure Execute(AOwner: TForm); override;
+  end;
+
+type
+  TGetWindowCommand = class(TRestCommand)
+  public
+    procedure Execute(AOwner: TForm); override;
   end;
 
 implementation
 
 uses
+  windows,
   Sessions,
-  Vcl.Forms,
   Vcl.stdctrls,
   System.Classes,
   System.SysUtils,
@@ -97,7 +104,7 @@ uses
 var
   Sessions: TSessions;
 
-procedure TStatusCommand.Execute;
+procedure TStatusCommand.Execute(AOwner: TForm);
 begin
   try
     ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
@@ -106,7 +113,7 @@ begin
   end;
 end;
 
-procedure TCreateSessionCommand.Execute;
+procedure TCreateSessionCommand.Execute(AOwner: TForm);
 var
   request : String;
   session : TSession;
@@ -120,7 +127,7 @@ begin
   ResponseJSON(session.GetSessionDetails);
 end;
 
-procedure TSessionTimeoutsCommand.Execute;
+procedure TSessionTimeoutsCommand.Execute(AOwner: TForm);
 var
   jsonObj : TJSONObject;
   requestType: String;
@@ -141,7 +148,7 @@ begin
   ResponseJSON(Sessions.SetSessionTimeouts(self.Params[1], StrToInt(value)));
 end;
 
-procedure TPostImplicitWaitCommand.Execute;
+procedure TPostImplicitWaitCommand.Execute(AOwner: TForm);
 var
   jsonObj : TJSONObject;
   requestType: String;
@@ -162,12 +169,12 @@ begin
   ResponseJSON(Sessions.SetSessionImplicitTimeouts(self.Params[1], StrToInt(value)));
 end;
 
-procedure TGetElementCommand.Execute;
+procedure TGetElementCommand.Execute(AOwner: TForm);
 begin
   ResponseJSON('{''TGetElementCommand'':'''+ self.Params[1] + '''}');
 end;
 
-procedure TGetSessionCommand.Execute;
+procedure TGetSessionCommand.Execute(AOwner: TForm);
 begin
   try
     ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
@@ -176,27 +183,27 @@ begin
   end;
 end;
 
-procedure TGetSessionsCommand.Execute;
+procedure TGetSessionsCommand.Execute(AOwner: TForm);
 begin
   // No longer correct, needs to be a json array
   ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
 end;
 
-procedure TUnimplementedCommand.Execute;
+procedure TUnimplementedCommand.Execute(AOwner: TForm);
 begin
   Error(501);
 end;
 
-procedure TGetTitleCommand.Execute;
+procedure TGetTitleCommand.Execute(AOwner: TForm);
 var
   caption : String;
 begin
   // Here we are assuming it is a form
-  caption := (self.Reg.FHost as TForm).Caption;
+  caption := AOwner.Caption;     // Never gets a caption for some reason
   ResponseJSON(caption);
 end;
 
-procedure TGetTextCommand.Execute;
+procedure TGetTextCommand.Execute(AOwner: TForm);
 var
   comp: TComponent;
 begin
@@ -212,7 +219,7 @@ begin
     Error(404);
 end;
 
-procedure TClickElementCommand.Execute;
+procedure TClickElementCommand.Execute(AOwner: TForm);
 var
   comp: TComponent;
 begin
@@ -228,12 +235,22 @@ begin
     Error(404);
 end;
 
-procedure TDeleteSessionCommand.Execute;
+procedure TGetWindowCommand.Execute(AOwner: TForm);
+var
+  handle : HWND;
 begin
-// Find session and delete it.
+  try
+    handle := AOwner.Handle;
+    ResponseJSON(intToStr(handle));
+  except on e: Exception do
+    Error(404);
+  end;
+end;
+
+procedure TDeleteSessionCommand.Execute(AOwner: TForm);
+begin
   try
     // Need to delete it!
-    //ResponseJSON(GetSessionStatus(self.Params[1]));
     Sessions.DeleteSession(self.Params[1]);
 
   except on e: Exception do
@@ -242,8 +259,8 @@ begin
 end;
 
 initialization
-//  Sessions:= TObjectList<TSession>.create;
   Sessions := TSessions.Create;
+
 finalization
   Sessions.Free;
 
