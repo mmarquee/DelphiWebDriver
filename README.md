@@ -12,6 +12,7 @@ Essentially a proof of concept / futile excerise.
 | GET     | /session/:sessionId                                 | Functional  |
 | GET     | /session/:sessionId/title                         	| In Progress |
 | GET     | /session/:sessionId/element/:id                     | In Progress |
+| POST    | /session/:sessionId/element                         | In Progress |
 | GET     | /session/:sessionId/screenshot                      | Initial     |
 | POST    | /session/:sessionId/element/:id/click               | In Progress |
 | POST    | /session/:sessionId/timeouts/implicit_wait          | In Progress |
@@ -39,7 +40,6 @@ NOTES:
 | POST   	| /session/:sessionId/buttonup                      	|
 | POST   	| /session/:sessionId/click                         	|
 | POST   	| /session/:sessionId/doubleclick                   	|
-| POST   	| /session/:sessionId/element                       	|
 | POST   	| /session/:sessionId/elements                      	|
 | POST   	| /session/:sessionId/element/active                	|
 | GET    	| /session/:sessionId/element/:id/attribute/:name   	|

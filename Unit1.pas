@@ -58,7 +58,7 @@ end;
 procedure TForm1.createServer(port: word);
 begin
   listbox1.Items.Add('Starting server on port ' + IntToStr(port));
-  FRestServer := TRestServer.Create(nil);
+  FRestServer := TRestServer.Create(self);
   FRestServer.OnLogMessage := LogMessage;
   FRestServer.Start(port);
 end;

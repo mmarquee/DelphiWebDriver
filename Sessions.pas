@@ -10,8 +10,6 @@ Type
   TSessions = class
   strict private
     FSessions: TObjectList<TSession>;
-  private
-    function OKResponse(const sessionId: String): String;
   public
     constructor Create;
     destructor Destroy; override;
@@ -24,6 +22,11 @@ Type
     function SetSessionImplicitTimeouts(const sessionId: String; ms: integer): String;
     function Count: Integer;
     function GetStatus: String;
+
+    function OKResponse(const sessionId: String): String;
+    function ErrorResponse(const sessionId, code, msg: String): String;
+
+    function FindElement(const sessionId: String): String;
   end;
 
 implementation
@@ -124,6 +127,34 @@ begin
   result := self.OKResponse(sessionId);
 end;
 
+function TSessions.ErrorResponse(const sessionId, code, msg: String): String;
+var
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+
+begin
+  // Construct reply
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject()
+      .Add('sessionID', sessionId)
+      .Add('status', code)
+      .BeginObject('value')
+        .Add('error', code)
+        .Add('message', code)
+      .EndObject
+    .EndObject;
+
+  result := StringBuilder.ToString;
+end;
+
 function TSessions.OKResponse(const sessionId: String): String;
 var
   Builder: TJSONObjectBuilder;
@@ -196,6 +227,12 @@ begin
     else
       result := 'Unknown';
   end;
+end;
+
+function TSessions.FindElement(const sessionId: String): String;
+begin
+  result := 'N/A';
+  //comp := (self.Reg.FHost.FindComponent(self.Params[2]));
 end;
 
 function TSessions.GetStatus: String;
