@@ -27,6 +27,8 @@ type
     Button14: TButton;
     Button15: TButton;
     Button16: TButton;
+    Button17: TButton;
+    Button18: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -45,6 +47,8 @@ type
     procedure Button14Click(Sender: TObject);
     procedure Button15Click(Sender: TObject);
     procedure Button16Click(Sender: TObject);
+    procedure Button17Click(Sender: TObject);
+    procedure Button18Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -233,6 +237,62 @@ begin
     .BeginObject
        .Add('using', 'name')
        .Add('value', 'This is Form1 - The Hosting Form')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button17Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'link text')
+       .Add('value', 'Get Title')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button18Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'Button3')
     .EndObject;
 
   Parameters := StringBuilder.ToString;

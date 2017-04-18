@@ -85,12 +85,6 @@ type
     procedure Execute(AOwner: TForm); override;
   end;
 
-type
-  TPostElementCommand = class(TRestCommand )
-  public
-    procedure Execute(AOwner: TForm); override;
-  end;
-
 implementation
 
 uses
@@ -261,44 +255,6 @@ begin
     Sessions.DeleteSession(self.Params[1]);
 
   except on e: Exception do
-    Error(404);
-  end;
-end;
-
-procedure TPostElementCommand.Execute(AOwner: TForm);
-var
-  jsonObj : TJSONObject;
-  using: String;
-  value: String;
-  comp: TComponent;
-
-begin
-  // Decode request
-  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(self.StreamContents),0) as TJSONObject;
-  try
-    (jsonObj as TJsonObject).TryGetValue<String>('using', using);
-    (jsonObj as TJsonObject).TryGetValue<String>('value', value);
-  finally
-    jsonObj.Free;
-  end;
-
-  // Lets assume it's 'name' all the time for now
-
-  try
-
-    if (AOwner.Caption = value) then
-      comp := AOwner
-    else
-      comp := AOwner.FindComponent(value);
-    //comp := (self.Reg.FHost.FindComponent(self.Params[2]));
-
-
-  //  handle := Sessions.FindElement(self.Params[1]);
-
-    ResponseJSON(inttostr((comp as TWinControl).Handle));
-
-  except on e: Exception do
-    // Probably should give a different reply
     Error(404);
   end;
 end;

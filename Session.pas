@@ -3,24 +3,39 @@ unit Session;
 interface
 
 uses
+  JsonAttributeSource,
   System.Classes;
+
+type
+  { Will use attributes later, maybe }
+  TStatus = class
+  public
+    [JsonAttribute('sessionID')]
+    Guid: TGUID;
+    [JsonAttribute('args')]
+    Args: String;
+    [JsonAttribute('app')]
+    App: String;
+    [JsonAttribute('platform')]
+    Platform: String;
+
+    function ToJsonString: String;
+  end;
 
 type
   TSession = class
   private
-    FGuid: TGUID;
-
-    FArgs: String;
-    FApp: String;
-    FPlatform: String;
-
+    FStatus: TStatus;
     FTimeouts: Integer;
+
+    function GetUid: TGUID;
+    procedure SetUid(val: TGUID);
 
   public
     function GetSessionDetails: String;
     function GetSession: String;
 
-    property Uid: TGUID read FGuid write FGuid;
+    property Uid: TGUID read GetUid write SetUid;
     property Timeouts: Integer write FTimeouts;
 
     constructor Create(const request: String);
@@ -30,7 +45,7 @@ implementation
 
 uses
   ResourceProcessing,
-  JSON,
+  System.JSON,
   System.Types,
   System.SysUtils,
   System.StrUtils,
@@ -46,7 +61,9 @@ var
   requestObj : TJSONValue;
 
 begin
-  if CreateGUID(self.FGuid) <> 0 then
+  FStatus:= TStatus.Create;
+
+  if CreateGUID(FStatus.Guid) <> 0 then
     raise Exception.Create('Unable to generate GUID')
   else
   begin
@@ -55,9 +72,9 @@ begin
     try
       requestObj := jsonObj.Get('desiredCapabilities').JsonValue;
 
-      (requestObj as TJsonObject).TryGetValue<String>('args', self.FArgs);
-      (requestObj as TJsonObject).TryGetValue<String>('app', self.FApp);
-      (requestObj as TJsonObject).TryGetValue<String>('platformName', self.FPlatform);
+      (requestObj as TJsonObject).TryGetValue<String>('args', FStatus.Args);
+      (requestObj as TJsonObject).TryGetValue<String>('app', FStatus.App);
+      (requestObj as TJsonObject).TryGetValue<String>('platformName', FStatus.Platform);
     finally
       jsonObj.Free;
     end;
@@ -70,6 +87,21 @@ begin
 end;
 
 function TSession.GetSessionDetails: String;
+begin
+  result := FStatus.ToJsonString;
+end;
+
+function TSession.GetUid: TGUID;
+begin
+  result := FStatus.Guid;
+end;
+
+procedure TSession.SetUid(val: TGUID);
+begin
+  FStatus.Guid := val;
+end;
+
+function TStatus.ToJsonString: String;
 var
   Builder: TJSONObjectBuilder;
   Writer: TJsonTextWriter;
@@ -85,12 +117,12 @@ begin
 
   Builder
     .BeginObject()
-      .Add('sessionID', GUIDToString(FGuid))
+      .Add('sessionID', GUIDToString(self.Guid))
       .Add('status', 0)
       .BeginObject('value')
-        .Add('app', self.FApp)
-        .Add('args', self.FArgs)
-        .Add('platformName', self.FPlatform)
+        .Add('app', self.App)
+        .Add('args', self.Args)
+        .Add('platformName', self.Platform)
       .EndObject
     .EndObject;
 

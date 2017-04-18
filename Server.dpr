@@ -9,7 +9,10 @@ uses
   Session in 'Session.pas',
   HttpServerCommand in 'HttpServerCommand.pas',
   ResourceProcessing in 'ResourceProcessing.pas',
-  Sessions in 'Sessions.pas';
+  Sessions in 'Sessions.pas',
+  JsonAttributeSource in 'JsonAttributeSource.pas',
+  Commands.PostElement in 'Commands.PostElement.pas',
+  Commands.PostElements in 'Commands.PostElements.pas';
 
 {$R *.res}
 

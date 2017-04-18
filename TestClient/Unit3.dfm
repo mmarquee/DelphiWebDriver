@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 0
   Top = 0
   Caption = 'Form3'
-  ClientHeight = 598
+  ClientHeight = 597
   ClientWidth = 744
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,7 +13,7 @@ object Form3: TForm3
   OldCreateOrder = False
   DesignSize = (
     744
-    598)
+    597)
   PixelsPerInch = 96
   TextHeight = 13
   object ListBox1: TListBox
@@ -186,5 +186,23 @@ object Form3: TForm3
     Caption = 'Get Elemnt'
     TabOrder = 18
     OnClick = Button16Click
+  end
+  object Button17: TButton
+    Left = 251
+    Top = 518
+    Width = 118
+    Height = 25
+    Caption = 'Get Elemnt By Text'
+    TabOrder = 19
+    OnClick = Button17Click
+  end
+  object Button18: TButton
+    Left = 370
+    Top = 518
+    Width = 118
+    Height = 25
+    Caption = 'Get Elemnt By Name'
+    TabOrder = 20
+    OnClick = Button18Click
   end
 end
