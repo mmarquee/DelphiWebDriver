@@ -22,7 +22,8 @@ implementation
 uses
   System.JSON,
   Vcl.controls,
-  Vcl.stdctrls,
+  Vcl.StdCtrls,
+  Vcl.ExtCtrls,
   System.Types,
   System.SysUtils,
   System.Classes,
@@ -102,13 +103,53 @@ begin
     else
     begin
       for i := 0 to tForm(AOwner).ControlCount -1 do
+
+        // Vcl.ExtCtrls ..
+        // TButtonedEdit
+        // THeader
+        // TPanel
+
+        // Vcl.StdCtrls ..
+        // TButton - done
+        // TCheckBox
+        // TComboBox
+        // TEdit
+        // TLabel
+        // TListBox
+        // TRadioButton
+        // TStaticText
+        // TMemo
+
+        // Specifically from the test host
+        // TTreeView
+        // TRichEdit
+        // TToolbar
+        // TToolbarButton
+        // TPageControl
+        // TTabSheet
+        // TStatusBar
+        // TMainMenu
+        // TMenuItem
+        // TPopupMenu
+        // TStringGrid
+        // TMaskedEdit
+        // TLinkLabel
+
+        // TSpeedButton - no window here, need to 'fake' one
+
         // Need to get each type of control and check the caption / text
         if (tForm(AOwner).Controls[i] is TButton) then
-        if (tForm(AOwner).Controls[i] as TButton).caption = value then
-        begin
-          comp := tForm(AOwner).Controls[i];
-          break;
-        end;
+          if (tForm(AOwner).Controls[i] as TButton).caption = value then
+          begin
+            comp := tForm(AOwner).Controls[i];
+            break;
+          end;
+        if (tForm(AOwner).Controls[i] is TPanel) then
+          if (tForm(AOwner).Controls[i] as TPanel).caption = value then
+          begin
+            comp := tForm(AOwner).Controls[i];
+            break;
+          end;
     end;
 
     if comp = nil then
