@@ -31,12 +31,6 @@ uses
   System.JSON.Writers,
   System.JSON.Builders;
 
-type
-  TMyControl = class (TControl)
-  protected
-    property Caption;
-  end;
-
 procedure TPostElementCommand.GetElementByName(const value:String; AOwner: TForm);
 var
   comp: TComponent;
@@ -49,15 +43,7 @@ begin
     if (AOwner.Caption = value) then
       comp := AOwner
     else
-    begin
-      for i := 0 to tForm(AOwner).ComponentCount -1 do
-        if tForm(AOwner).Components[i] is TControl then
-          if (tForm(AOwner).Components[i] as TControl).Caption = value then
-          begin
-            comp := tForm(AOwner).Components[i];
-            break;
-          end;
-    end;
+      comp := AOwner.FindComponent(value);
 
     if comp = nil then
       raise Exception.Create('Control not found');
@@ -83,13 +69,12 @@ begin
       comp := AOwner
     else
     begin
-      for i := 0 to tForm(AOwner).ComponentCount -1 do
-        if tForm(AOwner).Components[i] is TControl then
-          if (tForm(AOwner).Components[i] as TMyControl).ClassName = value then
-          begin
-            comp := tForm(AOwner).Components[i];
-            break;
-          end;
+      for i := 0 to tForm(AOwner).ControlCount -1 do
+        if tForm(AOwner).Controls[i].ClassName = value then
+        begin
+          comp := tForm(AOwner).Controls[i];
+          break;
+        end;
     end;
 
     if comp = nil then
@@ -107,7 +92,7 @@ procedure TPostElementCommand.GetElementByCaption(const value:String; AOwner: TF
 var
   comp: TComponent;
   i: Integer;
-  
+
 begin
   comp := nil;
 
@@ -116,14 +101,13 @@ begin
       comp := AOwner
     else
     begin
-      for i := 0 to tForm(AOwner).ComponentCount -1 do
-        if tForm(AOwner).Components[i] is TControl then
+      for i := 0 to tForm(AOwner).ControlCount -1 do
+        // Need to get each type of control and check the caption / text
+        if (tForm(AOwner).Controls[i] is TButton) then
+        if (tForm(AOwner).Controls[i] as TButton).caption = value then
         begin
-          if (tForm(AOwner).Components[i] as TMyControl).caption = value then
-          begin
-            comp := tForm(AOwner).Components[i];
-            break;
-          end;
+          comp := tForm(AOwner).Controls[i];
+          break;
         end;
     end;
 
