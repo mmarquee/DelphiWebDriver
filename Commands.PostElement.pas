@@ -13,6 +13,7 @@ type
     procedure GetElementByName(const value:String; AOwner: TForm);
     procedure GetElementByCaption(const value:String; AOwner: TForm);
     procedure GetElementByClassName(const value:String; AOwner: TForm);
+    function OKResponse(const sessionId, handle: String): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -35,11 +36,8 @@ uses
 procedure TPostElementCommand.GetElementByName(const value:String; AOwner: TForm);
 var
   comp: TComponent;
-  i: Integer;
 
 begin
-  comp := nil;
-
   try
     if (AOwner.Caption = value) then
       comp := AOwner
@@ -49,7 +47,7 @@ begin
     if comp = nil then
       raise Exception.Create('Control not found');
 
-    ResponseJSON(inttostr((comp as TWinControl).Handle));
+    ResponseJSON(self.OKResponse(self.Params[1], IntToStr((comp as TWinControl).Handle)));
 
   except on e: Exception do
     // Probably should give a different reply
@@ -81,7 +79,7 @@ begin
     if comp = nil then
       raise Exception.Create('Control not found');
 
-    ResponseJSON(inttostr((comp as TWinControl).Handle));
+    ResponseJSON(self.OKResponse(self.Params[1], IntToStr((comp as TWinControl).Handle)));
 
   except on e: Exception do
     // Probably should give a different reply
@@ -139,23 +137,35 @@ begin
 
         // Need to get each type of control and check the caption / text
         if (tForm(AOwner).Controls[i] is TButton) then
+        begin
           if (tForm(AOwner).Controls[i] as TButton).caption = value then
           begin
             comp := tForm(AOwner).Controls[i];
             break;
           end;
-        if (tForm(AOwner).Controls[i] is TPanel) then
+        end
+        else if (tForm(AOwner).Controls[i] is TPanel) then
+        begin
           if (tForm(AOwner).Controls[i] as TPanel).caption = value then
           begin
             comp := tForm(AOwner).Controls[i];
             break;
           end;
+        end
+        else if (tForm(AOwner).Controls[i] is TEdit) then
+        begin
+          if (tForm(AOwner).Controls[i] as TEdit).Text = value then
+          begin
+            comp := tForm(AOwner).Controls[i];
+            break;
+          end;
+        end;
     end;
 
     if comp = nil then
       raise Exception.Create('Control not found');
 
-    ResponseJSON(inttostr((comp as TWinControl).Handle));
+    ResponseJSON(self.OKResponse(self.Params[1], IntToStr((comp as TWinControl).Handle)));
 
   except on e: Exception do
     // Probably should give a different reply
@@ -170,7 +180,6 @@ var
   value: String;
 
 begin
-  // Decode request
   jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(self.StreamContents),0) as TJSONObject;
   try
     (jsonObj as TJsonObject).TryGetValue<String>('using', using);
@@ -185,9 +194,35 @@ begin
     GetElementByName(value, AOwner)
   else if (using = 'class name') then
     GetElementByClassName(value, AOwner)
-  // 'partial link text '
-  // 'id'
+  // 'partial link text '  (wildcard)
+  // 'id' (automation id)
 end;
 
+function TPostElementCommand.OKResponse(const sessionId, handle: String): String;
+var
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+
+begin
+  // Construct reply
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject()
+      .Add('sessionID', sessionId)
+      .Add('status', 0)
+      .BeginObject('value')
+        .Add('ELEMENT', handle)
+      .EndObject
+    .EndObject;
+
+  result := StringBuilder.ToString;
+end;
 
 end.

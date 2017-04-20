@@ -205,4 +205,13 @@ object Form3: TForm3
     TabOrder = 20
     OnClick = Button18Click
   end
+  object Button19: TButton
+    Left = 504
+    Top = 520
+    Width = 75
+    Height = 25
+    Caption = 'By ClassName'
+    TabOrder = 21
+    OnClick = Button19Click
+  end
 end

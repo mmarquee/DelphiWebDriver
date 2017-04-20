@@ -29,6 +29,7 @@ type
     Button16: TButton;
     Button17: TButton;
     Button18: TButton;
+    Button19: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -49,6 +50,7 @@ type
     procedure Button16Click(Sender: TObject);
     procedure Button17Click(Sender: TObject);
     procedure Button18Click(Sender: TObject);
+    procedure Button19Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -298,6 +300,34 @@ begin
   Parameters := StringBuilder.ToString;
 
   result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button19Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'class name')
+       .Add('value', 'TButton')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/elements', parameters);
   listBox1.Items.add(result);
 end;
 
