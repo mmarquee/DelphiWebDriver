@@ -431,6 +431,10 @@ var
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
   Parameters: String;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+  req: String;
+  handle: String;
 
 begin
   StringBuilder := TStringBuilder.Create;
@@ -470,7 +474,6 @@ begin
   result := post('session/' + self.FSessionId + '/element/' + handle + '/click');
 
   listBox1.Items.Add(result);
-
 end;
 
 procedure TForm3.Button2Click(Sender: TObject);

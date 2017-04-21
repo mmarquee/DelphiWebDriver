@@ -49,7 +49,10 @@ begin
     if comp = nil then
       raise Exception.Create('Control not found');
 
-    ResponseJSON(self.OKResponse(self.Params[1], IntToStr((comp as TWinControl).Handle)));
+    if (comp is TWinControl) then
+      ResponseJSON(self.OKResponse(self.Params[1], IntToStr((comp as TWinControl).Handle)))
+    else
+      ResponseJSON(self.OKResponse(self.Params[1], comp.name));
 
   except on e: Exception do
     // Probably should give a different reply
