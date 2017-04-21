@@ -12,7 +12,8 @@ uses
   Sessions in 'Sessions.pas',
   JsonAttributeSource in 'JsonAttributeSource.pas',
   Commands.PostElement in 'Commands.PostElement.pas',
-  Commands.PostElements in 'Commands.PostElements.pas';
+  Commands.PostElements in 'Commands.PostElements.pas',
+  Commands.ClickElement in 'Commands.ClickElement.pas';
 
 {$R *.res}
 

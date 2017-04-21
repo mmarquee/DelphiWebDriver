@@ -30,6 +30,9 @@ type
     Button17: TButton;
     Button18: TButton;
     Button19: TButton;
+    Button20: TButton;
+    Button21: TButton;
+    Button22: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -51,13 +54,16 @@ type
     procedure Button17Click(Sender: TObject);
     procedure Button18Click(Sender: TObject);
     procedure Button19Click(Sender: TObject);
+    procedure Button20Click(Sender: TObject);
+    procedure Button21Click(Sender: TObject);
+    procedure Button22Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
 
     function Get(const resource: String): string;
     function Delete(const resource: String): string;
-    function Post(const resource: String; const parameters: String): string;
+    function Post(const resource: String; const parameters: String = ''): string;
     function Sanitize(value: String): String;
   public
     { Public declarations }
@@ -86,7 +92,7 @@ begin
   result := value;
 end;
 
-function TForm3.Post(const resource: String; const parameters: String): string;
+function TForm3.Post(const resource: String; const parameters: String = ''): string;
 var
   lHTTP: TIdHTTP;
   val : String;
@@ -337,6 +343,134 @@ var
 begin
   result := Get('status');
   listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button20Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+  handle: String;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+  req: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'Button3')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+
+  // Decode it and get the handle
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
+    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
+  finally
+    jsonObj.Free;
+  end;
+
+  req := 'session/' + self.FSessionId + '/element/' + handle + '/click';
+
+  result := post('session/' + self.FSessionId + '/element/' + handle + '/click');
+
+  listBox1.Items.Add(result);
+end;
+
+procedure TForm3.Button21Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+  req: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'class name')
+       .Add('value', 'TSpeedButton')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/elements', parameters);
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button22Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+    StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'SpeedButton3')
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+
+  // Decode it and get the handle
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
+    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
+  finally
+    jsonObj.Free;
+  end;
+
+  req := 'session/' + self.FSessionId + '/element/' + handle + '/click';
+
+  result := post('session/' + self.FSessionId + '/element/' + handle + '/click');
+
+  listBox1.Items.Add(result);
+
 end;
 
 procedure TForm3.Button2Click(Sender: TObject);

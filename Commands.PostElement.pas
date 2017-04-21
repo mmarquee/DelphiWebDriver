@@ -8,11 +8,13 @@ uses
   HttpServerCommand;
 
 type
-  TPostElementCommand = class(TRestCommand )
+  TPostElementCommand = class(TRestCommand)
   private
     procedure GetElementByName(const value:String; AOwner: TForm);
     procedure GetElementByCaption(const value:String; AOwner: TForm);
     procedure GetElementByClassName(const value:String; AOwner: TForm);
+    procedure GetElementByPartialCaption(const value:String; AOwner: TForm);
+
     function OKResponse(const sessionId, handle: String): String;
   public
     procedure Execute(AOwner: TForm); override;
@@ -85,6 +87,11 @@ begin
     // Probably should give a different reply
     Error(404);
   end;
+end;
+
+procedure TPostElementCommand.GetElementByPartialCaption(const value:String; AOwner: TForm);
+begin
+  Error(404);
 end;
 
 procedure TPostElementCommand.GetElementByCaption(const value:String; AOwner: TForm);
@@ -194,7 +201,8 @@ begin
     GetElementByName(value, AOwner)
   else if (using = 'class name') then
     GetElementByClassName(value, AOwner)
-  // 'partial link text '  (wildcard)
+  else if (using = 'partial link text') then
+    GetElementByPartialCaption(value, AOwner)
   // 'id' (automation id)
 end;
 

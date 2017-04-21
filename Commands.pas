@@ -50,12 +50,6 @@ type
   end;
 
 type
-  TClickElementCommand = class(TRESTCommand)
-  public
-    procedure Execute(AOwner: TForm); override;
-  end;
-
-type
   TGetTitleCommand = class(TRestCommand)
   public
     procedure Execute(AOwner: TForm); override;
@@ -215,22 +209,6 @@ begin
   begin
     // Something like this?
     ResponseJSON((comp as TEdit).Text);
-  end
-  else
-    Error(404);
-end;
-
-procedure TClickElementCommand.Execute(AOwner: TForm);
-var
-  comp: TComponent;
-begin
-
-  comp := (self.Reg.FHost.FindComponent(self.Params[2]));
-
-  if (comp <> nil) then
-  begin
-    // Something like this?
-    (comp as TButton).click;
   end
   else
     Error(404);

@@ -15,6 +15,7 @@ type
   private
     procedure GetElementsByName(const value:String; AOwner: TForm);
     procedure GetElementsByCaption(const value:String; AOwner: TForm);
+    procedure GetElementsByPartialCaption(const value:String; AOwner: TForm);
     procedure GetElementsByClassName(const value:String; AOwner: TForm);
 
     function OKResponse(const sessionId: String; elements: TObjectList<TComponent>): String;
@@ -35,6 +36,44 @@ uses
   System.JSON.Builders;
 
 procedure TPostElementsCommand.GetElementsByName(const value:String; AOwner: TForm);
+var
+  comps: TObjectList<TComponent>;
+  i: Integer;
+
+begin
+  comps:= TObjectList<TComponent>.create;
+
+  try
+    try
+      if (AOwner.Name = value) then
+        comps.Add(AOwner)
+      else
+      begin
+        for i := 0 to tForm(AOwner).ControlCount -1 do
+        begin
+          if tForm(AOwner).Controls[i].Name = value then
+          begin
+            comps.Add(AOwner.Controls[i]);
+          end;
+        end;
+      end;
+
+      if comps.count = 0 then
+        raise Exception.Create('Control(s) not found');
+
+      ResponseJSON(self.OKResponse(self.Params[1], comps));
+
+    except on e: Exception do
+      // Probably should give a different reply
+
+      Error(401);
+    end;
+  finally
+//    comps.free;
+  end;
+end;
+
+procedure TPostElementsCommand.GetElementsByPartialCaption(const value:String; AOwner: TForm);
 begin
 
 end;
@@ -74,10 +113,11 @@ begin
 
     except on e: Exception do
       // Probably should give a different reply
+
       Error(401);
     end;
   finally
-    comps.free;
+//    comps.free;
   end;
 end;
 
@@ -103,7 +143,8 @@ begin
     GetElementsByName(value, AOwner)
   else if (using = 'class name') then
     GetElementsByClassName(value, AOwner)
-  // 'partial link text '
+  else if (using = 'partial link text') then
+    GetElementsByPartialCaption(value, AOwner)
 end;
 
 function TPostElementsCommand.OKResponse(const sessionId: String; elements: TObjectList<TComponent>): String;
@@ -124,7 +165,12 @@ begin
   for i := 0 to elements.count -1 do
   begin
     arrayObject := TJSONObject.Create;
-    arrayObject.AddPair(TJSONPair.Create('ELEMENT', IntToStr((elements[i] as TWinControl).Handle)));
+
+    if (elements[i] is TWinControl) then
+      arrayObject.AddPair(TJSONPair.Create('ELEMENT', IntToStr((elements[i] as TWinControl).Handle)))
+    else
+      arrayObject.AddPair(TJSONPair.Create('ELEMENT', elements[i].name));
+
     jsonArray.AddElement(arrayObject);
   end;
 

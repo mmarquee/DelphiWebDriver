@@ -197,7 +197,7 @@ object Form3: TForm3
     OnClick = Button17Click
   end
   object Button18: TButton
-    Left = 370
+    Left = 380
     Top = 518
     Width = 118
     Height = 25
@@ -206,12 +206,39 @@ object Form3: TForm3
     OnClick = Button18Click
   end
   object Button19: TButton
-    Left = 504
-    Top = 520
-    Width = 75
+    Left = 544
+    Top = 430
+    Width = 153
     Height = 25
-    Caption = 'By ClassName'
+    Caption = 'Elements By ClassName'
     TabOrder = 21
     OnClick = Button19Click
+  end
+  object Button20: TButton
+    Left = 380
+    Top = 549
+    Width = 149
+    Height = 25
+    Caption = 'Get/Click Elemnt By Name'
+    TabOrder = 22
+    OnClick = Button20Click
+  end
+  object Button21: TButton
+    Left = 544
+    Top = 549
+    Width = 153
+    Height = 25
+    Caption = 'Speedbuttons By ClassName'
+    TabOrder = 23
+    OnClick = Button21Click
+  end
+  object Button22: TButton
+    Left = 544
+    Top = 501
+    Width = 153
+    Height = 25
+    Caption = 'Click Speedbutton By ClassName'
+    TabOrder = 24
+    OnClick = Button22Click
   end
 end
