@@ -35,7 +35,6 @@ var
   ctrl: TWinControl;
   comp: TComponent;
   handle: Integer;
-  name: String;
 
 begin
   ctrl := nil;
@@ -47,8 +46,7 @@ begin
     ctrl := FindControl(handle);
   end
   else
-    // Access violation here
-    comp := (self.Reg.FHost.FindComponent(self.Params[2]));
+    comp := (AOwner.FindComponent(self.Params[2]));
 
   if (ctrl <> nil) then
   begin

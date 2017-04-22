@@ -101,6 +101,9 @@ type
     procedure LinkLabel1Click(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure SpeedButton1Click(Sender: TObject);
+    procedure SpeedButton2Click(Sender: TObject);
+    procedure SpeedButton3Click(Sender: TObject);
   private
     { Private declarations }
     FRestServer : TRestServer;
@@ -175,6 +178,21 @@ end;
 procedure TForm1.PopupMenu2Click(Sender: TObject);
 begin
   ShowMessage ('Popup menu clicked');
+end;
+
+procedure TForm1.SpeedButton1Click(Sender: TObject);
+begin
+  ShowMessage('SpeedButton1Click');
+end;
+
+procedure TForm1.SpeedButton2Click(Sender: TObject);
+begin
+  ShowMessage('SpeedButton2Click');
+end;
+
+procedure TForm1.SpeedButton3Click(Sender: TObject);
+begin
+  ShowMessage('SpeedButton3Click');
 end;
 
 procedure TForm1.ToolButton1Click(Sender: TObject);

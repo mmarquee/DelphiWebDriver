@@ -27,6 +27,7 @@ object Form1: TForm1
     Height = 48
     GroupIndex = 1
     Down = True
+    OnClick = SpeedButton1Click
   end
   object SpeedButton2: TSpeedButton
     Left = 519
@@ -34,6 +35,7 @@ object Form1: TForm1
     Width = 57
     Height = 48
     GroupIndex = 1
+    OnClick = SpeedButton2Click
   end
   object SpeedButton3: TSpeedButton
     Left = 582
@@ -41,6 +43,7 @@ object Form1: TForm1
     Width = 57
     Height = 48
     GroupIndex = 1
+    OnClick = SpeedButton3Click
   end
   object Edit2: TEdit
     Left = 96
