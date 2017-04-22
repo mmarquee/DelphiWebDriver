@@ -487,7 +487,6 @@ var
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
-  Parameters: String;
   jsonObj: TJSONObject;
   jsonPair: TJsonObject;
   req: String;
@@ -506,9 +505,7 @@ begin
        .Add('value', 'AutomationStringGrid1')
     .EndObject;
 
-  Parameters := StringBuilder.ToString;
-
-  result := post('session/' + self.FSessionId + '/element', parameters);
+  result := post('session/' + self.FSessionId + '/element', StringBuilder.ToString);
   listBox1.Items.add(result);
 
   // Decode it and get the handle
@@ -522,7 +519,7 @@ begin
 
   req := 'session/' + self.FSessionId + '/element/' + handle + '/elements';
 
-    StringBuilder := TStringBuilder.Create;
+  StringBuilder := TStringBuilder.Create;
   StringWriter := TStringWriter.Create(StringBuilder);
   Writer := TJsonTextWriter.Create(StringWriter);
   Writer.Formatting := TJsonFormatting.Indented;
@@ -538,7 +535,7 @@ begin
        .Add('value', 'DataItem')
     .EndObject;
 
-  result := post('session/' + self.FSessionId + '/element/' + handle + '/elements');
+  result := post('session/' + self.FSessionId + '/element/' + handle + '/elements', StringBuilder.ToString);
 
   listBox1.Items.Add(result);
 end;
