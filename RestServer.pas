@@ -35,6 +35,7 @@ type
 implementation
 
 uses
+  Commands.PostElementElementsCommand,
   Commands.ClickElement,
   Commands.PostElements,
   Commands.PostElement,
@@ -66,6 +67,7 @@ begin
 
   FCommand.Commands.Register('POST', '/session/(.*)/elements', TPostElementsCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand);
+  FCommand.Commands.Register('POST', '/session/(.*)/element)(.*)/elements', TPostElementElementsCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/element', TPostElementCommand);
 
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);

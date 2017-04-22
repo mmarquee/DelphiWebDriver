@@ -241,4 +241,13 @@ object Form3: TForm3
     TabOrder = 24
     OnClick = Button22Click
   end
+  object Button23: TButton
+    Left = 128
+    Top = 560
+    Width = 117
+    Height = 25
+    Caption = 'Get Grid Header'
+    TabOrder = 25
+    OnClick = Button23Click
+  end
 end

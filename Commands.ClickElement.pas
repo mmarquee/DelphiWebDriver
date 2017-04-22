@@ -16,19 +16,12 @@ type
 implementation
 
 uses
+  Utils,
   Vcl.StdCtrls,
   Vcl.Buttons,
   Vcl.Controls,
   System.SysUtils,
   System.Classes;
-
-function isNumber(const s: String): boolean;
-var
-  iValue, iCode: Integer;
-begin
-  val(s, iValue, iCode);
-  result := (iCode = 0)
-end;
 
 procedure TClickElementCommand.Execute(AOwner: TForm);
 var

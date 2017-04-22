@@ -13,7 +13,9 @@ uses
   JsonAttributeSource in 'JsonAttributeSource.pas',
   Commands.PostElement in 'Commands.PostElement.pas',
   Commands.PostElements in 'Commands.PostElements.pas',
-  Commands.ClickElement in 'Commands.ClickElement.pas';
+  Commands.ClickElement in 'Commands.ClickElement.pas',
+  Utils in 'Utils.pas',
+  Commands.PostElementElementsCommand in 'Commands.PostElementElementsCommand.pas';
 
 {$R *.res}
 
