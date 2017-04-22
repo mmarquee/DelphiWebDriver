@@ -211,29 +211,26 @@ end;
 
 function TPostElementCommand.OKResponse(const sessionId, handle: String): String;
 var
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
+  i: Integer;
+  jsonPair: TJSONPair;
+  jsonObject, arrayObject: TJSONObject;
 
 begin
   // Construct reply
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
+  arrayObject := TJSONObject.Create;
+  jsonObject := TJSONObject.Create;
 
-  Builder
-    .BeginObject()
-      .Add('sessionID', sessionId)
-      .Add('status', 0)
-      .BeginObject('value')
-        .Add('ELEMENT', handle)
-      .EndObject
-    .EndObject;
+  arrayObject.AddPair('ELEMENT', Handle);
 
-  result := StringBuilder.ToString;
+  jsonPair := TJSONPair.Create('value', arrayObject);
+
+  jsonObject.AddPair(TJSONPair.Create('sessionID', sessionId));
+  jsonObject.AddPair(TJSONPair.Create('status', '0'));
+
+  jsonObject.AddPair(jsonPair);
+
+  result := jsonObject.ToString;
 end;
+
 
 end.
