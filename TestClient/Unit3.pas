@@ -659,8 +659,27 @@ end;
 procedure TForm3.Button4Click(Sender: TObject);
 var
   result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+
 begin
-  result := get('session/' + self.FSessionId + '/element/btnOK');
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'Button1')
+    .EndObject;
+
+  result := post('session/' + self.FSessionId + '/element', StringBuilder.ToString);
   listBox1.Items.add(result);
 end;
 
