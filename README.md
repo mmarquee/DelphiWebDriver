@@ -57,6 +57,7 @@ NOTES:
 | GET    	| /session/:sessionId/element/:id/selected          	|
 | GET    	| /session/:sessionId/element/:id/size              	|
 | GET    	| /session/:sessionId/element/:id/text              	|
+| GET           | /session/:sessionId/element/:id/rect                  |
 | POST   	| /session/:sessionId/element/:id/value             	|
 | POST   	| /session/:sessionId/keys                          	|
 | GET    	| /session/:sessionId/location                      	|

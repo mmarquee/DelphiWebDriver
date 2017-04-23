@@ -16,7 +16,8 @@ uses
   Commands.ClickElement in 'Commands.ClickElement.pas',
   Utils in 'Utils.pas',
   Commands.PostElementElementsCommand in 'Commands.PostElementElementsCommand.pas',
-  Commands.GetTextCommand in 'Commands.GetTextCommand.pas';
+  Commands.GetText in 'Commands.GetText.pas',
+  Commands.GetRect in 'Commands.GetRect.pas';
 
 {$R *.res}
 

@@ -36,8 +36,9 @@ implementation
 
 uses
   Commands.PostElementElementsCommand,
-  Commands.GetTextCommand,
+  Commands.GetText,
   Commands.ClickElement,
+  Commands.GetRect,
   Commands.PostElements,
   Commands.PostElement,
   System.JSON.Types,
@@ -55,6 +56,7 @@ begin
 
   FCommand:= THttpServerCommand.Create(AOwner);
 
+  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/rect', TGetRectCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand);
 //  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);
   //FCommand.Commands.Register('GET', '/session/(.*)/screenshot', TGetScreenshotCommand);
