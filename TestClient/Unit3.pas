@@ -408,9 +408,6 @@ var
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
   Parameters: String;
-  jsonObj: TJSONObject;
-  jsonPair: TJsonObject;
-  req: String;
 
 begin
   StringBuilder := TStringBuilder.Create;
@@ -607,75 +604,8 @@ end;
 procedure TForm3.Button25Click(Sender: TObject);
 var
   result : String;
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
-  jsonObj: TJSONObject;
-  jsonPair: TJsonObject;
-  req: String;
-  handle: String;
 
 begin
-(*
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject
-       .Add('using', 'name')
-       .Add('value', 'ListBox1')
-    .EndObject;
-
-  result := post('session/' + self.FSessionId + '/element', StringBuilder.ToString);
-  listBox1.Items.add(result);
-
-  // Decode it and get the handle
-  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
-  try
-    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
-    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
-  finally
-    jsonObj.Free;
-  end;
-
-  req := 'session/' + self.FSessionId + '/element/' + handle + '/elements';
-
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-
-  // Header / HeaderItem / Text
-  // DataItem / Text
-
-  Builder
-    .BeginObject
-       .Add('using', 'class name')
-       .Add('value', 'DataItem')
-    .EndObject;
-
-  result := post('session/' + self.FSessionId + '/element/' + handle + '/elements', StringBuilder.ToString);
-*)
-  // Now get the 3rd entries text
-
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject
-       .Add('using', 'class name')
-       .Add('value', 'ListBox1.ListItem0')
-    .EndObject;
-
   result := get('session/' + self.FSessionId + '/element/ListBox1.0/text');
 
   listBox1.Items.Add(result);
@@ -684,77 +614,9 @@ end;
 procedure TForm3.Button26Click(Sender: TObject);
 var
   result : String;
-  Builder: TJSONObjectBuilder;
-  Writer: TJsonTextWriter;
-  StringWriter: TStringWriter;
-  StringBuilder: TStringBuilder;
-  jsonObj: TJSONObject;
-  jsonPair: TJsonObject;
-  req: String;
-  handle: String;
 
 begin
-(*
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-  Builder
-    .BeginObject
-       .Add('using', 'name')
-       .Add('value', 'ListBox1')
-    .EndObject;
-
-  result := post('session/' + self.FSessionId + '/element', StringBuilder.ToString);
-  listBox1.Items.add(result);
-
-  // Decode it and get the handle
-  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
-  try
-    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
-    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
-  finally
-    jsonObj.Free;
-  end;
-
-  req := 'session/' + self.FSessionId + '/element/' + handle + '/elements';
-
-  StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
-
-  // Header / HeaderItem / Text
-  // DataItem / Text
-
-  Builder
-    .BeginObject
-       .Add('using', 'class name')
-       .Add('value', 'DataItem')
-    .EndObject;
-
-  result := post('session/' + self.FSessionId + '/element/' + handle + '/elements', StringBuilder.ToString);
-*)
-  // Now get the 3rd entries text
-
-//  StringBuilder := TStringBuilder.Create;
-//  StringWriter := TStringWriter.Create(StringBuilder);
-//  Writer := TJsonTextWriter.Create(StringWriter);
-//  Writer.Formatting := TJsonFormatting.Indented;
-//  Builder := TJSONObjectBuilder.Create(Writer);
-
-//  Builder
-//    .BeginObject
-//       .Add('using', 'class name')
-//       .Add('value', 'ListBox1.ListItem0')
-//    .EndObject;
-
   result := get('session/' + self.FSessionId + '/element/AutomationStringGrid1.1.1/text');
-
   listBox1.Items.Add(result);
 end;
 

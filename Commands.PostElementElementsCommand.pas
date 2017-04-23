@@ -85,7 +85,6 @@ begin
     Error(404);
 end;
 
-
 function TPostElementElementsCommand.OKResponse(const sessionId: String; elements: TStringList): String;
 var
   i: Integer;

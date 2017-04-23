@@ -9,6 +9,8 @@ uses
 
 type
   TClickElementCommand = class(TRESTCommand)
+  private
+    function OKResponse(const handle: String): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -21,6 +23,7 @@ uses
   Vcl.Buttons,
   Vcl.Controls,
   System.SysUtils,
+  System.JSON,
   System.Classes;
 
 procedure TClickElementCommand.Execute(AOwner: TForm);
@@ -44,15 +47,36 @@ begin
   if (ctrl <> nil) then
   begin
     if (ctrl is TButton) then
-      (ctrl as TButton).click
+    begin
+      (ctrl as TButton).click;
+    end;
+
+    ResponseJSON(self.OKResponse(self.Params[2]));
   end
   else if (comp <> nil) then
   begin
     if (comp is TSpeedButton) then
+    begin
       (comp as TSpeedButton).click;
+
+    end;
+
+    ResponseJSON(self.OKResponse(self.Params[2]));
   end
   else
     Error(404);
+end;
+
+function TClickElementCommand.OKResponse(const handle: String): String;
+var
+  jsonObject: TJSONObject;
+
+begin
+  jsonObject := TJSONObject.Create;
+
+  jsonObject.AddPair(TJSONPair.Create('id', handle));
+
+  result := jsonObject.ToString;
 end;
 
 end.

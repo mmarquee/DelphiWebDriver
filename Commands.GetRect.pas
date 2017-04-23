@@ -9,6 +9,8 @@ uses
 
 type
   TGetRectCommand = class(TRESTCommand)
+  private
+    function OKResponse(x, y, width, height: Integer): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -20,6 +22,7 @@ uses
   System.SysUtils,
   System.Classes,
   System.StrUtils,
+  System.JSON,
   Vcl.Buttons,
   Vcl.StdCtrls,
   utils;
@@ -40,22 +43,42 @@ begin
     ctrl := FindControl(handle);
   end
   else
-  begin
     comp := AOwner.FindComponent(self.Params[2]);
 
-    if (ctrl <> nil) then
+  // Needs to actually be proper rect
+  if (ctrl <> nil) then
+  begin
+    if (ctrl is TEdit) then
     begin
-      if (ctrl is TEdit) then
-         ResponseJSON((ctrl as TEdit))
-    end
-    else if (comp <> nil) then
-    begin
-      if (comp is TSpeedButton) then
-        ResponseJSON((comp as TSpeedButton).Caption)
+      ResponseJSON((ctrl as TEdit).Text)
     end;
   end
-//  else
-//    Error(404);
+  else if (comp <> nil) then
+  begin
+    if (comp is TSpeedButton) then
+    begin
+      ResponseJSON((comp as TSpeedButton).Caption);
+    end;
+  end
+  else
+  begin
+    Error(404);
+  end;
+end;
+
+function TGetRectCommand.OKResponse(x, y, width, height: Integer): String;
+var
+  jsonObject: TJSONObject;
+
+begin
+  jsonObject := TJSONObject.Create;
+
+  jsonObject.AddPair(TJSONPair.Create('x', IntToStr(x)));
+  jsonObject.AddPair(TJSONPair.Create('y', IntToStr(y)));
+  jsonObject.AddPair(TJSONPair.Create('width', IntToStr(width)));
+  jsonObject.AddPair(TJSONPair.Create('height', IntToStr(height)));
+
+  result := jsonObject.ToString;
 end;
 
 

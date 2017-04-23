@@ -211,12 +211,10 @@ end;
 
 function TPostElementCommand.OKResponse(const sessionId, handle: String): String;
 var
-  i: Integer;
   jsonPair: TJSONPair;
   jsonObject, arrayObject: TJSONObject;
 
 begin
-  // Construct reply
   arrayObject := TJSONObject.Create;
   jsonObject := TJSONObject.Create;
 

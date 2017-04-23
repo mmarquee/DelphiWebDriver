@@ -9,6 +9,8 @@ uses
 
 type
   TGetTextCommand = class(TRESTCommand)
+  private
+    function OKResponse(const handle, value: String): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -16,6 +18,8 @@ type
 implementation
 
 uses
+  System.JSON,
+  System.JSON.Types,
   Vcl.Controls,
   System.SysUtils,
   System.Classes,
@@ -73,32 +77,48 @@ begin
         end;
 
         // Now send it back please
-        ResponseJSON(value);
+        ResponseJSON(OKResponse(self.Params[2], value));
         sent := true;
       finally
         values.free;
       end;
     end
     else
-      comp := AOwner.FindComponent(self.Params[2]);
-
-    if (not sent) then
     begin
-      if (ctrl <> nil) then
-      begin
-        if (ctrl is TEdit) then
-          ResponseJSON((ctrl as TEdit).Text)
-      end
-      else if (comp <> nil) then
-      begin
-        if (comp is TSpeedButton) then
-          ResponseJSON((comp as TSpeedButton).Caption)
-      end;
+      comp := AOwner.FindComponent(self.Params[2]);
+    end;
+  end;
+
+  if (not sent) then
+  begin
+    if (ctrl <> nil) then
+    begin
+      if (ctrl is TEdit) then
+        ResponseJSON(OKResponse(self.Params[2], (ctrl as TEdit).Text))
     end
-  end; // need to sort out errors
-//  else
-//    Error(404);
-//  end;
+    else if (comp <> nil) then
+    begin
+      if (comp is TSpeedButton) then
+        ResponseJSON(OKResponse(self.Params[2], (comp as TSpeedButton).Caption))
+    end;
+  end
+  else
+  begin
+    Error(404);
+  end;
+end;
+
+function TGetTextCommand.OKResponse(const handle, value: String): String;
+var
+  jsonObject: TJSONObject;
+
+begin
+  jsonObject := TJSONObject.Create;
+
+  jsonObject.AddPair(TJSONPair.Create('id', handle));
+  jsonObject.AddPair(TJSONPair.Create('value', value));
+
+  result := jsonObject.ToString;
 end;
 
 end.
