@@ -63,20 +63,18 @@ begin
       begin
         // Needs a name as it doesn't have a handle
         // Add each line as an offset????
-        comps.Add(ctrl.name + '.DataItem'+IntToStr(i));
+        comps.Add(ctrl.name + IntToStr(i));
       end;
     end
     else if (ctrl is TListBox) then
     begin
-      for i := 0 to (ctrl as TListBox).RowCount -1 do
+      for i := 0 to (ctrl as TListBox).Count -1 do
       begin
         // Needs a name as it doesn't have a handle
         // Add each line as an offset????
-        comps.Add(ctrl.name + '.DataItem'+IntToStr(i));
+        comps.Add(ctrl.name + IntToStr(i));
       end;
     end;
-
-
 
     if comps = nil then
       raise Exception.Create('Control(s) not found');

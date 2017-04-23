@@ -2,7 +2,7 @@ object Form3: TForm3
   Left = 0
   Top = 0
   Caption = 'Form3'
-  ClientHeight = 597
+  ClientHeight = 639
   ClientWidth = 744
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -13,7 +13,7 @@ object Form3: TForm3
   OldCreateOrder = False
   DesignSize = (
     744
-    597)
+    639)
   PixelsPerInch = 96
   TextHeight = 13
   object ListBox1: TListBox
@@ -246,8 +246,35 @@ object Form3: TForm3
     Top = 560
     Width = 117
     Height = 25
-    Caption = 'Get Grid Header'
+    Caption = 'Get Grid Items'
     TabOrder = 25
     OnClick = Button23Click
+  end
+  object Button24: TButton
+    Left = 128
+    Top = 591
+    Width = 117
+    Height = 25
+    Caption = 'Get List Items'
+    TabOrder = 26
+    OnClick = Button24Click
+  end
+  object Button25: TButton
+    Left = 251
+    Top = 591
+    Width = 117
+    Height = 25
+    Caption = 'Get List Item Text'
+    TabOrder = 27
+    OnClick = Button25Click
+  end
+  object Button26: TButton
+    Left = 380
+    Top = 591
+    Width = 149
+    Height = 25
+    Caption = 'Get Grid Item Text'
+    TabOrder = 28
+    OnClick = Button26Click
   end
 end

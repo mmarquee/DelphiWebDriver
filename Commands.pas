@@ -26,12 +26,6 @@ type
   end;
 
 type
-  TGetTextCommand = class(TRESTCommand)
-  public
-    procedure Execute(AOwner: TForm); override;
-  end;
-
-type
   TCreateSessionCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
@@ -197,22 +191,6 @@ begin
   // Here we are assuming it is a form
   caption := AOwner.Caption;     // Never gets a caption for some reason
   ResponseJSON(caption);
-end;
-
-procedure TGetTextCommand.Execute(AOwner: TForm);
-var
-  comp: TComponent;
-begin
-
-  comp := (self.Reg.FHost.FindComponent(self.Params[2]));
-
-  if (comp <> nil) then
-  begin
-    // Something like this?
-    ResponseJSON((comp as TEdit).Text);
-  end
-  else
-    Error(404);
 end;
 
 procedure TGetWindowCommand.Execute(AOwner: TForm);

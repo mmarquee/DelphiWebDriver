@@ -36,6 +36,7 @@ implementation
 
 uses
   Commands.PostElementElementsCommand,
+  Commands.GetTextCommand,
   Commands.ClickElement,
   Commands.PostElements,
   Commands.PostElement,

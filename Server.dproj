@@ -115,6 +115,7 @@
         <DCCReference Include="Commands.ClickElement.pas"/>
         <DCCReference Include="Utils.pas"/>
         <DCCReference Include="Commands.PostElementElementsCommand.pas"/>
+        <DCCReference Include="Commands.GetTextCommand.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
