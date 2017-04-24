@@ -3,6 +3,9 @@
         <ProjectGuid>{F0632DB7-C065-419A-AD41-FF66399F1522}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
+        <Projects Include="DelphiWebDriver.dproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="TestClient\TestClient.dproj">
             <Dependencies/>
         </Projects>
@@ -17,6 +20,15 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="DelphiWebDriver">
+        <MSBuild Projects="DelphiWebDriver.dproj"/>
+    </Target>
+    <Target Name="DelphiWebDriver:Clean">
+        <MSBuild Projects="DelphiWebDriver.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="DelphiWebDriver:Make">
+        <MSBuild Projects="DelphiWebDriver.dproj" Targets="Make"/>
+    </Target>
     <Target Name="TestClient">
         <MSBuild Projects="TestClient\TestClient.dproj"/>
     </Target>
@@ -36,13 +48,13 @@
         <MSBuild Projects="TestHost\TestHost.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="TestClient;TestHost"/>
+        <CallTarget Targets="DelphiWebDriver;TestClient;TestHost"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="TestClient:Clean;TestHost:Clean"/>
+        <CallTarget Targets="DelphiWebDriver:Clean;TestClient:Clean;TestHost:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="TestClient:Make;TestHost:Make"/>
+        <CallTarget Targets="DelphiWebDriver:Make;TestClient:Make;TestHost:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
