@@ -70,10 +70,13 @@ begin
         begin
           value := (parent as TListBox).items[StrToInt(values[1])];
         end
-        else
-        if (parent is TStringGrid) then
+        else if (parent is TStringGrid) then
         begin
           value := (parent as TStringGrid).Cells[StrToInt(values[1]),StrToInt(values[2])];
+        end
+        else if (parent is TCombobox) then
+        begin
+          value := (parent as TCombobox).items[StrToInt(values[1])];
         end;
 
         // Now send it back please
@@ -100,11 +103,11 @@ begin
     begin
       if (comp is TSpeedButton) then
         ResponseJSON(OKResponse(self.Params[2], (comp as TSpeedButton).Caption))
+    end
+    else
+    begin
+      Error(404);
     end;
-  end
-  else
-  begin
-    Error(404);
   end;
 end;
 

@@ -64,6 +64,7 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+        <Debugger_HostApplication>e:\Users\Mark\Documents\GitHub\DelphiWebDriver\TestHost\Win32\Debug\TestHost.exe</Debugger_HostApplication>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <DCC_RemoteDebug>false</DCC_RemoteDebug>
@@ -83,13 +84,13 @@
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="CommandRegistry.pas"/>
-        <DCCReference Include="Commands.ClickElement.pas"/>
-        <DCCReference Include="Commands.GetRect.pas"/>
-        <DCCReference Include="Commands.GetText.pas"/>
-        <DCCReference Include="Commands.pas"/>
-        <DCCReference Include="Commands.PostElement.pas"/>
-        <DCCReference Include="Commands.PostElementElementsCommand.pas"/>
-        <DCCReference Include="Commands.PostElements.pas"/>
+        <DCCReference Include="Commands\Commands.ClickElement.pas"/>
+        <DCCReference Include="Commands\Commands.GetRect.pas"/>
+        <DCCReference Include="Commands\Commands.GetText.pas"/>
+        <DCCReference Include="Commands\Commands.pas"/>
+        <DCCReference Include="Commands\Commands.PostElement.pas"/>
+        <DCCReference Include="Commands\Commands.PostElementElements.pas"/>
+        <DCCReference Include="Commands\Commands.PostElements.pas"/>
         <DCCReference Include="HttpServerCommand.pas"/>
         <DCCReference Include="JsonAttributeSource.pas"/>
         <DCCReference Include="ResourceProcessing.pas"/>
@@ -97,6 +98,7 @@
         <DCCReference Include="Session.pas"/>
         <DCCReference Include="Sessions.pas"/>
         <DCCReference Include="Utils.pas"/>
+        <DCCReference Include="Commands\Commands.CreateSession.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

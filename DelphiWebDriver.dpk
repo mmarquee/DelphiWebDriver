@@ -26,7 +26,7 @@ package DelphiWebDriver;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$RUNONLY}
-{$IMPLICITBUILD ON}
+{$IMPLICITBUILD OFF}
 
 requires
   IndyCore,
@@ -36,19 +36,20 @@ requires
 
 contains
   CommandRegistry in 'CommandRegistry.pas',
-  Commands.ClickElement in 'Commands.ClickElement.pas',
-  Commands.GetRect in 'Commands.GetRect.pas',
-  Commands.GetText in 'Commands.GetText.pas',
-  Commands in 'Commands.pas',
-  Commands.PostElement in 'Commands.PostElement.pas',
-  Commands.PostElementElementsCommand in 'Commands.PostElementElementsCommand.pas',
-  Commands.PostElements in 'Commands.PostElements.pas',
+  Commands.ClickElement in 'Commands\Commands.ClickElement.pas',
+  Commands.GetRect in 'Commands\Commands.GetRect.pas',
+  Commands.GetText in 'Commands\Commands.GetText.pas',
+  Commands in 'Commands\Commands.pas',
+  Commands.PostElement in 'Commands\Commands.PostElement.pas',
+  Commands.PostElementElements in 'Commands\Commands.PostElementElements.pas',
+  Commands.PostElements in 'Commands\Commands.PostElements.pas',
   HttpServerCommand in 'HttpServerCommand.pas',
   JsonAttributeSource in 'JsonAttributeSource.pas',
   ResourceProcessing in 'ResourceProcessing.pas',
   RestServer in 'RestServer.pas',
   Session in 'Session.pas',
   Sessions in 'Sessions.pas',
-  Utils in 'Utils.pas';
+  Utils in 'Utils.pas',
+  Commands.CreateSession in 'Commands\Commands.CreateSession.pas';
 
 end.

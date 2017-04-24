@@ -3,6 +3,7 @@ unit Commands;
 interface
 
 uses
+  Sessions,
   Vcl.Forms,
   CommandRegistry,
   HttpServerCommand;
@@ -21,12 +22,6 @@ type
 
 type
   TStatusCommand = class(TRESTCommand)
-  public
-    procedure Execute(AOwner: TForm); override;
-  end;
-
-type
-  TCreateSessionCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -73,11 +68,13 @@ type
     procedure Execute(AOwner: TForm); override;
   end;
 
+var
+  Sessions: TSessions;
+
 implementation
 
 uses
   windows,
-  Sessions,
   Vcl.stdctrls,
   System.Classes,
   System.SysUtils,
@@ -91,9 +88,6 @@ uses
   Utils,
   Session;
 
-var
-  Sessions: TSessions;
-
 procedure TStatusCommand.Execute(AOwner: TForm);
 begin
   try
@@ -101,20 +95,6 @@ begin
   except on e: Exception do
     Error(404);
   end;
-end;
-
-procedure TCreateSessionCommand.Execute(AOwner: TForm);
-var
-  request : String;
-  session : TSession;
-begin
-  request := self.StreamContents;
-
-  session := TSession.Create(request);
-
-  Sessions.Add(session);
-
-  ResponseJSON(session.GetSessionDetails);
 end;
 
 procedure TSessionTimeoutsCommand.Execute(AOwner: TForm);

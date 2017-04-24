@@ -35,12 +35,13 @@ type
 implementation
 
 uses
-  Commands.PostElementElementsCommand,
+  Commands.PostElementElements,
   Commands.GetText,
   Commands.ClickElement,
   Commands.GetRect,
   Commands.PostElements,
   Commands.PostElement,
+  Commands.CreateSession,
   System.JSON.Types,
   System.JSON.Writers,
   System.JSON.Builders,
