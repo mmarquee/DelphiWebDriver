@@ -21,7 +21,7 @@ implementation
 
 uses
   System.JSON,
-  AutomatedStringGrid,
+  Vcl.Grids,
   Vcl.controls,
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
@@ -57,9 +57,9 @@ begin
 
   if (ctrl <> nil) then
   begin
-    if (ctrl is TAutomationStringGrid) then
+    if (ctrl is TStringGrid) then
     begin
-      for i := 0 to (ctrl as TAutomationStringGrid).RowCount -1 do
+      for i := 0 to (ctrl as TStringGrid).RowCount -1 do
       begin
         // Needs a name as it doesn't have a handle
         // Add each line as an offset????

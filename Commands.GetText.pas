@@ -21,12 +21,12 @@ uses
   System.JSON,
   System.JSON.Types,
   Vcl.Controls,
+  Vcl.Grids,
   System.SysUtils,
   System.Classes,
   System.StrUtils,
   Vcl.Buttons,
   Vcl.StdCtrls,
-  AutomatedStringGrid,
   utils;
 
 procedure TGetTextCommand.Execute(AOwner: TForm);
@@ -71,9 +71,9 @@ begin
           value := (parent as TListBox).items[StrToInt(values[1])];
         end
         else
-        if (parent is TAutomationStringGrid) then
+        if (parent is TStringGrid) then
         begin
-          value := (parent as TAutomationStringGrid).Cells[StrToInt(values[1]),StrToInt(values[2])];
+          value := (parent as TStringGrid).Cells[StrToInt(values[1]),StrToInt(values[2])];
         end;
 
         // Now send it back please

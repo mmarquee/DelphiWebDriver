@@ -82,7 +82,6 @@
         <DCCReference Include="IndyProtocols.dcp"/>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="vcl.dcp"/>
-        <DCCReference Include="..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas"/>
         <DCCReference Include="CommandRegistry.pas"/>
         <DCCReference Include="Commands.ClickElement.pas"/>
         <DCCReference Include="Commands.GetRect.pas"/>
@@ -98,8 +97,6 @@
         <DCCReference Include="Session.pas"/>
         <DCCReference Include="Sessions.pas"/>
         <DCCReference Include="Utils.pas"/>
-        <DCCReference Include="..\DelphiUIAutomation\controls\AutomatedStringGrid.pas"/>
-        <DCCReference Include="..\DelphiUIAutomation\controls\StringGridItem.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

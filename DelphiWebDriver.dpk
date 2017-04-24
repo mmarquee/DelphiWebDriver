@@ -35,7 +35,6 @@ requires
   vcl;
 
 contains
-  UIAutomationCore_TLB in '..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas',
   CommandRegistry in 'CommandRegistry.pas',
   Commands.ClickElement in 'Commands.ClickElement.pas',
   Commands.GetRect in 'Commands.GetRect.pas',
@@ -50,8 +49,6 @@ contains
   RestServer in 'RestServer.pas',
   Session in 'Session.pas',
   Sessions in 'Sessions.pas',
-  Utils in 'Utils.pas',
-  AutomatedStringGrid in '..\DelphiUIAutomation\controls\AutomatedStringGrid.pas',
-  StringGridItem in '..\DelphiUIAutomation\controls\StringGridItem.pas';
+  Utils in 'Utils.pas';
 
 end.
