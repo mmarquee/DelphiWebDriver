@@ -234,7 +234,7 @@ object Form3: TForm3
   end
   object Button22: TButton
     Left = 544
-    Top = 501
+    Top = 488
     Width = 153
     Height = 25
     Caption = 'Click Speedbutton By ClassName'
@@ -276,5 +276,19 @@ object Form3: TForm3
     Caption = 'Get Grid Item Text'
     TabOrder = 28
     OnClick = Button26Click
+  end
+  object ComboBox1: TComboBox
+    Left = 544
+    Top = 461
+    Width = 153
+    Height = 21
+    TabOrder = 29
+    Text = 'TButton'
+    Items.Strings = (
+      'TButton'
+      'TEdit'
+      'TSpeedButton'
+      'TTabSheet'
+      'TStringGrid')
   end
 end

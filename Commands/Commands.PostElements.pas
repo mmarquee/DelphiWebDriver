@@ -113,7 +113,6 @@ begin
 
     except on e: Exception do
       // Probably should give a different reply
-
       Error(401);
     end;
   finally

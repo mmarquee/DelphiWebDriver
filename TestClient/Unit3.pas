@@ -37,6 +37,7 @@ type
     Button24: TButton;
     Button25: TButton;
     Button26: TButton;
+    ComboBox1: TComboBox;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -336,7 +337,7 @@ begin
   Builder
     .BeginObject
        .Add('using', 'class name')
-       .Add('value', 'TButton')
+       .Add('value', ComboBox1.Text)
     .EndObject;
 
   Parameters := StringBuilder.ToString;

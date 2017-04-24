@@ -25,12 +25,13 @@ uses
   Vcl.Forms,
   HostMain in 'HostMain.pas' {Form1},
   AutomatedCombobox in '..\..\DelphiUIAutomation\controls\AutomatedCombobox.pas',
-  UIAutomationCore_TLB in '..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas',
-  AutomatedStringGrid in '..\..\DelphiUIAutomation\controls\AutomatedStringGrid.pas',
-  StringGridItem in '..\..\DelphiUIAutomation\controls\StringGridItem.pas',
   AutomatedEdit in '..\..\DelphiUIAutomation\controls\AutomatedEdit.pas',
   AutomatedMaskEdit in '..\..\DelphiUIAutomation\controls\AutomatedMaskEdit.pas',
-  AutomatedStaticText in '..\..\DelphiUIAutomation\controls\AutomatedStaticText.pas';
+  AutomatedStaticText in '..\..\DelphiUIAutomation\controls\AutomatedStaticText.pas',
+  AutomatedStringGrid in '..\..\DelphiUIAutomation\controls\AutomatedStringGrid.pas',
+  DemoForm in '..\..\DelphiUIAutomation\controls\DemoForm.pas' {Form2},
+  StringGridItem in '..\..\DelphiUIAutomation\controls\StringGridItem.pas',
+  UIAutomationCore_TLB in '..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas';
 
 {$R *.res}
 
@@ -38,5 +39,6 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TForm2, Form2);
   Application.Run;
 end.
