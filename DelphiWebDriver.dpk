@@ -29,6 +29,8 @@ package DelphiWebDriver;
 {$IMPLICITBUILD ON}
 
 requires
+  IndyCore,
+  IndyProtocols,
   rtl,
   vcl;
 
