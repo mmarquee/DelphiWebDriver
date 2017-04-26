@@ -43,6 +43,7 @@ uses
   Commands.PostElements,
   Commands.PostElement,
   Commands.CreateSession,
+  Commands.GetEnabled,
   System.JSON.Types,
   System.JSON.Writers,
   System.JSON.Builders,
@@ -58,6 +59,7 @@ begin
 
   FCommand:= THttpServerCommand.Create(AOwner);
 
+  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/enabled', TGetEnabledCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/rect', TGetRectCommand);
   FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand);
 //  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);

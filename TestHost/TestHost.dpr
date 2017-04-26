@@ -48,7 +48,8 @@ uses
   Commands.PostElement in '..\Commands\Commands.PostElement.pas',
   Commands.PostElementElements in '..\Commands\Commands.PostElementElements.pas',
   Commands.PostElements in '..\Commands\Commands.PostElements.pas',
-  Commands.PostExecute in '..\Commands\Commands.PostExecute.pas';
+  Commands.PostExecute in '..\Commands\Commands.PostExecute.pas',
+  Commands.GetEnabled in '..\Commands\Commands.GetEnabled.pas';
 
 {$R *.res}
 
