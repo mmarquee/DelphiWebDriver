@@ -319,4 +319,13 @@ object Form3: TForm3
     TabOrder = 31
     OnClick = Button27Click
   end
+  object Button28: TButton
+    Left = 374
+    Top = 606
+    Width = 149
+    Height = 25
+    Caption = 'Right-Click on Grid'
+    TabOrder = 32
+    OnClick = Button28Click
+  end
 end

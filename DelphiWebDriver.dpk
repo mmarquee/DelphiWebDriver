@@ -26,7 +26,7 @@ package DelphiWebDriver;
 {$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$RUNONLY}
-{$IMPLICITBUILD OFF}
+{$IMPLICITBUILD ON}
 
 requires
   IndyCore,
@@ -50,6 +50,7 @@ contains
   Session in 'Session.pas',
   Sessions in 'Sessions.pas',
   Utils in 'Utils.pas',
-  Commands.CreateSession in 'Commands\Commands.CreateSession.pas';
+  Commands.CreateSession in 'Commands\Commands.CreateSession.pas',
+  Commands.PostExecute in 'Commands\Commands.PostExecute.pas';
 
 end.

@@ -230,6 +230,8 @@ begin
     GetElementByClassName(value, AOwner)
   else if (using = 'partial link text') then
     GetElementByPartialCaption(value, AOwner)
+  else
+    Error(404);
   // 'id' (automation id)
 end;
 

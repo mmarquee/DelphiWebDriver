@@ -36,6 +36,7 @@ implementation
 
 uses
   Commands.PostElementElements,
+  Commands.PostExecute,
   Commands.GetText,
   Commands.ClickElement,
   Commands.GetRect,
@@ -76,6 +77,7 @@ begin
   // Avoiding mismatch with patten above
   FCommand.Commands.Register('POST', '/session/(.*)/elements', TPostElementsCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/element', TPostElementCommand);
+  FCommand.Commands.Register('POST', '/session/(.*)/execute', TPostExecuteCommand);
 
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/timeouts', TSessionTimeoutsCommand);

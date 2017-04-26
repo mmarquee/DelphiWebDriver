@@ -40,6 +40,7 @@ type
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     Button27: TButton;
+    Button28: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -69,6 +70,7 @@ type
     procedure Button25Click(Sender: TObject);
     procedure Button26Click(Sender: TObject);
     procedure Button27Click(Sender: TObject);
+    procedure Button28Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -634,6 +636,36 @@ begin
 
 end;
 
+procedure TForm3.Button28Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+      .Add('script', 'right click')
+      .BeginObject('args')
+        .Add('first', 'AutomationStringGrid1.1.1')
+      .EndObject
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/execute', parameters);
+  listBox1.Items.Add(result);
+end;
+
 procedure TForm3.Button2Click(Sender: TObject);
 var
   result : String;
@@ -677,8 +709,6 @@ var
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
-  jsonObj: TJSONObject;
-  jsonPair: TJsonObject;
 
 begin
   StringBuilder := TStringBuilder.Create;

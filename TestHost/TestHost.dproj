@@ -114,6 +114,7 @@
         <DCCReference Include="..\Commands\Commands.PostElement.pas"/>
         <DCCReference Include="..\Commands\Commands.PostElementElements.pas"/>
         <DCCReference Include="..\Commands\Commands.PostElements.pas"/>
+        <DCCReference Include="..\Commands\Commands.PostExecute.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
