@@ -41,6 +41,7 @@ type
     ComboBox2: TComboBox;
     Button27: TButton;
     Button28: TButton;
+    ComboBox3: TComboBox;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -631,9 +632,8 @@ var
   result : String;
 
 begin
-  result := get('session/' + self.FSessionId + '/element/PageControl1.1/text');
+  result := get('session/' + self.FSessionId + '/element/PageControl1.' + Combobox3.text + '/text');
   listBox1.Items.Add(result);
-
 end;
 
 procedure TForm3.Button28Click(Sender: TObject);

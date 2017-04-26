@@ -296,7 +296,9 @@ object Form3: TForm3
       'TAutomatedEdit'
       'TRadioButton'
       'TPageControl'
-      'TCheckBox')
+      'TCheckBox'
+      'TToolbar'
+      'TToolButton')
   end
   object ComboBox2: TComboBox
     Left = 544
@@ -327,5 +329,17 @@ object Form3: TForm3
     Caption = 'Right-Click on Grid'
     TabOrder = 32
     OnClick = Button28Click
+  end
+  object ComboBox3: TComboBox
+    Left = 544
+    Top = 610
+    Width = 153
+    Height = 21
+    Style = csDropDownList
+    TabOrder = 33
+    Items.Strings = (
+      '0'
+      '1'
+      '2')
   end
 end
