@@ -38,6 +38,8 @@ type
     Button25: TButton;
     Button26: TButton;
     ComboBox1: TComboBox;
+    ComboBox2: TComboBox;
+    Button27: TButton;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -66,6 +68,7 @@ type
     procedure Button24Click(Sender: TObject);
     procedure Button25Click(Sender: TObject);
     procedure Button26Click(Sender: TObject);
+    procedure Button27Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -458,7 +461,7 @@ begin
   Builder
     .BeginObject
        .Add('using', 'name')
-       .Add('value', 'SpeedButton3')
+       .Add('value', 'SpeedButton' + COmbobox2.Text)
     .EndObject;
 
   Parameters := StringBuilder.ToString;
@@ -619,6 +622,16 @@ var
 begin
   result := get('session/' + self.FSessionId + '/element/AutomationStringGrid1.1.1/text');
   listBox1.Items.Add(result);
+end;
+
+procedure TForm3.Button27Click(Sender: TObject);
+var
+  result : String;
+
+begin
+  result := get('session/' + self.FSessionId + '/element/PageControl1.1/text');
+  listBox1.Items.Add(result);
+
 end;
 
 procedure TForm3.Button2Click(Sender: TObject);

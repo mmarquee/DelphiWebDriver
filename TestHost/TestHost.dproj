@@ -66,7 +66,6 @@
         <DCC_RemoteDebug>true</DCC_RemoteDebug>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
-        <UsePackages>true</UsePackages>
         <DCC_UsePackage>DelphiWebDriver;$(DCC_UsePackage)</DCC_UsePackage>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <DCC_UnitSearchPath>..;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
@@ -99,6 +98,22 @@
         </DCCReference>
         <DCCReference Include="..\..\DelphiUIAutomation\controls\StringGridItem.pas"/>
         <DCCReference Include="..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas"/>
+        <DCCReference Include="..\CommandRegistry.pas"/>
+        <DCCReference Include="..\HttpServerCommand.pas"/>
+        <DCCReference Include="..\JsonAttributeSource.pas"/>
+        <DCCReference Include="..\ResourceProcessing.pas"/>
+        <DCCReference Include="..\RestServer.pas"/>
+        <DCCReference Include="..\Session.pas"/>
+        <DCCReference Include="..\Sessions.pas"/>
+        <DCCReference Include="..\Utils.pas"/>
+        <DCCReference Include="..\Commands\Commands.ClickElement.pas"/>
+        <DCCReference Include="..\Commands\Commands.CreateSession.pas"/>
+        <DCCReference Include="..\Commands\Commands.GetRect.pas"/>
+        <DCCReference Include="..\Commands\Commands.GetText.pas"/>
+        <DCCReference Include="..\Commands\Commands.pas"/>
+        <DCCReference Include="..\Commands\Commands.PostElement.pas"/>
+        <DCCReference Include="..\Commands\Commands.PostElementElements.pas"/>
+        <DCCReference Include="..\Commands\Commands.PostElements.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

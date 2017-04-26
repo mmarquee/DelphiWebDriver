@@ -237,7 +237,7 @@ object Form3: TForm3
     Top = 488
     Width = 153
     Height = 25
-    Caption = 'Click Speedbutton By ClassName'
+    Caption = 'Click Speedbutton'
     TabOrder = 24
     OnClick = Button22Click
   end
@@ -261,7 +261,7 @@ object Form3: TForm3
   end
   object Button25: TButton
     Left = 251
-    Top = 591
+    Top = 580
     Width = 117
     Height = 25
     Caption = 'Get List Item Text'
@@ -269,8 +269,8 @@ object Form3: TForm3
     OnClick = Button25Click
   end
   object Button26: TButton
-    Left = 380
-    Top = 591
+    Left = 374
+    Top = 580
     Width = 149
     Height = 25
     Caption = 'Get Grid Item Text'
@@ -282,13 +282,41 @@ object Form3: TForm3
     Top = 461
     Width = 153
     Height = 21
+    Style = csDropDownList
     TabOrder = 29
-    Text = 'TButton'
     Items.Strings = (
       'TButton'
       'TEdit'
       'TSpeedButton'
       'TTabSheet'
-      'TStringGrid')
+      'TAutomationStringGrid'
+      'TListBox'
+      'TComboBox'
+      'TAutomatedCombobox'
+      'TAutomatedEdit'
+      'TRadioButton'
+      'TPageControl'
+      'TCheckBox')
+  end
+  object ComboBox2: TComboBox
+    Left = 544
+    Top = 522
+    Width = 153
+    Height = 21
+    Style = csDropDownList
+    TabOrder = 30
+    Items.Strings = (
+      '1'
+      '2'
+      '3')
+  end
+  object Button27: TButton
+    Left = 544
+    Top = 580
+    Width = 149
+    Height = 25
+    Caption = 'Get TabItem Text'
+    TabOrder = 31
+    OnClick = Button27Click
   end
 end

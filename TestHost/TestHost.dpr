@@ -31,7 +31,23 @@ uses
   AutomatedStringGrid in '..\..\DelphiUIAutomation\controls\AutomatedStringGrid.pas',
   DemoForm in '..\..\DelphiUIAutomation\controls\DemoForm.pas' {Form2},
   StringGridItem in '..\..\DelphiUIAutomation\controls\StringGridItem.pas',
-  UIAutomationCore_TLB in '..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas';
+  UIAutomationCore_TLB in '..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas',
+  CommandRegistry in '..\CommandRegistry.pas',
+  HttpServerCommand in '..\HttpServerCommand.pas',
+  JsonAttributeSource in '..\JsonAttributeSource.pas',
+  ResourceProcessing in '..\ResourceProcessing.pas',
+  RestServer in '..\RestServer.pas',
+  Session in '..\Session.pas',
+  Sessions in '..\Sessions.pas',
+  Utils in '..\Utils.pas',
+  Commands.ClickElement in '..\Commands\Commands.ClickElement.pas',
+  Commands.CreateSession in '..\Commands\Commands.CreateSession.pas',
+  Commands.GetRect in '..\Commands\Commands.GetRect.pas',
+  Commands.GetText in '..\Commands\Commands.GetText.pas',
+  Commands in '..\Commands\Commands.pas',
+  Commands.PostElement in '..\Commands\Commands.PostElement.pas',
+  Commands.PostElementElements in '..\Commands\Commands.PostElementElements.pas',
+  Commands.PostElements in '..\Commands\Commands.PostElements.pas';
 
 {$R *.res}
 
