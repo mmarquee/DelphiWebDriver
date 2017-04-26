@@ -50,6 +50,7 @@ uses
   System.Classes,
   System.StrUtils,
   Vcl.ComCtrls,
+  Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.StdCtrls,
   utils;
@@ -62,20 +63,33 @@ var
   parent: TComponent;
   values : TStringList;
   value: String;
-  sent: Boolean;
 
 const
   Delimiter = '.';
 
 begin
-  sent := false;
-  ctrl := nil;
-  comp := nil;
-
   if (isNumber(self.Params[2])) then
   begin
     handle := StrToInt(self.Params[2]);
     ctrl := FindControl(handle);
+
+    if (ctrl <> nil) then
+    begin
+      if (ctrl is TEdit) then
+        value := (ctrl as TEdit).Text
+      else if (ctrl is TStaticText) then
+        value := (ctrl as TStaticText).Caption
+      else if (ctrl is TCheckBox) then
+        value := (ctrl as TCheckBox).Caption
+      else if (ctrl is TLinkLabel) then
+        value := (ctrl as TLinkLabel).Caption
+      else if (ctrl is TRadioButton) then
+        value := (ctrl as TRadioButton).Caption;
+
+      ResponseJSON(OKResponse(self.Params[2], value));
+    end
+    else
+      Error(440);
   end
   else
   begin
@@ -110,7 +124,6 @@ begin
 
         // Now send it back please
         ResponseJSON(OKResponse(self.Params[2], value));
-        sent := true;
       finally
         values.free;
       end;
@@ -118,24 +131,18 @@ begin
     else
     begin
       comp := AOwner.FindComponent(self.Params[2]);
-    end;
-  end;
 
-  if (not sent) then
-  begin
-    if (ctrl <> nil) then
-    begin
-      if (ctrl is TEdit) then
-        ResponseJSON(OKResponse(self.Params[2], (ctrl as TEdit).Text))
-    end
-    else if (comp <> nil) then
-    begin
-      if (comp is TSpeedButton) then
-        ResponseJSON(OKResponse(self.Params[2], (comp as TSpeedButton).Caption))
-    end
-    else
-    begin
-      Error(404);
+      if (comp <> nil) then
+      begin
+        if (comp is TSpeedButton) then
+          Value := (comp as TSpeedButton).Caption
+        else if (comp is TLabel) then
+          Value := (comp as TLabel).Caption;
+
+        ResponseJSON(OKResponse(self.Params[2], value));
+      end
+      else
+        Error(404);
     end;
   end;
 end;
