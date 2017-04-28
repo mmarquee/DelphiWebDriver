@@ -27,12 +27,15 @@ Essentially a proof of concept / futile excerise.
 | POST    | /session/:sessionId/appium/app/launch             	| Not implemented? |
 | POST    | /session/:sessionId/appium/app/close              	| Not implemented? |
 | GET     | /session/:sessionId/window                          | In Progress |
+| POST | /session/:sessionId/element/:id/value | In Progress |
+| GET | /session/:sessionId/element/:id/enabled | In Progress |
+| GET | /session/:sessionId/element/:id/rect | In Progress |
 
 NOTES:
 * Functional here means it has been at least partially implemented in both a host and a test client
 * Not Implemented commands are those that are usually to do with navigation, etc. in a browser
 
-## To been implemented
+## To been implemented - not an exhaustive list yet
 
 | HTTP | Path |
 | --- | --- |

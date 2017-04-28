@@ -42,6 +42,11 @@ type
     Button27: TButton;
     Button28: TButton;
     ComboBox3: TComboBox;
+    Button29: TButton;
+    ComboBox4: TComboBox;
+    Button30: TButton;
+    Button31: TButton;
+    Edit1: TEdit;
     procedure btnStartSessionClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button2Click(Sender: TObject);
@@ -72,6 +77,8 @@ type
     procedure Button26Click(Sender: TObject);
     procedure Button27Click(Sender: TObject);
     procedure Button28Click(Sender: TObject);
+    procedure Button29Click(Sender: TObject);
+    procedure Button31Click(Sender: TObject);
   private
     { Private declarations }
     FSessionId: String;
@@ -455,12 +462,6 @@ begin
   Writer.Formatting := TJsonFormatting.Indented;
   Builder := TJSONObjectBuilder.Create(Writer);
 
-    StringBuilder := TStringBuilder.Create;
-  StringWriter := TStringWriter.Create(StringBuilder);
-  Writer := TJsonTextWriter.Create(StringWriter);
-  Writer.Formatting := TJsonFormatting.Indented;
-  Builder := TJSONObjectBuilder.Create(Writer);
-
   Builder
     .BeginObject
        .Add('using', 'name')
@@ -483,7 +484,7 @@ begin
 
   req := 'session/' + self.FSessionId + '/element/' + handle + '/click';
 
-  result := post('session/' + self.FSessionId + '/element/' + handle + '/click');
+  result := post(req);
 
   listBox1.Items.Add(result);
 end;
@@ -656,13 +657,66 @@ begin
     .BeginObject
       .Add('script', 'right click')
       .BeginObject('args')
-        .Add('first', 'AutomationStringGrid1.1.1')
+        .Add('first', 'ToolButton5')
       .EndObject
     .EndObject;
 
   Parameters := StringBuilder.ToString;
 
   result := post('session/' + self.FSessionId + '/execute', parameters);
+  listBox1.Items.Add(result);
+end;
+
+procedure TForm3.Button29Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  Parameters: String;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+  req: String;
+  handle: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+    StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'ToolButton' + Combobox4.Text)
+    .EndObject;
+
+  Parameters := StringBuilder.ToString;
+
+  result := post('session/' + self.FSessionId + '/element', parameters);
+  listBox1.Items.add(result);
+
+  // Decode it and get the handle
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
+    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
+  finally
+    jsonObj.Free;
+  end;
+
+  req := 'session/' + self.FSessionId + '/element/' + handle + '/click';
+
+  result := post('session/' + self.FSessionId + '/element/' + handle + '/click');
+
   listBox1.Items.Add(result);
 end;
 
@@ -691,6 +745,61 @@ begin
   Parameters := StringBuilder.ToString;
 
   result := post('session/' + self.FSessionId + '/timeouts', parameters);
+  listBox1.Items.add(result);
+end;
+
+procedure TForm3.Button31Click(Sender: TObject);
+var
+  result : String;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  jsonObj: TJSONObject;
+  jsonPair: TJsonObject;
+  req: String;
+  handle: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  // First get the handle of the control
+  Builder
+    .BeginObject
+       .Add('using', 'name')
+       .Add('value', 'Edit1')
+    .EndObject;
+
+  result := post('session/' + self.FSessionId + '/element', StringBuilder.ToString);
+  listBox1.Items.add(result);
+
+  // Decode it and get the handle
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(result),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<TJsonObject>('value', jsonPair);
+    (jsonPair as TJsonObject).TryGetValue<String>('ELEMENT', handle);
+  finally
+    jsonObj.Free;
+  end;
+
+  req := 'session/' + self.FSessionId + '/element/' + handle + '/value';
+
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  Builder
+    .BeginObject
+       .Add('value', Edit1.text)
+    .EndObject;
+
+  result := post(req, StringBuilder.ToString);
   listBox1.Items.add(result);
 end;
 

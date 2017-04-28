@@ -51,7 +51,7 @@ object Form1: TForm1
     Width = 217
     Height = 21
     TabOrder = 0
-    Text = 'Edit1'
+    Text = 'Edit2'
   end
   object Button1: TButton
     Left = 157
@@ -361,12 +361,14 @@ object Form1: TForm1
           Top = 0
           Caption = 'btn3'
           ImageIndex = 2
+          OnClick = ToolButton2Click
         end
         object ToolButton4: TToolButton
           Left = 213
           Top = 0
           Caption = 'ToolButton4'
           ImageIndex = 3
+          OnClick = ToolButton4Click
         end
       end
     end
@@ -396,6 +398,7 @@ object Form1: TForm1
           Caption = 'btn2'
           ImageIndex = 1
           ParentShowHint = False
+          PopupMenu = PopupMenu4
           ShowHint = False
         end
         object ToolButton6: TToolButton
@@ -489,7 +492,7 @@ object Form1: TForm1
     Left = 184
     Top = 576
     Bitmap = {
-      494C01010A0018004C0040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010A001800540040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000000010000C000000001002000000000000000
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -6831,5 +6834,18 @@ object Form1: TForm1
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
       000000000000}
+  end
+  object PopupMenu4: TPopupMenu
+    Left = 744
+    Top = 8
+    object Menu11: TMenuItem
+      Caption = 'Menu1'
+    end
+    object Menu21: TMenuItem
+      Caption = 'Menu2'
+    end
+    object Menu31: TMenuItem
+      Caption = 'Menu3'
+    end
   end
 end

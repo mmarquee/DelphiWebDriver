@@ -89,7 +89,7 @@ begin
       ResponseJSON(OKResponse(self.Params[2], value));
     end
     else
-      Error(440);
+      Error(404);
   end
   else
   begin

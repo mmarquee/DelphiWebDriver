@@ -90,6 +90,10 @@ type
     SpeedButton2: TSpeedButton;
     SpeedButton3: TSpeedButton;
     Button3: TButton;
+    PopupMenu4: TPopupMenu;
+    Menu11: TMenuItem;
+    Menu21: TMenuItem;
+    Menu31: TMenuItem;
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Exit1Click(Sender: TObject);
@@ -104,6 +108,8 @@ type
     procedure SpeedButton1Click(Sender: TObject);
     procedure SpeedButton2Click(Sender: TObject);
     procedure SpeedButton3Click(Sender: TObject);
+    procedure ToolButton2Click(Sender: TObject);
+    procedure ToolButton4Click(Sender: TObject);
   private
     { Private declarations }
     FRestServer : TRestServer;
@@ -198,6 +204,16 @@ end;
 procedure TForm1.ToolButton1Click(Sender: TObject);
 begin
   ShowMessage ('ToolButton1Click');
+end;
+
+procedure TForm1.ToolButton2Click(Sender: TObject);
+begin
+  ShowMessage ('ToolButton2Click');
+end;
+
+procedure TForm1.ToolButton4Click(Sender: TObject);
+begin
+  ShowMessage ('ToolButton4Click');
 end;
 
 procedure TForm1.ToolButton5Click(Sender: TObject);

@@ -44,6 +44,7 @@ uses
   Commands.PostElement,
   Commands.CreateSession,
   Commands.GetEnabled,
+  Commands.PostValue,
   System.JSON.Types,
   System.JSON.Writers,
   System.JSON.Builders,
@@ -72,7 +73,7 @@ begin
 
   FCommand.Commands.Register('GET', '/status', TStatusCommand);
 
-
+  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/value', TPostValueCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand);
   FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/elements', TPostElementElementsCommand);
 

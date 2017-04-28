@@ -121,11 +121,11 @@ begin
         comps.Add(AOwner)
       else
       begin
-        for i := 0 to tForm(AOwner).ControlCount -1 do
+        for i := 0 to tForm(AOwner).ComponentCount -1 do
         begin
-          if tForm(AOwner).Controls[i].ClassName = value then
+          if tForm(AOwner).Components[i].ClassName = value then
           begin
-            comps.Add(AOwner.Controls[i]);
+            comps.Add(AOwner.Components[i]);
           end;
         end;
       end;
@@ -190,8 +190,10 @@ begin
     arrayObject := TJSONObject.Create;
 
     if (elements[i] is TWinControl) then
+      // Great we can use the actual window handle
       arrayObject.AddPair(TJSONPair.Create('ELEMENT', IntToStr((elements[i] as TWinControl).Handle)))
     else
+      // Use the name, as it won't have a true handle
       arrayObject.AddPair(TJSONPair.Create('ELEMENT', elements[i].name));
 
     jsonArray.AddElement(arrayObject);

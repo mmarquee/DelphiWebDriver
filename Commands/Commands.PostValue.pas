@@ -19,22 +19,20 @@
 {  limitations under the License.                                           }
 {                                                                           }
 {***************************************************************************}
-unit Commands.GetEnabled;
+unit Commands.PostValue;
 
 interface
 
 uses
-  CommandRegistry,
+  Sessions,
   Vcl.Forms,
+  CommandRegistry,
   HttpServerCommand;
 
 type
-  ///  <summary>
-  ///  Handles 'GET' '/session/(.*)/element/(.*)/enabled'
-  ///  </summary>
-  TGetEnabledCommand = class(TRESTCommand)
+  TPostValueCommand = class(TRestCommand)
   private
-    function OKResponse(const SessionID: String; enabled: boolean): String;
+    function OKResponse(const sessionId, value: String): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -42,64 +40,76 @@ type
 implementation
 
 uses
-  Vcl.Controls,
-  System.SysUtils,
-  System.Classes,
-  System.StrUtils,
-  System.JSON,
-  Vcl.Buttons,
-  Vcl.Grids,
   Vcl.StdCtrls,
-  utils;
+  Vcl.Controls,
+  System.StrUtils,
+  System.SysUtils,
+  Utils,
+  System.Classes,
+  System.JSON;
 
-procedure TGetEnabledCommand.Execute(AOwner: TForm);
+procedure TPostValueCommand.Execute(AOwner: TForm);
 var
-  comp: TComponent;
-  ctrl: TWinControl;
-  handle: Integer;
+  jsonObj : TJSONObject;
+  argsObj : TJsonValue;
+  value: String;
+  handle: integer;
+  ctrl: TComponent;
 
 begin
-  ctrl := nil;
-  comp := nil;
+  // Decode the incoming JSON and see what we have
+  jsonObj := TJSONObject.ParseJSONValue(TEncoding.ASCII.GetBytes(self.StreamContents),0) as TJSONObject;
+  try
+    (jsonObj as TJsonObject).TryGetValue<String>('value', value);
+  finally
+    jsonObj.Free;
+  end;
 
-  if (isNumber(self.Params[2])) then
-  begin
-    handle := StrToInt(self.Params[2]);
-    ctrl := FindControl(handle);
-  end
-  else
-    comp := AOwner.FindComponent(self.Params[2]);
+  try
+    if (isNumber(self.Params[2])) then
+    begin
+      handle := StrToInt(self.Params[2]);
+      ctrl := FindControl(handle);
 
-  // Needs to actually be proper rect
-  if (ctrl <> nil) then
-  begin
-    OKResponse(self.Params[1], ctrl.Enabled)
-  end
-  else if (comp <> nil) then
-  begin
-    if (comp is TSpeedButton) then
-      OKResponse(self.Params[1], (comp as TSpeedButton).enabled)
-    else if (comp is TLabel) then
-      OKResponse(self.Params[1], (comp as TLabel).enabled)
-    else if (comp is TStringGrid) then
-      OKResponse(self.Params[1], (comp as TStringGrid).enabled);
-  end
-  else
-  begin
+      if (ctrl <> nil) then
+      begin
+        if (ctrl is TEdit) then
+          (ctrl as TEdit).Text := value;
+    //    else if (ctrl is TStaticText) then
+      //    (ctrl as TStaticText).Caption := value
+      //  else if (ctrl is TCheckBox) then
+      //    (ctrl as TCheckBox).Caption := value
+      //  else if (ctrl is TLinkLabel) then
+      //    (ctrl as TLinkLabel).Caption := value
+      //  else if (ctrl is TRadioButton) then
+      //    (ctrl as TRadioButton).Caption := value;
+
+        ResponseJSON(OKResponse(self.Params[2], value));
+      end
+      else
+        Error(404);
+    end
+    else
+    begin
+      // simple controls?
+      Error(404);
+    end;
+  except on e: Exception do
     Error(404);
   end;
+
 end;
 
-function TGetEnabledCommand.OKResponse(const SessionID: String; enabled: boolean): String;
+function TPostValueCommand.OKResponse(const sessionId, value: String): String;
 var
   jsonObject: TJSONObject;
 
 begin
   jsonObject := TJSONObject.Create;
 
-  jsonObject.AddPair(TJSONPair.Create('sessionID', SessionId));
+  jsonObject.AddPair(TJSONPair.Create('sessionID', sessionId));
   jsonObject.AddPair(TJSONPair.Create('status', '0'));
-  jsonObject.AddPair(TJSONPair.Create('value', BoolToStr(enabled)));
+  jsonObject.AddPair(TJSONPair.Create('value', value));
 
   result := jsonObject.ToString;
 end;
