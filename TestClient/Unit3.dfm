@@ -3,7 +3,7 @@ object Form3: TForm3
   Top = 0
   Caption = 'Form3'
   ClientHeight = 639
-  ClientWidth = 744
+  ClientWidth = 909
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -12,14 +12,14 @@ object Form3: TForm3
   Font.Style = []
   OldCreateOrder = False
   DesignSize = (
-    744
+    909
     639)
   PixelsPerInch = 96
   TextHeight = 13
   object ListBox1: TListBox
     Left = 8
     Top = 8
-    Width = 728
+    Width = 893
     Height = 341
     Anchors = [akLeft, akTop, akRight]
     ItemHeight = 13
@@ -55,7 +55,7 @@ object Form3: TForm3
   object StaticText1: TStaticText
     Left = 176
     Top = 355
-    Width = 451
+    Width = 616
     Height = 25
     Anchors = [akLeft, akTop, akRight]
     AutoSize = False
@@ -297,7 +297,7 @@ object Form3: TForm3
       'TRadioButton'
       'TPageControl'
       'TCheckBox'
-      'TToolbar'
+      'TToolBar'
       'TToolButton')
   end
   object ComboBox2: TComboBox
@@ -341,5 +341,53 @@ object Form3: TForm3
       '0'
       '1'
       '2')
+  end
+  object Button29: TButton
+    Left = 728
+    Top = 487
+    Width = 121
+    Height = 25
+    Caption = 'Click ToolButon'
+    TabOrder = 34
+    OnClick = Button29Click
+  end
+  object ComboBox4: TComboBox
+    Left = 728
+    Top = 520
+    Width = 121
+    Height = 21
+    Style = csDropDownList
+    TabOrder = 35
+    Items.Strings = (
+      '1'
+      '2'
+      '3'
+      '4')
+  end
+  object Button30: TButton
+    Left = 728
+    Top = 549
+    Width = 121
+    Height = 25
+    Caption = 'Right-Click on TB'
+    TabOrder = 36
+    OnClick = Button28Click
+  end
+  object Button31: TButton
+    Left = 8
+    Top = 522
+    Width = 75
+    Height = 25
+    Caption = 'Set Text'
+    TabOrder = 37
+    OnClick = Button31Click
+  end
+  object Edit1: TEdit
+    Left = 8
+    Top = 551
+    Width = 114
+    Height = 21
+    TabOrder = 38
+    Text = 'This is a test'
   end
 end

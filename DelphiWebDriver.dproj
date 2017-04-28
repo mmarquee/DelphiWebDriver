@@ -100,6 +100,8 @@
         <DCCReference Include="Utils.pas"/>
         <DCCReference Include="Commands\Commands.CreateSession.pas"/>
         <DCCReference Include="Commands\Commands.PostExecute.pas"/>
+        <DCCReference Include="Commands\Commands.GetEnabled.pas"/>
+        <DCCReference Include="Commands\Commands.PostValue.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

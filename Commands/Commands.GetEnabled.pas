@@ -19,7 +19,7 @@
 {  limitations under the License.                                           }
 {                                                                           }
 {***************************************************************************}
-unit Commands.GetRect;
+unit Commands.GetEnabled;
 
 interface
 
@@ -30,11 +30,11 @@ uses
 
 type
   ///  <summary>
-  ///  Handles 'GET' '/session/(.*)/element/(.*)/rect'
+  ///  Handles 'GET' '/session/(.*)/element/(.*)/enabled'
   ///  </summary>
-  TGetRectCommand = class(TRESTCommand)
+  TGetEnabledCommand = class(TRESTCommand)
   private
-    function OKResponse(x, y, width, height: Integer): String;
+    function OKResponse(const SessionID: String; enabled: boolean): String;
   public
     procedure Execute(AOwner: TForm); override;
   end;
@@ -48,10 +48,11 @@ uses
   System.StrUtils,
   System.JSON,
   Vcl.Buttons,
+  Vcl.Grids,
   Vcl.StdCtrls,
   utils;
 
-procedure TGetRectCommand.Execute(AOwner: TForm);
+procedure TGetEnabledCommand.Execute(AOwner: TForm);
 var
   comp: TComponent;
   ctrl: TWinControl;
@@ -72,17 +73,16 @@ begin
   // Needs to actually be proper rect
   if (ctrl <> nil) then
   begin
-    if (ctrl is TEdit) then
-    begin
-      ResponseJSON((ctrl as TEdit).Text)
-    end;
+    OKResponse(self.Params[1], ctrl.Enabled)
   end
   else if (comp <> nil) then
   begin
     if (comp is TSpeedButton) then
-    begin
-      ResponseJSON((comp as TSpeedButton).Caption);
-    end;
+      OKResponse(self.Params[1], (comp as TSpeedButton).enabled)
+    else if (comp is TLabel) then
+      OKResponse(self.Params[1], (comp as TLabel).enabled)
+    else if (comp is TStringGrid) then
+      OKResponse(self.Params[1], (comp as TStringGrid).enabled);
   end
   else
   begin
@@ -90,17 +90,16 @@ begin
   end;
 end;
 
-function TGetRectCommand.OKResponse(x, y, width, height: Integer): String;
+function TGetEnabledCommand.OKResponse(const SessionID: String; enabled: boolean): String;
 var
   jsonObject: TJSONObject;
 
 begin
   jsonObject := TJSONObject.Create;
 
-  jsonObject.AddPair(TJSONPair.Create('x', IntToStr(x)));
-  jsonObject.AddPair(TJSONPair.Create('y', IntToStr(y)));
-  jsonObject.AddPair(TJSONPair.Create('width', IntToStr(width)));
-  jsonObject.AddPair(TJSONPair.Create('height', IntToStr(height)));
+  jsonObject.AddPair(TJSONPair.Create('sessionID', SessionId));
+  jsonObject.AddPair(TJSONPair.Create('status', '0'));
+  jsonObject.AddPair(TJSONPair.Create('value', BoolToStr(enabled)));
 
   result := jsonObject.ToString;
 end;

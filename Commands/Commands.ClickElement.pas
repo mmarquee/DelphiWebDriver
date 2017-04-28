@@ -44,6 +44,7 @@ implementation
 uses
   Utils,
   Vcl.StdCtrls,
+  Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Controls,
   System.SysUtils,
@@ -80,10 +81,9 @@ begin
   else if (comp <> nil) then
   begin
     if (comp is TSpeedButton) then
-    begin
-      (comp as TSpeedButton).click;
-
-    end;
+      (comp as TSpeedButton).click
+    else if (comp is TToolButton) then
+      (comp as TToolButton).click;
 
     ResponseJSON(self.OKResponse(self.Params[2]));
   end

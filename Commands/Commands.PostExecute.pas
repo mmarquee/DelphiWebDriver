@@ -33,13 +33,16 @@ type
   ///  <summary>
   ///  Handles POST /session/{sessionId}/execute
   ///  </summary>
+  ///  <remarks>
+  ///  Only for certain specific controls - StringGrids and ToolButtons
+  ///  </remarks>
   TPostExecuteCommand = class(TRestCommand)
   private
     /// <summary>
     ///  Right click on the control
     /// </summary>
     /// <remarks>
-    ///  Currently only implemented for stringgrids
+    ///  Currently only implemented for some controls
     /// </remarks>
     procedure RightClick (AOwner: TForm; Const control: String);
 
@@ -47,7 +50,7 @@ type
     ///  Right click on the control
     /// </summary>
     /// <remarks>
-    ///  Currently only implemented for stringgrids
+    ///  Currently only implemented for some controls
     /// </remarks>
     procedure LeftClick (AOwner: TForm; Const control: String);
 
@@ -55,7 +58,7 @@ type
     ///  Right click on the control
     /// </summary>
     /// <remarks>
-    ///  Currently only implemented for stringgrids
+    ///  Currently only implemented for some controls
     /// </remarks>
     procedure DoubleClick (AOwner: TForm; Const control: String);
 
@@ -70,6 +73,7 @@ type
 implementation
 
 uses
+  Vcl.ComCtrls,
   System.StrUtils,
   System.SysUtils,
   Vcl.Grids,
@@ -126,7 +130,7 @@ procedure TPostExecuteCommand.RightClick (AOwner: TForm; Const control: String);
 var
   gridTop, top: Integer;
   gridLeft, left: Integer;
-  parent: TComponent;
+  parent, comp: TComponent;
   values : TStringList;
   value: String;
   parentGrid: TStringGrid;
@@ -170,7 +174,26 @@ begin
     end
     else
     begin
-      Error(404);
+      comp := AOwner.FindComponent(control);
+
+      if comp <> nil then
+      begin
+        if (comp is TToolButton) then
+        begin
+          if (comp as TToolButton).PopupMenu <> nil then
+          begin
+            // Popup a menu item here
+            (comp as TToolButton).PopupMenu.Popup(100, 100);
+            ResponseJSON(OKResponse(self.Params[2], control));
+          end
+          else
+          begin
+            Error(404);
+          end;
+        end;
+      end
+      else
+        Error(404);
     end;
 end;
 

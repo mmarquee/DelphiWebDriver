@@ -51,6 +51,8 @@ contains
   Sessions in 'Sessions.pas',
   Utils in 'Utils.pas',
   Commands.CreateSession in 'Commands\Commands.CreateSession.pas',
-  Commands.PostExecute in 'Commands\Commands.PostExecute.pas';
+  Commands.PostExecute in 'Commands\Commands.PostExecute.pas',
+  Commands.GetEnabled in 'Commands\Commands.GetEnabled.pas',
+  Commands.PostValue in 'Commands\Commands.PostValue.pas';
 
 end.
