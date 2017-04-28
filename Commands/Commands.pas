@@ -36,60 +36,78 @@ type
   end;
 
 type
-  TDeleteSessionCommand = class(TRestCommand)
-  public
-    procedure Execute(AOwner: TForm); override;
-  end;
-
-type
   ///  <summary>
   ///  Handles 'GET' '/status'
   ///  </summary>
   TStatusCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TGetSessionsCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TGetSessionCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TGetTitleCommand = class(TRestCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TSessionTimeoutsCommand = class(TRESTCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TPostImplicitWaitCommand = class(TRestCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TGetElementCommand = class(TRestCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 type
   TGetWindowCommand = class(TRestCommand)
   public
     procedure Execute(AOwner: TForm); override;
+
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
   end;
 
 var
@@ -119,6 +137,16 @@ begin
   except on e: Exception do
     Error(404);
   end;
+end;
+
+class function TStatusCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TStatusCommand.GetRoute: String;
+begin
+  result := '/status';
 end;
 
 procedure TSessionTimeoutsCommand.Execute(AOwner: TForm);
@@ -183,6 +211,37 @@ begin
   ResponseJSON(Sessions.GetSessionStatus(self.Params[1]));
 end;
 
+class function TGetSessionsCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetSessionsCommand.GetRoute: String;
+begin
+  result := '/sessions';
+end;
+
+class function TGetSessionCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetSessionCommand.GetRoute: String;
+begin
+  result := '/session/(.*)';
+end;
+
+class function TGetElementCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetElementCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element';
+end;
+
+
 procedure TUnimplementedCommand.Execute(AOwner: TForm);
 begin
   Error(501);
@@ -197,6 +256,16 @@ begin
   ResponseJSON(caption);
 end;
 
+class function TGetTitleCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetTitleCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/title';
+end;
+
 procedure TGetWindowCommand.Execute(AOwner: TForm);
 var
   handle : HWND;
@@ -209,15 +278,34 @@ begin
   end;
 end;
 
-procedure TDeleteSessionCommand.Execute(AOwner: TForm);
+class function TSessionTimeoutsCommand.GetCommand: String;
 begin
-  try
-    // Need to delete it!
-    Sessions.DeleteSession(self.Params[1]);
+  result := 'POST';
+end;
 
-  except on e: Exception do
-    Error(404);
-  end;
+class function TSessionTimeoutsCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/timeouts';
+end;
+
+class function TPostImplicitWaitCommand.GetCommand: String;
+begin
+  result := 'POST';
+end;
+
+class function TPostImplicitWaitCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/timeouts/implicit_wait';
+end;
+
+class function TGetWindowCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetWindowCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/window';
 end;
 
 initialization

@@ -50,7 +50,9 @@ uses
   Commands.PostElements in '..\Commands\Commands.PostElements.pas',
   Commands.PostExecute in '..\Commands\Commands.PostExecute.pas',
   Commands.GetEnabled in '..\Commands\Commands.GetEnabled.pas',
-  Commands.PostValue in '..\Commands\Commands.PostValue.pas';
+  Commands.PostValue in '..\Commands\Commands.PostValue.pas',
+  Commands.DeleteSession in '..\Commands\Commands.DeleteSession.pas',
+  Commands.GetWindowHandle in '..\Commands\Commands.GetWindowHandle.pas';
 
 {$R *.res}
 

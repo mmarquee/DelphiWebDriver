@@ -19,22 +19,21 @@
 {  limitations under the License.                                           }
 {                                                                           }
 {***************************************************************************}
-unit Commands.ClickElement;
+unit Commands.DeleteSession;
 
 interface
 
 uses
-  CommandRegistry,
+  Sessions,
   Vcl.Forms,
+  CommandRegistry,
   HttpServerCommand;
 
 type
   ///  <summary>
-  ///  Handles 'POST', '/session/(.*)/element/(.*)/click'
+  ///  Handles 'DELETE' '/session/(.*)'
   ///  </summary>
-  TClickElementCommand = class(TRESTCommand)
-  private
-    function OKResponse(const handle: String): String;
+  TDeleteSessionCommand = class(TRestCommand)
   public
     class function GetCommand: String; override;
     class function GetRoute: String; override;
@@ -45,75 +44,28 @@ type
 implementation
 
 uses
-  Utils,
-  Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.Buttons,
-  Vcl.Controls,
   System.SysUtils,
-  System.JSON,
-  System.Classes;
+  Commands;
 
-procedure TClickElementCommand.Execute(AOwner: TForm);
-var
-  ctrl: TWinControl;
-  comp: TComponent;
-  handle: Integer;
-
+procedure TDeleteSessionCommand.Execute(AOwner: TForm);
 begin
-  ctrl := nil;
-  comp := nil;
+  try
+    // Need to delete it!
+    Commands.Sessions.DeleteSession(self.Params[1]);
 
-  if (isNumber(self.Params[2])) then
-  begin
-    handle := StrToInt(self.Params[2]);
-    ctrl := FindControl(handle);
-  end
-  else
-    comp := (AOwner.FindComponent(self.Params[2]));
-
-  if (ctrl <> nil) then
-  begin
-    if (ctrl is TButton) then
-    begin
-      (ctrl as TButton).click;
-    end;
-
-    ResponseJSON(self.OKResponse(self.Params[2]));
-  end
-  else if (comp <> nil) then
-  begin
-    if (comp is TSpeedButton) then
-      (comp as TSpeedButton).click
-    else if (comp is TToolButton) then
-      (comp as TToolButton).click;
-
-    ResponseJSON(self.OKResponse(self.Params[2]));
-  end
-  else
+  except on e: Exception do
     Error(404);
+  end;
 end;
 
-class function TClickElementCommand.GetCommand: String;
+class function TDeleteSessionCommand.GetCommand: String;
 begin
-  result := 'POST';
+  result := 'DELETE';
 end;
 
-class function TClickElementCommand.GetRoute: String;
+class function TDeleteSessionCommand.GetRoute: String;
 begin
-  result := '/session/(.*)/element/(.*)/click';
-end;
-
-function TClickElementCommand.OKResponse(const handle: String): String;
-var
-  jsonObject: TJSONObject;
-
-begin
-  jsonObject := TJSONObject.Create;
-
-  jsonObject.AddPair(TJSONPair.Create('id', handle));
-
-  result := jsonObject.ToString;
+  result := '/session/(.*)';
 end;
 
 end.

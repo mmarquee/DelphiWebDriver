@@ -36,6 +36,9 @@ type
   private
     function OKResponse(const SessionID: String; enabled: boolean): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -88,6 +91,16 @@ begin
   begin
     Error(404);
   end;
+end;
+
+class function TGetEnabledCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetEnabledCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element/(.*)/enabled';
 end;
 
 function TGetEnabledCommand.OKResponse(const SessionID: String; enabled: boolean): String;

@@ -36,6 +36,9 @@ type
   private
     function OKResponse(x, y, width, height: Integer): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -88,6 +91,16 @@ begin
   begin
     Error(404);
   end;
+end;
+
+class function TGetRectCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetRectCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element/(.*)/rect';
 end;
 
 function TGetRectCommand.OKResponse(x, y, width, height: Integer): String;

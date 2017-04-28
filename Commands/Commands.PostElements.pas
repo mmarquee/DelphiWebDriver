@@ -44,6 +44,9 @@ type
 
     function OKResponse(const sessionId: String; elements: TObjectList<TComponent>): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -202,6 +205,16 @@ begin
   jsonObject.AddPair(jsonPair);
 
   result := jsonObject.ToString;
+end;
+
+class function TPostElementsCommand.GetCommand: String;
+begin
+  result := 'POST';
+end;
+
+class function TPostElementsCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/elements';
 end;
 
 end.

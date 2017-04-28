@@ -34,6 +34,9 @@ type
   ///  </summary>
   TCreateSessionCommand = class(TRESTCommand)
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -42,6 +45,16 @@ implementation
 uses
   Commands,
   Session;
+
+class function TCreateSessionCommand.GetCommand: String;
+begin
+  result := 'POST';
+end;
+
+class function TCreateSessionCommand.GetRoute: String;
+begin
+  result := '/session';
+end;
 
 procedure TCreateSessionCommand.Execute(AOwner: TForm);
 var

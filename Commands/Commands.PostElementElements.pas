@@ -38,6 +38,9 @@ Type
   private
     function OKResponse(const sessionId: String; elements: TStringList): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -136,6 +139,16 @@ begin
   jsonObject.AddPair(jsonPair);
 
   result := jsonObject.ToString;
+end;
+
+class function TPostElementElementsCommand.GetCommand: String;
+begin
+  result := 'POST';
+end;
+
+class function TPostElementElementsCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element/(.*)/elements';
 end;
 
 end.

@@ -36,6 +36,9 @@ type
   private
     function OKResponse(const handle, value: String): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     procedure Execute(AOwner: TForm); override;
   end;
 
@@ -158,6 +161,16 @@ begin
   jsonObject.AddPair(TJSONPair.Create('value', value));
 
   result := jsonObject.ToString;
+end;
+
+class function TGetTextCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetTextCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element/(.*)/text';
 end;
 
 end.

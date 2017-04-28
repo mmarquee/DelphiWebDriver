@@ -64,6 +64,9 @@ type
 
     function OKResponse(const sessionId, control: String): String;
   public
+    class function GetCommand: String; override;
+    class function GetRoute: String; override;
+
     /// <summary>
     ///  Highjacked for left and right clicks on controls
     /// </summary>
@@ -209,6 +212,16 @@ begin
   jsonObject.AddPair(TJSONPair.Create('value', control));
 
   result := jsonObject.ToString;
+end;
+
+class function TPostExecuteCommand.GetCommand: String;
+begin
+  result := 'POST';
+end;
+
+class function TPostExecuteCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/execute';
 end;
 
 end.

@@ -22,6 +22,9 @@ type
     procedure ParseParams(const AURI, AMask:String);
     procedure ReadStream(ARequestInfo: TIdHTTPRequestInfo);
   public
+    class function GetCommand: String; virtual;
+    class function GetRoute: String; virtual;
+
     constructor Create;
 
     procedure Start(AReg: TRESTCommandREG; AContext: TIdContext; ARequestInfo: TIdHTTPRequestInfo; AResponseInfo: TIdHTTPResponseInfo; AParams: TStringList);
@@ -52,7 +55,9 @@ type
   private
     FList: TObjectList<TRESTCommandREG>;
   public
-    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass);
+    procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;
+    procedure Register(ACommand: TRESTCommandClass); overload;
+
     constructor Create(AOwner: TComponent); override;
     function isUri(AURI: String; AMask: String; AParams: TStringList): boolean;
     function FindCommand(ACommand: String; AURI: String; Params: TStringList): TRESTCommandREG;
@@ -111,10 +116,14 @@ begin
   end;
 end;
 
-procedure THttpServerCommandRegister.Register(ATYPE, APATH: String;
-  ACommand: TRESTCommandClass);
+procedure THttpServerCommandRegister.Register(ATYPE, APATH: String; ACommand: TRESTCommandClass);
 begin
   FList.Add(TRESTCommandREG.Create(ATYPE, APATH, ACommand));
+end;
+
+procedure THttpServerCommandRegister.Register(ACommand: TRESTCommandClass);
+begin
+  FList.Add(TRESTCommandREG.Create(ACommand.GetCommand, ACommand.GetRoute, ACommand));
 end;
 
 { TRESTCommandREG }
@@ -127,6 +136,16 @@ begin
 end;
 
 { TRESTCommand }
+
+class function TRESTCommand.GetCommand: String;
+begin
+  result := '';
+end;
+
+class function TRESTCommand.GetRoute: String;
+begin
+  result := '';
+end;
 
 constructor TRESTCommand.create;
 begin
