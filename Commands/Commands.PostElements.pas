@@ -185,8 +185,8 @@ begin
   jsonObject := TJSONObject.Create;
   jsonPair := TJSONPair.Create('value', jsonArray);
 
-  jsonObject.AddPair(TJSONPair.Create('sessionID', sessionId));
-  jsonObject.AddPair(TJSONPair.Create('status', '0'));
+  jsonObject.AddPair(TJSONPair.Create('sessionId', sessionId));
+//  jsonObject.AddPair(TJSONPair.Create('status', '0'));
 
   for i := 0 to elements.count -1 do
   begin

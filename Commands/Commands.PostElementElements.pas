@@ -53,6 +53,7 @@ uses
   Vcl.StdCtrls,
   Vcl.ExtCtrls,
   System.Types,
+  Vcl.ComCtrls,
   System.SysUtils,
   System.StrUtils,
   System.JSON.Types,
@@ -88,18 +89,21 @@ begin
     begin
       for i := 0 to (ctrl as TStringGrid).RowCount -1 do
       begin
-        // Needs a name as it doesn't have a handle
-        // Add each line as an offset????
-        comps.Add(ctrl.name + IntToStr(i));
+        comps.Add(ctrl.name + '.' + IntToStr(i));
       end;
     end
     else if (ctrl is TListBox) then
     begin
       for i := 0 to (ctrl as TListBox).Count -1 do
       begin
-        // Needs a name as it doesn't have a handle
-        // Add each line as an offset????
-        comps.Add(ctrl.name + IntToStr(i));
+        comps.Add(ctrl.name + '.' + IntToStr(i));
+      end;
+    end
+    else if (ctrl is TPageControl) then
+    begin
+      for i := 0 to (ctrl as TPageControl).PageCount -1 do
+      begin
+        comps.Add(ctrl.name + '.' + IntToStr(i));
       end;
     end;
 
@@ -124,8 +128,8 @@ begin
   jsonObject := TJSONObject.Create;
   jsonPair := TJSONPair.Create('value', jsonArray);
 
-  jsonObject.AddPair(TJSONPair.Create('sessionID', sessionId));
-  jsonObject.AddPair(TJSONPair.Create('status', '0'));
+  jsonObject.AddPair(TJSONPair.Create('sessionId', sessionId));
+ // jsonObject.AddPair(TJSONPair.Create('status', '0'));
 
   for i := 0 to elements.count -1 do
   begin

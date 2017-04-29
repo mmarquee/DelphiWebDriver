@@ -10,7 +10,7 @@ type
   { Will use attributes later, maybe }
   TStatus = class
   public
-    [JsonAttribute('sessionID')]
+    [JsonAttribute('sessionId')]
     Guid: String;
     [JsonAttribute('args')]
     Args: String;

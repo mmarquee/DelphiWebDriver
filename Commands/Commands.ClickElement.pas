@@ -46,6 +46,7 @@ implementation
 
 uses
   Utils,
+  System.StrUtils,
   Vcl.StdCtrls,
   Vcl.ComCtrls,
   Vcl.Buttons,
@@ -59,6 +60,10 @@ var
   ctrl: TWinControl;
   comp: TComponent;
   handle: Integer;
+  values : TStringList;
+
+const
+  Delimiter = '.';
 
 begin
   ctrl := nil;
@@ -68,30 +73,65 @@ begin
   begin
     handle := StrToInt(self.Params[2]);
     ctrl := FindControl(handle);
-  end
-  else
-    comp := (AOwner.FindComponent(self.Params[2]));
 
-  if (ctrl <> nil) then
-  begin
-    if (ctrl is TButton) then
+    if (ctrl <> nil) then
     begin
-      (ctrl as TButton).click;
-    end;
+      if (ctrl is TButton) then
+      begin
+        (ctrl as TButton).click;
+      end;
 
-    ResponseJSON(self.OKResponse(self.Params[2]));
-  end
-  else if (comp <> nil) then
-  begin
-    if (comp is TSpeedButton) then
-      (comp as TSpeedButton).click
-    else if (comp is TToolButton) then
-      (comp as TToolButton).click;
+      ResponseJSON(self.OKResponse(self.Params[2]));
+    end
+    else
+      Error(404);
 
-    ResponseJSON(self.OKResponse(self.Params[2]));
   end
   else
-    Error(404);
+  begin
+    if (ContainsText(self.Params[2], Delimiter)) then
+    begin
+      values := TStringList.Create;
+      try
+        values.Delimiter := Delimiter;
+        values.StrictDelimiter := True;
+        values.DelimitedText := self.Params[2];
+
+        // Find parent
+        comp := (AOwner.FindComponent(values[0]));
+
+        if comp <> nil then
+        begin
+          if comp is TPageControl then
+          begin
+            (comp as TPageControl).ActivePage :=
+              (comp as TPageControl).Pages[StrToInt(values[1])];
+          end;
+        end
+        else
+          Error(404);
+
+      finally
+        values.Free;
+      end
+    end
+    else
+    begin
+      comp := (AOwner.FindComponent(self.Params[2]));
+
+      if (comp <> nil) then
+      begin
+        if (comp is TSpeedButton) then
+          (comp as TSpeedButton).click
+        else if (comp is TToolButton) then
+          (comp as TToolButton).click;
+
+        ResponseJSON(self.OKResponse(self.Params[2]));
+      end
+      else
+        Error(404);
+    end;
+  end;
 end;
 
 class function TClickElementCommand.GetCommand: String;

@@ -110,8 +110,8 @@ var
 begin
   jsonObject := TJSONObject.Create;
 
-  jsonObject.AddPair(TJSONPair.Create('sessionID', SessionId));
-  jsonObject.AddPair(TJSONPair.Create('status', '0'));
+  jsonObject.AddPair(TJSONPair.Create('sessionId', SessionId));
+//  jsonObject.AddPair(TJSONPair.Create('status', '0'));
   jsonObject.AddPair(TJSONPair.Create('value', BoolToStr(enabled)));
 
   result := jsonObject.ToString;

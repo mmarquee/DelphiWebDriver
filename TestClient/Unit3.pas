@@ -195,7 +195,7 @@ begin
 
   // Decode the JSon
   LJSONValue := TJSONObject.ParseJSONValue(TEncoding.UTF8.GetBytes(result),0);
-  FSessionID := LJSONValue.GetValue<String>('sessionID');
+  FSessionID := LJSONValue.GetValue<String>('sessionId');
 
   StaticText1.Caption := FSessionId;
 end;

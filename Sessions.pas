@@ -144,7 +144,7 @@ begin
 
   Builder
     .BeginObject()
-      .Add('sessionID', sessionId)
+      .Add('sessionId', sessionId)
       .Add('status', code)
       .BeginObject('value')
         .Add('error', code)
@@ -172,7 +172,7 @@ begin
 
   Builder
     .BeginObject()
-      .Add('sessionID', sessionId)
+      .Add('sessionId', sessionId)
       .Add('status', 0)
     .EndObject;
 
