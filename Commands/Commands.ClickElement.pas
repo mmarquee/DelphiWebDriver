@@ -34,6 +34,8 @@ type
   ///  </summary>
   TClickElementCommand = class(TRESTCommand)
   private
+    procedure ProcessHandle;
+    procedure ProcessControlName;
     function OKResponse(const handle: String): String;
   public
     class function GetCommand: String; override;
@@ -55,83 +57,85 @@ uses
   System.JSON,
   System.Classes;
 
-procedure TClickElementCommand.Execute(AOwner: TForm);
+procedure TClickElementCommand.ProcessHandle;
 var
   ctrl: TWinControl;
-  comp: TComponent;
   handle: Integer;
+
+begin
+  handle := StrToInt(self.Params[2]);
+  ctrl := FindControl(handle);
+
+  if (ctrl <> nil) then
+  begin
+    if (ctrl is TButton) then
+    begin
+      (ctrl as TButton).click;
+    end;
+
+    ResponseJSON(self.OKResponse(self.Params[2]));
+  end
+  else
+    Error(404);
+end;
+
+procedure TClickElement.ProcessControlName;
+var
+  comp: TComponent;
   values : TStringList;
 
 const
   Delimiter = '.';
 
 begin
-  ctrl := nil;
-  comp := nil;
-
-  if (isNumber(self.Params[2])) then
+  if (ContainsText(self.Params[2], Delimiter)) then
   begin
-    handle := StrToInt(self.Params[2]);
-    ctrl := FindControl(handle);
+    values := TStringList.Create;
+    try
+      values.Delimiter := Delimiter;
+      values.StrictDelimiter := True;
+      values.DelimitedText := self.Params[2];
 
-    if (ctrl <> nil) then
-    begin
-      if (ctrl is TButton) then
+      // Find parent
+      comp := (AOwner.FindComponent(values[0]));
+
+      if comp <> nil then
       begin
-        (ctrl as TButton).click;
-      end;
-
-      ResponseJSON(self.OKResponse(self.Params[2]));
-    end
-    else
-      Error(404);
-
-  end
-  else
-  begin
-    if (ContainsText(self.Params[2], Delimiter)) then
-    begin
-      values := TStringList.Create;
-      try
-        values.Delimiter := Delimiter;
-        values.StrictDelimiter := True;
-        values.DelimitedText := self.Params[2];
-
-        // Find parent
-        comp := (AOwner.FindComponent(values[0]));
-
-        if comp <> nil then
+        if comp is TPageControl then
         begin
-          if comp is TPageControl then
-          begin
-            (comp as TPageControl).ActivePage :=
-              (comp as TPageControl).Pages[StrToInt(values[1])];
-          end;
-        end
-        else
-          Error(404);
-
-      finally
-        values.Free;
-      end
-    end
-    else
-    begin
-      comp := (AOwner.FindComponent(self.Params[2]));
-
-      if (comp <> nil) then
-      begin
-        if (comp is TSpeedButton) then
-          (comp as TSpeedButton).click
-        else if (comp is TToolButton) then
-          (comp as TToolButton).click;
-
-        ResponseJSON(self.OKResponse(self.Params[2]));
+          (comp as TPageControl).ActivePage :=
+            (comp as TPageControl).Pages[StrToInt(values[1])];
+        end;
       end
       else
         Error(404);
-    end;
+    finally
+      values.Free;
+    end
+  end
+  else
+  begin
+    comp := (AOwner.FindComponent(self.Params[2]));
+
+    if (comp <> nil) then
+    begin
+      if (comp is TSpeedButton) then
+        (comp as TSpeedButton).click
+      else if (comp is TToolButton) then
+        (comp as TToolButton).click;
+        ResponseJSON(self.OKResponse(self.Params[2]));
+    end
+    else
+      Error(404);
   end;
+end;
+
+procedure TClickElementCommand.Execute(AOwner: TForm);
+begin
+  if (isNumber(self.Params[2])) then
+    ProcessHandle
+  else
+    ProcessControlName;
 end;
 
 class function TClickElementCommand.GetCommand: String;
