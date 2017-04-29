@@ -64,7 +64,7 @@ begin
 
   for i := 0 to FSessions.Count -1 do
   begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    if FSessions[i].Uid = sessionId then
     begin
       result := FSessions[i];
       break;
@@ -86,7 +86,7 @@ begin
   // Probably a better way of doing this!
   for i := 0 to FSessions.Count -1 do
   begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    if FSessions[i].Uid = sessionId then
     begin
       // Dodgy
       found := true;
@@ -112,7 +112,7 @@ begin
   // Probably a better way of doing this!
   for i := 0 to FSessions.Count -1 do
   begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    if FSessions[i].Uid = sessionId then
     begin
       // Dodgy
       found := true;
@@ -204,7 +204,7 @@ begin
   // Probably a better way of doing this!
   for i := 0 to FSessions.Count -1 do
   begin
-    if FSessions[i].Uid = TGUID.Create(sessionId) then
+    if FSessions[i].Uid = sessionId then
     begin
       // Dodgy
       found := true;

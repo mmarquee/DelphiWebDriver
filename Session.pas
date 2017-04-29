@@ -11,7 +11,7 @@ type
   TStatus = class
   public
     [JsonAttribute('sessionID')]
-    Guid: TGUID;
+    Guid: String;
     [JsonAttribute('args')]
     Args: String;
     [JsonAttribute('app')]
@@ -28,14 +28,14 @@ type
     FStatus: TStatus;
     FTimeouts: Integer;
 
-    function GetUid: TGUID;
-    procedure SetUid(val: TGUID);
+    function GetUid: String;
+    procedure SetUid(val: String);
 
   public
     function GetSessionDetails: String;
     function GetSession: String;
 
-    property Uid: TGUID read GetUid write SetUid;
+    property Uid: String read GetUid write SetUid;
     property Timeouts: Integer write FTimeouts;
 
     constructor Create(const request: String);
@@ -59,11 +59,13 @@ constructor TSession.Create;
 var
   jsonObj : TJSONObject;
   requestObj : TJSONValue;
+  guid: TGuid;
+  value: String;
 
 begin
   FStatus:= TStatus.Create;
 
-  if CreateGUID(FStatus.Guid) <> 0 then
+  if CreateGUID(Guid) <> 0 then
     raise Exception.Create('Unable to generate GUID')
   else
   begin
@@ -75,6 +77,13 @@ begin
       (requestObj as TJsonObject).TryGetValue<String>('args', FStatus.Args);
       (requestObj as TJsonObject).TryGetValue<String>('app', FStatus.App);
       (requestObj as TJsonObject).TryGetValue<String>('platformName', FStatus.Platform);
+
+      value := Guid.ToString;
+      delete(value,length(value),1);
+      delete(value,1,1);
+
+      FStatus.Guid := value;
+
     finally
       jsonObj.Free;
     end;
@@ -91,12 +100,12 @@ begin
   result := FStatus.ToJsonString;
 end;
 
-function TSession.GetUid: TGUID;
+function TSession.GetUid: String;
 begin
   result := FStatus.Guid;
 end;
 
-procedure TSession.SetUid(val: TGUID);
+procedure TSession.SetUid(val: String);
 begin
   FStatus.Guid := val;
 end;
@@ -107,6 +116,7 @@ var
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
+  uid: String;
 
 begin
   StringBuilder := TStringBuilder.Create;
@@ -117,7 +127,7 @@ begin
 
   Builder
     .BeginObject()
-      .Add('sessionID', GUIDToString(self.Guid))
+      .Add('sessionId', self.Guid)
       .Add('status', 0)
       .BeginObject('value')
         .Add('app', self.App)

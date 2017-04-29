@@ -39,6 +39,7 @@ uses
   Commands.DeleteSession,
   Commands.PostElementElements,
   Commands.PostExecute,
+  Commands.PostClear,
   Commands.GetText,
   Commands.ClickElement,
   Commands.GetRect,
@@ -74,10 +75,11 @@ begin
   FCommand.Commands.Register(TGetSessionsCommand);
   FCommand.Commands.Register(TStatusCommand);
   FCommand.Commands.Register(TPostValueCommand);
+  FCommand.Commands.Register(TPostClearCommand);
   FCommand.Commands.Register(TClickElementCommand);
   FCommand.Commands.Register(TPostElementElementsCommand);
 
-  // Avoiding mismatch with patten above
+  // Avoiding mismatch with pattern above
   FCommand.Commands.Register(TPostElementsCommand);
   FCommand.Commands.Register(TPostElementCommand);
   FCommand.Commands.Register(TPostExecuteCommand);
@@ -86,49 +88,6 @@ begin
   FCommand.Commands.Register(TCreateSessionCommand);
   FCommand.Commands.Register(TDeleteSessionCommand);
 
-//  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/enabled', TGetEnabledCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/rect', TGetRectCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)/text', TGetTextCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/element/(.*)', TGetElementCommand);
-//  //FCommand.Commands.Register('GET', '/session/(.*)/screenshot', TGetScreenshotCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/window_handle', TGetWindowhandleCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/window', TGetWindowCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)/title', TGetTitleCommand);
-//  FCommand.Commands.Register('GET', '/session/(.*)', TGetSessionCommand);
-//  FCommand.Commands.Register('GET', '/sessions', TGetSessionsCommand);
-
-//  FCommand.Commands.Register('GET', '/status', TStatusCommand);
-
-//  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/value', TPostValueCommand);
-//  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/click', TClickElementCommand);
-//  FCommand.Commands.Register('POST', '/session/(.*)/element/(.*)/elements', TPostElementElementsCommand);
- //
-//  // Avoiding mismatch with patten above
-//  FCommand.Commands.Register('POST', '/session/(.*)/elements', TPostElementsCommand);
-//  FCommand.Commands.Register('POST', '/session/(.*)/element', TPostElementCommand);
-//  FCommand.Commands.Register('POST', '/session/(.*)/execute', TPostExecuteCommand);
-//
-//  FCommand.Commands.Register('POST', '/session/(.*)/timeouts/implicit_wait', TPostImplicitWaitCommand);
-//  FCommand.Commands.Register('POST', '/session/(.*)/timeouts', TSessionTimeoutsCommand);
-//
- // FCommand.Commands.Register('POST', '/session', TCreateSessionCommand);
-//
-//  FCommand.Commands.Register('DELETE', '/session/(.*)', TDeleteSessionCommand);
-
-  // Just as an example
-//  FCommand.Commands.Register('DELETE', '/session/:sessionId', TUnimplementedCommand);
-
-  // Other commands to be implemented later
-(*
-FCommand.Commands.Register('DELETE', '/session/:sessionId', TDeleteSessionCommand);
-
-FCommand.Commands.Register('POST', '/session/:sessionId/timeouts/async_script', TPostAsyncScriptCommand);
-FCommand.Commands.Register('POST', '/session/:sessionId/timeouts/implicit_wait', TPostImplicitWaitCommand);
-FCommand.Commands.Register('GET', '/session/:sessionId/window_handle', TGetWindowHandleCommand);
-FCommand.Commands.Register('GET', '/session/:sessionId/window_handles', TGetWindowHandlesCommand);
-
-etc.
-*)
   FCommand.OnLogMessage := FOnLogMessage;
 
   FHttpServer := TIdHTTPServer.Create(AOwner);
