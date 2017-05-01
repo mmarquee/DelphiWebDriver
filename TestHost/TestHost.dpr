@@ -53,7 +53,8 @@ uses
   Commands.PostValue in '..\Commands\Commands.PostValue.pas',
   Commands.DeleteSession in '..\Commands\Commands.DeleteSession.pas',
   Commands.GetWindowHandle in '..\Commands\Commands.GetWindowHandle.pas',
-  Commands.PostClear in '..\Commands\Commands.PostClear.pas';
+  Commands.PostClear in '..\Commands\Commands.PostClear.pas',
+  Commands.GetElementValue in '..\Commands\Commands.GetElementValue.pas';
 
 {$R *.res}
 

@@ -19,49 +19,61 @@
 {  limitations under the License.                                           }
 {                                                                           }
 {***************************************************************************}
-unit Commands.ClickElement;
+unit Commands.GetElementValue;
 
 interface
 
 uses
-  CommandRegistry,
   Vcl.Forms,
+  CommandRegistry,
   HttpServerCommand;
 
 type
-  ///  <summary>
-  ///  Handles 'POST', '/session/(.*)/element/(.*)/click'
-  ///  </summary>
-  TClickElementCommand = class(TRESTCommand)
+  TGetElementValueCommand = class(TRestCommand)
   private
     procedure ProcessHandle(AOwner: TForm);
     procedure ProcessControlName(AOwner: TForm);
-    function OKResponse(const handle: String): String;
+    function OKResponse(const session, value: String): String;
   public
+    procedure Execute(AOwner: TForm); override;
+
     class function GetCommand: String; override;
     class function GetRoute: String; override;
-
-    procedure Execute(AOwner: TForm); override;
   end;
 
 implementation
 
 uses
-  Utils,
-  System.StrUtils,
-  Vcl.StdCtrls,
-  Vcl.ComCtrls,
-  Vcl.Buttons,
-  Vcl.Controls,
-  System.SysUtils,
   System.JSON,
-  System.Classes;
+  System.JSON.Types,
+  Vcl.Controls,
+  Vcl.Grids,
+  System.SysUtils,
+  System.Classes,
+  System.StrUtils,
+  Vcl.ComCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Buttons,
+  Vcl.StdCtrls,
+  System.JSON.Writers,
+  System.JSON.Builders,
+  utils;
 
-procedure TClickElementCommand.ProcessHandle(AOwner: TForm);
+class function TGetElementValueCommand.GetCommand: String;
+begin
+  result := 'GET';
+end;
+
+class function TGetElementValueCommand.GetRoute: String;
+begin
+  result := '/session/(.*)/element/(.*)/attribute/(.*)';
+end;
+
+procedure TGetElementValueCommand.ProcessHandle(AOwner: TForm);
 var
   ctrl: TWinControl;
   handle: Integer;
-  checked: boolean;
+  value: String;
 
 begin
   handle := StrToInt(self.Params[2]);
@@ -69,27 +81,21 @@ begin
 
   if (ctrl <> nil) then
   begin
-    if (ctrl is TButton) then
+    if (ctrl is TCheckBox) then
     begin
-      (ctrl as TButton).click;
-    end
-    else if (ctrl is TCheckBox) then
-    begin
-      checked := (ctrl as TCheckBox).Checked;
-      (ctrl as TCheckBox).Checked := not checked;
-    end
-    else if (ctrl is TRadioButton) then
-    begin
-      (ctrl as TRadioButton).Checked := true;
+      if (self.Params[3] = 'Checked') then
+        if (ctrl as TCheckBox).Checked then value := 'True' else value := 'False'
+      else
+        value := 'Unknown';
     end;
 
-    ResponseJSON(self.OKResponse(self.Params[2]));
+    ResponseJSON(self.OKResponse(self.Params[2], value));
   end
   else
     Error(404);
 end;
 
-procedure TClickElementCommand.ProcessControlName(AOwner: TForm);
+procedure TGetElementValueCommand.ProcessControlName(AOwner: TForm);
 var
   comp: TComponent;
   values : TStringList;
@@ -98,6 +104,8 @@ const
   Delimiter = '.';
 
 begin
+  Error(404);
+(*
   if (ContainsText(self.Params[2], Delimiter)) then
   begin
     values := TStringList.Create;
@@ -138,9 +146,10 @@ begin
     else
       Error(404);
   end;
+  *)
 end;
 
-procedure TClickElementCommand.Execute(AOwner: TForm);
+procedure TGetElementValueCommand.Execute(AOwner: TForm);
 begin
   if (isNumber(self.Params[2])) then
     ProcessHandle(AOwner)
@@ -148,26 +157,28 @@ begin
     ProcessControlName(AOwner);
 end;
 
-class function TClickElementCommand.GetCommand: String;
-begin
-  result := 'POST';
-end;
-
-class function TClickElementCommand.GetRoute: String;
-begin
-  result := '/session/(.*)/element/(.*)/click';
-end;
-
-function TClickElementCommand.OKResponse(const handle: String): String;
+function TGetElementValueCommand.OKResponse(const session, value: String): String;
 var
-  jsonObject: TJSONObject;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
 
 begin
-  jsonObject := TJSONObject.Create;
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
 
-  jsonObject.AddPair(TJSONPair.Create('id', handle));
+  Builder
+    .BeginObject()
+      .Add('sessionId', session)
+      .Add('status', 0)
+      .Add('value', value)
+    .EndObject;
 
-  result := jsonObject.ToString;
+  result := StringBuilder.ToString;
 end;
 
 end.

@@ -34,7 +34,7 @@ type
   ///  </summary>
   TGetRectCommand = class(TRESTCommand)
   private
-    function OKResponse(x, y, width, height: Integer): String;
+    function OKResponse(const sessionId: String; x, y, width, height: Integer): String;
   public
     class function GetCommand: String; override;
     class function GetRoute: String; override;
@@ -50,6 +50,9 @@ uses
   System.Classes,
   System.StrUtils,
   System.JSON,
+  System.JSON.Types,
+  System.JSON.Writers,
+  System.JSON.Builders,
   Vcl.Buttons,
   Vcl.StdCtrls,
   utils;
@@ -75,18 +78,13 @@ begin
   // Needs to actually be proper rect
   if (ctrl <> nil) then
   begin
-    if (ctrl is TEdit) then
-    begin
-      ResponseJSON((ctrl as TEdit).Text)
-    end;
+    ResponseJSON(OKResponse(self.Params[1], ctrl.top, ctrl.left, ctrl.width, ctrl.height))
   end
-  else if (comp <> nil) then
-  begin
-    if (comp is TSpeedButton) then
-    begin
-      ResponseJSON((comp as TSpeedButton).Caption);
-    end;
-  end
+// Not possible for components?
+//  else if (comp <> nil) then
+//  begin
+//    ResponseJSON(OKResponse(self.Params[1], comp.top, comp.left, comp.width, comp.height))
+//  end
   else
   begin
     Error(404);
@@ -103,19 +101,31 @@ begin
   result := '/session/(.*)/element/(.*)/rect';
 end;
 
-function TGetRectCommand.OKResponse(x, y, width, height: Integer): String;
+function TGetRectCommand.OKResponse(const sessionId: String; x, y, width, height: Integer): String;
 var
-  jsonObject: TJSONObject;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
 
 begin
-  jsonObject := TJSONObject.Create;
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
 
-  jsonObject.AddPair(TJSONPair.Create('x', IntToStr(x)));
-  jsonObject.AddPair(TJSONPair.Create('y', IntToStr(y)));
-  jsonObject.AddPair(TJSONPair.Create('width', IntToStr(width)));
-  jsonObject.AddPair(TJSONPair.Create('height', IntToStr(height)));
+  Builder
+    .BeginObject()
+      .Add('sessionId', sessionId)
+      .Add('status', 0)
+      .Add('x', x)
+      .Add('y', y)
+      .Add('width', width)
+      .Add('height', height)
+    .EndObject;
 
-  result := jsonObject.ToString;
+  result := StringBuilder.ToString;
 end;
 
 end.

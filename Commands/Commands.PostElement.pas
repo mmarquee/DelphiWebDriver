@@ -239,31 +239,11 @@ begin
 end;
 
 function TPostElementCommand.OKResponse(const sessionId, handle: String): String;
-//var
-//  jsonPair: TJSONPair;
-//  jsonObject, arrayObject: TJSONObject;
-
-//begin
-//  arrayObject := TJSONObject.Create;
-//  jsonObject := TJSONObject.Create;
-//
-//  arrayObject.AddPair('ELEMENT', Handle);
-//
-//  jsonPair := TJSONPair.Create('value', arrayObject);
-//
-//  jsonObject.AddPair(TJSONPair.Create('sessionId', sessionId));
-//  jsonObject.AddPair(TJSONPair.Create('status', '0'));
-//
-//  jsonObject.AddPair(jsonPair);
-//
- // result := jsonObject.ToString;
-
 var
   Builder: TJSONObjectBuilder;
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
-  uid: String;
 
 begin
   StringBuilder := TStringBuilder.Create;

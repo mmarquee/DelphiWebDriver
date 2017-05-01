@@ -39,6 +39,7 @@ uses
   Commands.DeleteSession,
   Commands.PostElementElements,
   Commands.PostExecute,
+  Commands.GetElementValue,
   Commands.PostClear,
   Commands.GetText,
   Commands.ClickElement,
@@ -62,6 +63,8 @@ begin
   FOwner := AOwner;
 
   FCommand:= THttpServerCommand.Create(AOwner);
+
+  FCommand.Commands.Register(TGetElementValueCommand);
 
   FCommand.Commands.Register(TGetEnabledCommand);
   FCommand.Commands.Register(TGetRectCommand);

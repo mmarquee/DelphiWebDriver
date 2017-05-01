@@ -135,7 +135,6 @@ var
   gridLeft, left: Integer;
   parent, comp: TComponent;
   values : TStringList;
-  value: String;
   parentGrid: TStringGrid;
 
 const

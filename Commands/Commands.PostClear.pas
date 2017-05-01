@@ -53,8 +53,6 @@ uses
 
 procedure TPostClearCommand.Execute(AOwner: TForm);
 var
-  jsonObj : TJSONObject;
-  argsObj : TJsonValue;
   value: String;
   handle: integer;
   ctrl: TComponent;

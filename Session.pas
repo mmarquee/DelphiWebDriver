@@ -116,7 +116,6 @@ var
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
-  uid: String;
 
 begin
   StringBuilder := TStringBuilder.Create;
