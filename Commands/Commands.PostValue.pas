@@ -76,7 +76,10 @@ begin
       if (ctrl <> nil) then
       begin
         if (ctrl is TEdit) then
-          (ctrl as TEdit).Text := value;
+          (ctrl as TEdit).Text := value
+        else if (ctrl is TCombobox) then
+          (ctrl as TCombobox).Text := value;
+
     //    else if (ctrl is TStaticText) then
       //    (ctrl as TStaticText).Caption := value
       //  else if (ctrl is TCheckBox) then
