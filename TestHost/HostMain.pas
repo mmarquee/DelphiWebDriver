@@ -27,9 +27,9 @@ uses
   RestServer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Menus,
-  AutomatedCombobox, AutomatedEdit, Vcl.Grids, AutomatedStringGrid, Vcl.Mask,
-  AutomatedMaskEdit, Vcl.ToolWin, Vcl.ExtCtrls, Vcl.ImgList, System.ImageList,
-  AutomatedStaticText, Vcl.Buttons;
+  Vcl.Grids, AutomatedStringGrid, Vcl.Mask,
+  Vcl.ToolWin, Vcl.ExtCtrls, Vcl.ImgList, System.ImageList,
+  Vcl.Buttons;
 
 type
   TForm1 = class(TForm)
@@ -57,11 +57,11 @@ type
     About1: TMenuItem;
     PopupMenu1: TPopupMenu;
     PopupMenu2: TMenuItem;
-    AutomatedEdit1: TAutomatedEdit;
-    AutomatedCombobox1: TAutomatedCombobox;
-    AutomatedCombobox2: TAutomatedCombobox;
-    AutomationStringGrid1: TAutomationStringGrid;
-    AutomatedMaskEdit1: TAutomatedMaskEdit;
+    AutomatedEdit1: TEdit;
+    AutomatedCombobox1: TCombobox;
+    AutomatedCombobox2: TCombobox;
+    AutomationStringGrid1: TStringGrid;
+    AutomatedMaskEdit1: TMaskEdit;
     RichEdit1: TRichEdit;
     TreeView1: TTreeView;
     PopupMenu3: TPopupMenu;
@@ -84,7 +84,7 @@ type
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
     ImageList1: TImageList;
-    AutomatedStaticText1: TAutomatedStaticText;
+    AutomatedStaticText1: TStaticText;
     ListBox2: TListBox;
     SpeedButton1: TSpeedButton;
     SpeedButton2: TSpeedButton;

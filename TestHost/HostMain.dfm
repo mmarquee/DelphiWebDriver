@@ -184,7 +184,7 @@ object Form1: TForm1
       'Forth'
       'Beezer Conference')
   end
-  object AutomatedEdit1: TAutomatedEdit
+  object AutomatedEdit1: TEdit
     Left = 24
     Top = 496
     Width = 121
@@ -192,7 +192,7 @@ object Form1: TForm1
     TabOrder = 11
     Text = 'AutomatedEdit1'
   end
-  object AutomatedCombobox1: TAutomatedCombobox
+  object AutomatedCombobox1: TCombobox
     Left = 24
     Top = 536
     Width = 145
@@ -200,7 +200,7 @@ object Form1: TForm1
     TabOrder = 12
     Text = 'AutomatedCombobox1'
   end
-  object AutomatedCombobox2: TAutomatedCombobox
+  object AutomatedCombobox2: TCombobox
     Left = 175
     Top = 536
     Width = 145
@@ -213,7 +213,7 @@ object Form1: TForm1
       'Second'
       'Third')
   end
-  object AutomationStringGrid1: TAutomationStringGrid
+  object AutomationStringGrid1: TStringGrid
     Left = 329
     Top = 174
     Width = 386
@@ -233,7 +233,7 @@ object Form1: TForm1
       24
       24)
   end
-  object AutomatedMaskEdit1: TAutomatedMaskEdit
+  object AutomatedMaskEdit1: TMaskEdit
     Left = 189
     Top = 496
     Width = 120
@@ -423,7 +423,7 @@ object Form1: TForm1
       end
     end
   end
-  object AutomatedStaticText1: TAutomatedStaticText
+  object AutomatedStaticText1: TStaticText
     Left = 28
     Top = 616
     Width = 112

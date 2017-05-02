@@ -87,17 +87,10 @@
             <Form>Form1</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\AutomatedCombobox.pas"/>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\AutomatedEdit.pas"/>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\AutomatedMaskEdit.pas"/>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\AutomatedStaticText.pas"/>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\AutomatedStringGrid.pas"/>
         <DCCReference Include="..\..\DelphiUIAutomation\controls\DemoForm.pas">
             <Form>Form2</Form>
             <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\StringGridItem.pas"/>
-        <DCCReference Include="..\..\DelphiUIAutomation\controls\UIAutomationCore_TLB.pas"/>
         <DCCReference Include="..\CommandRegistry.pas"/>
         <DCCReference Include="..\HttpServerCommand.pas"/>
         <DCCReference Include="..\JsonAttributeSource.pas"/>
