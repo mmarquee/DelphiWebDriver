@@ -27,7 +27,7 @@ uses
   RestServer,
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ComCtrls, Vcl.Menus,
-  Vcl.Grids, AutomatedStringGrid, Vcl.Mask,
+  Vcl.Grids, Vcl.Mask,
   Vcl.ToolWin, Vcl.ExtCtrls, Vcl.ImgList, System.ImageList,
   Vcl.Buttons;
 

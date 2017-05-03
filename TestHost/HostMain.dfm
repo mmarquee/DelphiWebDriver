@@ -192,7 +192,7 @@ object Form1: TForm1
     TabOrder = 11
     Text = 'AutomatedEdit1'
   end
-  object AutomatedCombobox1: TCombobox
+  object AutomatedCombobox1: TComboBox
     Left = 24
     Top = 536
     Width = 145
@@ -200,7 +200,7 @@ object Form1: TForm1
     TabOrder = 12
     Text = 'AutomatedCombobox1'
   end
-  object AutomatedCombobox2: TCombobox
+  object AutomatedCombobox2: TComboBox
     Left = 175
     Top = 536
     Width = 145
@@ -492,7 +492,7 @@ object Form1: TForm1
     Left = 184
     Top = 576
     Bitmap = {
-      494C01010A0018005C0040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
+      494C01010A001800600040004000FFFFFFFF2110FFFFFFFFFFFFFFFF424D3600
       000000000000360000002800000000010000C000000001002000000000000000
       0300000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

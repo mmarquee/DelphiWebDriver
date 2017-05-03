@@ -24,7 +24,6 @@ program TestHost;
 uses
   Vcl.Forms,
   HostMain in 'HostMain.pas' {Form1},
-  DemoForm in '..\..\DelphiUIAutomation\controls\DemoForm.pas' {Form2},
   CommandRegistry in '..\CommandRegistry.pas',
   HttpServerCommand in '..\HttpServerCommand.pas',
   JsonAttributeSource in '..\JsonAttributeSource.pas',
@@ -55,6 +54,5 @@ begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
   Application.CreateForm(TForm1, Form1);
-  Application.CreateForm(TForm2, Form2);
   Application.Run;
 end.
