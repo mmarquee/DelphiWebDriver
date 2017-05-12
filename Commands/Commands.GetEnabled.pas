@@ -167,12 +167,22 @@ begin
   Writer.Formatting := TJsonFormatting.Indented;
   Builder := TJSONObjectBuilder.Create(Writer);
 
-  Builder
-    .BeginObject()
-      .Add('sessionId', sessionId)
-      .Add('status', 0)
-      .Add('value', 'true')
-    .EndObject;
+  // Wrong but works
+
+  if enabled = true then
+    Builder
+      .BeginObject()
+        .Add('sessionId', sessionId)
+        .Add('status', 0)
+        .Add('value', true)
+      .EndObject
+  else
+     Builder
+      .BeginObject()
+        .Add('sessionId', sessionId)
+        .Add('status', 0)
+        .Add('value', false)
+      .EndObject;
 
   result := StringBuilder.ToString;
 end;
