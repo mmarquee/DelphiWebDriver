@@ -53,6 +53,7 @@ uses
   System.Classes,
   System.StrUtils,
   Vcl.ComCtrls,
+  Vcl.Menus,
   Vcl.ExtCtrls,
   Vcl.Buttons,
   Vcl.StdCtrls,
@@ -139,6 +140,8 @@ begin
       begin
         if (comp is TSpeedButton) then
           Value := (comp as TSpeedButton).Caption
+        else if (comp is TMenuItem) then
+          Value := (comp as TMenuItem).Caption
         else if (comp is TLabel) then
           Value := (comp as TLabel).Caption;
 

@@ -53,6 +53,7 @@ uses
   Vcl.ComCtrls,
   Vcl.Buttons,
   Vcl.Controls,
+  Vcl.Menus,
   System.SysUtils,
   System.JSON,
   System.Classes;
@@ -131,6 +132,8 @@ begin
     begin
       if (comp is TSpeedButton) then
         (comp as TSpeedButton).click
+      else if (comp is TMenuItem) then
+        (comp as TMenuItem).click
       else if (comp is TToolButton) then
         (comp as TToolButton).click;
         ResponseJSON(self.OKResponse(self.Params[2]));
