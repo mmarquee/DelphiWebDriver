@@ -105,6 +105,13 @@ begin
       begin
         comps.Add(ctrl.name + '.' + IntToStr(i));
       end;
+    end
+    else if (ctrl is TToolBar) then
+    begin
+      for i := 0 to (ctrl as TToolBar).ButtonCount -1 do
+      begin
+        comps.Add(ctrl.name + '.' + IntToStr(i));
+      end;
     end;
 
     if comps = nil then

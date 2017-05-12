@@ -48,11 +48,15 @@ uses
   Vcl.Controls,
   System.SysUtils,
   System.Classes,
+  Vcl.ComCtrls,
+  Vcl.ExtCtrls,
+  Vcl.Buttons,
+  Vcl.StdCtrls,
   System.StrUtils,
   System.JSON,
-  Vcl.Buttons,
-  Vcl.Grids,
-  Vcl.StdCtrls,
+  System.JSON.Types,
+  System.JSON.Writers,
+  System.JSON.Builders,
   utils;
 
 procedure TGetEnabledCommand.Execute(AOwner: TForm);
@@ -60,6 +64,12 @@ var
   comp: TComponent;
   ctrl: TWinControl;
   handle: Integer;
+  values : TStringList;
+  value: boolean;
+  parent: TComponent;
+
+const
+  Delimiter = '.';
 
 begin
   ctrl := nil;
@@ -69,28 +79,48 @@ begin
   begin
     handle := StrToInt(self.Params[2]);
     ctrl := FindControl(handle);
-  end
-  else
-    comp := AOwner.FindComponent(self.Params[2]);
 
-  // Needs to actually be proper rect
-  if (ctrl <> nil) then
-  begin
-    OKResponse(self.Params[1], ctrl.Enabled)
-  end
-  else if (comp <> nil) then
-  begin
-    if (comp is TSpeedButton) then
-      OKResponse(self.Params[1], (comp as TSpeedButton).enabled)
-    else if (comp is TLabel) then
-      OKResponse(self.Params[1], (comp as TLabel).enabled)
-    else if (comp is TStringGrid) then
-      OKResponse(self.Params[1], (comp as TStringGrid).enabled);
+    ResponseJSON(OKResponse(self.Params[1], ctrl.Enabled))
   end
   else
-  begin
-    Error(404);
-  end;
+  if (ContainsText(self.Params[2], Delimiter)) then
+    begin
+      values := TStringList.Create;
+      try
+        values.Delimiter := Delimiter;
+        values.StrictDelimiter := True;
+        values.DelimitedText := self.Params[2];
+
+        // Get parent
+        parent := AOwner.FindComponent(values[0]);
+
+        if (parent is TToolBar) then
+        begin
+          value := (parent as TToolBar).Buttons[StrToInt(values[1])].enabled;
+        end;
+
+        // Now send it back please
+        ResponseJSON(OKResponse(self.Params[2], value));
+      finally
+        values.free;
+      end;
+    end
+    else
+    begin
+      comp := AOwner.FindComponent(self.Params[2]);
+
+      if (comp <> nil) then
+      begin
+        if (comp is TSpeedButton) then
+          OKResponse(self.Params[1], (comp as TSpeedButton).enabled)
+        else if (comp is TLabel) then
+          OKResponse(self.Params[1], (comp as TLabel).enabled);
+
+        ResponseJSON(OKResponse(self.Params[2], value));
+      end
+      else
+        Error(404);
+    end;
 end;
 
 class function TGetEnabledCommand.GetCommand: String;
@@ -105,16 +135,29 @@ end;
 
 function TGetEnabledCommand.OKResponse(const SessionID: String; enabled: boolean): String;
 var
-  jsonObject: TJSONObject;
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  value: Variant;
 
 begin
-  jsonObject := TJSONObject.Create;
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
 
-  jsonObject.AddPair(TJSONPair.Create('sessionId', SessionId));
-//  jsonObject.AddPair(TJSONPair.Create('status', '0'));
-  jsonObject.AddPair(TJSONPair.Create('value', BoolToStr(enabled)));
+  value := enabled;
 
-  result := jsonObject.ToString;
+  Builder
+    .BeginObject()
+      .Add('sessionId', sessionId)
+      .Add('status', 0)
+      .Add('value', value)
+    .EndObject;
+
+  result := StringBuilder.ToString;
 end;
 
 end.
