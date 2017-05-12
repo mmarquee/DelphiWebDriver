@@ -134,31 +134,12 @@ begin
 end;
 
 function TGetEnabledCommand.OKResponse(const SessionID: String; enabled: boolean): String;
-(*var
-  jsonObject: TJSONObject;
-  value: String;
-
-begin
-  jsonObject := TJSONObject.Create;
-
-  jsonObject.AddPair(TJSONPair.Create('sessionId', SessionId));
-//  jsonObject.AddPair(TJSONPair.Create('status', '0'));
-
-  value := 'false';
-  if enabled = true then
-    value := 'true';
-
-  jsonObject.AddPair(TJSONPair.Create('value', value));
-
-  result := jsonObject.ToString;
-end;
-*)
 var
   Builder: TJSONObjectBuilder;
   Writer: TJsonTextWriter;
   StringWriter: TStringWriter;
   StringBuilder: TStringBuilder;
-  value: String;
+  value: Variant;
 
 begin
   StringBuilder := TStringBuilder.Create;
@@ -167,22 +148,14 @@ begin
   Writer.Formatting := TJsonFormatting.Indented;
   Builder := TJSONObjectBuilder.Create(Writer);
 
-  // Wrong but works
+  value := enabled;
 
-  if enabled = true then
-    Builder
-      .BeginObject()
-        .Add('sessionId', sessionId)
-        .Add('status', 0)
-        .Add('value', true)
-      .EndObject
-  else
-     Builder
-      .BeginObject()
-        .Add('sessionId', sessionId)
-        .Add('status', 0)
-        .Add('value', false)
-      .EndObject;
+  Builder
+    .BeginObject()
+      .Add('sessionId', sessionId)
+      .Add('status', 0)
+      .Add('value', value)
+    .EndObject;
 
   result := StringBuilder.ToString;
 end;
