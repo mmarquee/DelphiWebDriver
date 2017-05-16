@@ -47,7 +47,11 @@ uses
   Commands.PostElements,
   Commands.PostElement,
   Commands.CreateSession,
+  Commands.DismissAlert,
+  Commands.AcceptAlert,
   Commands.GetEnabled,
+  Commands.GetScreenshot,
+  Commands.GetElementScreenshot,
   Commands.PostValue,
   System.JSON.Types,
   System.JSON.Writers,
@@ -70,7 +74,7 @@ begin
   FCommand.Commands.Register(TGetRectCommand);
   FCommand.Commands.Register(TGetTextCommand);
 //  FCommand.Commands.Register(TGetElementCommand);
-  //FCommand.Commands.Register(TGetScreenshotCommand);
+  FCommand.Commands.Register(TGetScreenshotCommand);
   FCommand.Commands.Register(TGetWindowhandleCommand);
   FCommand.Commands.Register(TGetWindowCommand);
   FCommand.Commands.Register(TGetTitleCommand);
@@ -85,7 +89,10 @@ begin
   // Avoiding mismatch with pattern above
   FCommand.Commands.Register(TPostElementsCommand);
   FCommand.Commands.Register(TPostElementCommand);
+  FCommand.Commands.Register(TDismissAlertCommand);
+  FCommand.Commands.Register(TAcceptAlertCommand);
   FCommand.Commands.Register(TPostExecuteCommand);
+  FCommand.Commands.Register(TGetElementScreenshotCommand);
   FCommand.Commands.Register(TPostImplicitWaitCommand);
   FCommand.Commands.Register(TSessionTimeoutsCommand);
   FCommand.Commands.Register(TCreateSessionCommand);

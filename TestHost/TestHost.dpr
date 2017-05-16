@@ -46,7 +46,11 @@ uses
   Commands.DeleteSession in '..\Commands\Commands.DeleteSession.pas',
   Commands.GetWindowHandle in '..\Commands\Commands.GetWindowHandle.pas',
   Commands.PostClear in '..\Commands\Commands.PostClear.pas',
-  Commands.GetElementValue in '..\Commands\Commands.GetElementValue.pas';
+  Commands.GetElementValue in '..\Commands\Commands.GetElementValue.pas',
+  Commands.DismissAlert in '..\Commands\Commands.DismissAlert.pas',
+  Commands.AcceptAlert in '..\Commands\Commands.AcceptAlert.pas',
+  Commands.GetScreenshot in '..\Commands\Commands.GetScreenshot.pas',
+  Commands.GetElementScreenshot in '..\Commands\Commands.GetElementScreenshot.pas';
 
 {$R *.res}
 
