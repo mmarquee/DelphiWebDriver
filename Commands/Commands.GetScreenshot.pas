@@ -88,24 +88,24 @@ var
 begin
   Win := GetDesktopWindow;
 
-    GetWindowRect(Win, WinRect);
-    DC := GetWindowDC(Win);
+  GetWindowRect(Win, WinRect);
+  DC := GetWindowDC(Win);
 
-    Width := WinRect.Right - WinRect.Left;
-    Height := WinRect.Bottom - WinRect.Top;
+  Width := WinRect.Right - WinRect.Left;
+  Height := WinRect.Bottom - WinRect.Top;
 
-    bmp := Vcl.Graphics.TBitmap.Create;
-    try
-      bmp.width := width;
-      bmp.height := height;
+  bmp := Vcl.Graphics.TBitmap.Create;
+  try
+    bmp.width := width;
+    bmp.height := height;
 
-      BitBlt(Bmp.Canvas.Handle, 0, 0, Width, Height, DC, 0, 0, SRCCOPY);
+    BitBlt(Bmp.Canvas.Handle, 0, 0, Width, Height, DC, 0, 0, SRCCOPY);
 
-      ResponseJSON(self.OKResponse(self.Params[2], bmp));
-    finally
-      ReleaseDC(GetDesktopWindow, DC);
-      bmp.Free;
-    end;
+    ResponseJSON(self.OKResponse(self.Params[2], bmp));
+  finally
+    ReleaseDC(GetDesktopWindow, DC);
+    bmp.Free;
+  end;
 end;
 
 function TGetScreenshotCommand.OKResponse(const session: String; value: Vcl.Graphics.TBitmap): String;
