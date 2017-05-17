@@ -44,8 +44,8 @@ type
 implementation
 
 uses
+  utils,
   Winapi.Windows,
-  System.NetEncoding,
   System.JSON,
   System.JSON.Types,
   System.JSON.Writers,
@@ -62,48 +62,20 @@ begin
   result := '/session/(.*)/screenshot';
 end;
 
-function BitmapToBase64(ABitmap: Vcl.Graphics.TBitmap): string;
-var
-  SS: TMemoryStream;
-
-begin
-  SS := TMemoryStream.Create;
-  try
-    ABitmap.SaveToStream(SS);
-    Result := TNetEncoding.Base64.EncodeBytesToString(SS.Memory, SS.Size)
-  finally
-    SS.Free;
-  end;
-end;
-
 procedure TGetScreenshotCommand.Execute(AOwner: TForm);
 var
   Bmp: Vcl.Graphics.TBitmap;
-  DC: HDC;
   Win: HWND;
-  WinRect: TRect;
-  Width: Integer;
-  Height: Integer;
 
 begin
   Win := GetDesktopWindow;
 
-  GetWindowRect(Win, WinRect);
-  DC := GetWindowDC(Win);
-
-  Width := WinRect.Right - WinRect.Left;
-  Height := WinRect.Bottom - WinRect.Top;
-
   bmp := Vcl.Graphics.TBitmap.Create;
   try
-    bmp.width := width;
-    bmp.height := height;
-
-    BitBlt(Bmp.Canvas.Handle, 0, 0, Width, Height, DC, 0, 0, SRCCOPY);
+    bmp := TakeScreenshot(Win);
 
     ResponseJSON(self.OKResponse(self.Params[2], bmp));
   finally
-    ReleaseDC(GetDesktopWindow, DC);
     bmp.Free;
   end;
 end;

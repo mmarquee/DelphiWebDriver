@@ -73,7 +73,7 @@ begin
   FCommand.Commands.Register(TGetEnabledCommand);
   FCommand.Commands.Register(TGetRectCommand);
   FCommand.Commands.Register(TGetTextCommand);
-//  FCommand.Commands.Register(TGetElementCommand);
+  FCommand.Commands.Register(TGetElementScreenshotCommand);
   FCommand.Commands.Register(TGetScreenshotCommand);
   FCommand.Commands.Register(TGetWindowhandleCommand);
   FCommand.Commands.Register(TGetWindowCommand);
@@ -92,7 +92,6 @@ begin
   FCommand.Commands.Register(TDismissAlertCommand);
   FCommand.Commands.Register(TAcceptAlertCommand);
   FCommand.Commands.Register(TPostExecuteCommand);
-  FCommand.Commands.Register(TGetElementScreenshotCommand);
   FCommand.Commands.Register(TPostImplicitWaitCommand);
   FCommand.Commands.Register(TSessionTimeoutsCommand);
   FCommand.Commands.Register(TCreateSessionCommand);

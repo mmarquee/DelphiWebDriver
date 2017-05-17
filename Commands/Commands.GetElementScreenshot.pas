@@ -25,11 +25,14 @@ interface
 
 uses
   Vcl.Forms,
+  Vcl.Graphics,
   CommandRegistry,
   HttpServerCommand;
 
 type
   TGetElementScreenshotCommand = class(TRestCommand)
+  private
+    function OKResponse(const session: String; value: Vcl.Graphics.TBitmap): String;
   public
     procedure Execute(AOwner: TForm); override;
 
@@ -39,6 +42,18 @@ type
 
 implementation
 
+uses
+  Commands,
+  Vcl.Controls,
+  System.Classes,
+  Winapi.Windows,
+  System.JSON,
+  System.JSON.Types,
+  System.JSON.Writers,
+  System.SysUtils,
+  System.JSON.Builders,
+  utils;
+
 class function TGetElementScreenshotCommand.GetCommand: String;
 begin
   result := 'GET';
@@ -46,11 +61,62 @@ end;
 
 class function TGetElementScreenshotCommand.GetRoute: String;
 begin
-  result := '/session/(.*)/element/(.*)/screenshot';
+  result := '/session/(.*)/element/screenshot/(.*)';
 end;
 
 procedure TGetElementScreenshotCommand.Execute(AOwner: TForm);
+var
+  Bmp: Vcl.Graphics.TBitmap;
+  Win: HWND;
+  ctrl: TWinControl;
+  handle: Integer;
+
 begin
+  if (isNumber(self.Params[2])) then
+  begin
+    handle := StrToInt(self.Params[2]);
+    ctrl := FindControl(handle);
+
+    bmp := Vcl.Graphics.TBitmap.Create;
+    try
+      bmp := TakeScreenshot(ctrl.Handle);
+
+      ResponseJSON(self.OKResponse(self.Params[2], bmp));
+    finally
+      bmp.Free;
+    end;
+  end
+  else
+  begin
+    Commands.Sessions.ErrorResponse ('7', 'no such element', 'An element could not be located on the page using the given search parameteres');
+  end;
+end;
+
+function TGetElementScreenshotCommand.OKResponse(const session: String; value: Vcl.Graphics.TBitmap): String;
+var
+  Builder: TJSONObjectBuilder;
+  Writer: TJsonTextWriter;
+  StringWriter: TStringWriter;
+  StringBuilder: TStringBuilder;
+  val: String;
+
+begin
+  StringBuilder := TStringBuilder.Create;
+  StringWriter := TStringWriter.Create(StringBuilder);
+  Writer := TJsonTextWriter.Create(StringWriter);
+  Writer.Formatting := TJsonFormatting.Indented;
+  Builder := TJSONObjectBuilder.Create(Writer);
+
+  val := BitmapToBase64(value);
+
+  Builder
+    .BeginObject()
+      .Add('sessionId', session)
+      .Add('status', 0)
+      .Add('value', BitmapToBase64(value))
+    .EndObject;
+
+  result := StringBuilder.ToString;
 end;
 
 end.
