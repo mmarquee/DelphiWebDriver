@@ -61,7 +61,7 @@ end;
 
 class function TGetElementScreenshotCommand.GetRoute: String;
 begin
-  result := '/session/(.*)/element/screenshot/(.*)';
+  result := '/session/(.*)/screenshot/(.*)';   // This looks wrong according to the WebDriver spec
 end;
 
 procedure TGetElementScreenshotCommand.Execute(AOwner: TForm);
