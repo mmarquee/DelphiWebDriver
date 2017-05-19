@@ -52,7 +52,8 @@ type
   end;
 
   THttpServerCommandRegister=class(TComponent)
-  private
+  public // for debugging
+  // private
     FList: TObjectList<TRESTCommandREG>;
   public
     procedure Register(ATYPE:String; APATH: String; ACommand: TRESTCommandClass); overload;

@@ -32,6 +32,7 @@ Type
 implementation
 
 uses
+  utils,
   System.StrUtils,
   System.JSON.Types,
   System.Classes,
@@ -215,18 +216,6 @@ begin
 
   if not found then
     raise Exception.create('Cannot find session');
-end;
-
-function OSArchitectureToString(arch: TOSVersion.TArchitecture): String;
-begin
-  case arch of
-    arIntelX86: result := 'Intel X86';
-    arIntelX64: result := 'Intel X64';
-    arArm64: result := 'ARM 64';
-    arArm32: result := 'ARM 32';
-    else
-      result := 'Unknown';
-  end;
 end;
 
 function TSessions.FindElement(const sessionId: String): String;

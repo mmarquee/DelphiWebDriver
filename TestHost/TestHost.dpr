@@ -50,7 +50,8 @@ uses
   Commands.DismissAlert in '..\Commands\Commands.DismissAlert.pas',
   Commands.AcceptAlert in '..\Commands\Commands.AcceptAlert.pas',
   Commands.GetScreenshot in '..\Commands\Commands.GetScreenshot.pas',
-  Commands.GetElementScreenshot in '..\Commands\Commands.GetElementScreenshot.pas';
+  Commands.GetElementScreenshot in '..\Commands\Commands.GetElementScreenshot.pas',
+  Commands.GetAlertText in '..\Commands\Commands.GetAlertText.pas';
 
 {$R *.res}
 

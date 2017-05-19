@@ -40,6 +40,7 @@ uses
   Commands.PostElementElements,
   Commands.PostExecute,
   Commands.GetElementValue,
+  Commands.GetAlertText,
   Commands.PostClear,
   Commands.GetText,
   Commands.ClickElement,
@@ -70,16 +71,23 @@ begin
 
   FCommand.Commands.Register(TGetElementValueCommand);
 
-  FCommand.Commands.Register(TGetEnabledCommand);
-  FCommand.Commands.Register(TGetRectCommand);
-  FCommand.Commands.Register(TGetTextCommand);
-  FCommand.Commands.Register(TGetElementScreenshotCommand);
-  FCommand.Commands.Register(TGetScreenshotCommand);
-  FCommand.Commands.Register(TGetWindowhandleCommand);
-  FCommand.Commands.Register(TGetWindowCommand);
-  FCommand.Commands.Register(TGetTitleCommand);
-  FCommand.Commands.Register(TGetSessionCommand);
+  FCommand.Commands.Register(TGetEnabledCommand);          // '/session/(.*)/element/(.*)/enabled'
+  FCommand.Commands.Register(TGetRectCommand);             // '/session/(.*)/element/(.*)/rect'
+  FCommand.Commands.Register(TGetTextCommand);             // '/session/(.*)/element/(.*)/text'
+  FCommand.Commands.Register(TGetElementScreenshotCommand);// '/session/(.*)/screenshot/(.*)'
+  FCommand.Commands.Register(TGetScreenshotCommand);       // '/session/(.*)/screenshot'
+  FCommand.Commands.Register(TGetWindowhandleCommand);     // '/session/(.*)/window_handle'
+  FCommand.Commands.Register(TGetWindowCommand);           // '/session/(.*)/window'
+  FCommand.Commands.Register(TGetTitleCommand);            // '/session/(.*)/title'
+  FCommand.Commands.Register(TGetAlertTextCommand);        // '/session/(.*)/alert_text';
+
+  FCommand.Commands.Register(TGetSessionCommand);          // '/session/(.*)'
+
+  FCommand.Commands.Register(TDismissAlertCommand);        // '/session/(.*)/dismiss_alert';
+  FCommand.Commands.Register(TAcceptAlertCommand);         // '/session/(.*)/accept_alert';
+
   FCommand.Commands.Register(TGetSessionsCommand);
+
   FCommand.Commands.Register(TStatusCommand);
   FCommand.Commands.Register(TPostValueCommand);
   FCommand.Commands.Register(TPostClearCommand);
@@ -89,8 +97,6 @@ begin
   // Avoiding mismatch with pattern above
   FCommand.Commands.Register(TPostElementsCommand);
   FCommand.Commands.Register(TPostElementCommand);
-  FCommand.Commands.Register(TDismissAlertCommand);
-  FCommand.Commands.Register(TAcceptAlertCommand);
   FCommand.Commands.Register(TPostExecuteCommand);
   FCommand.Commands.Register(TPostImplicitWaitCommand);
   FCommand.Commands.Register(TSessionTimeoutsCommand);

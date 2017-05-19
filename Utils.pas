@@ -3,12 +3,14 @@ unit Utils;
 interface
 
 uses
+  System.SysUtils,
   Winapi.Windows,
   Vcl.Graphics;
 
 function isNumber(const s: String): boolean;
 function TakeScreenshot(Win: HWND) : Vcl.Graphics.TBitmap;
 function BitmapToBase64(ABitmap: Vcl.Graphics.TBitmap): string;
+function OSArchitectureToString(arch: TOSVersion.TArchitecture): String;
 
 implementation
 
@@ -63,6 +65,18 @@ begin
     Result := TNetEncoding.Base64.EncodeBytesToString(SS.Memory, SS.Size)
   finally
     SS.Free;
+  end;
+end;
+
+function OSArchitectureToString(arch: TOSVersion.TArchitecture): String;
+begin
+  case arch of
+    arIntelX86: result := 'Intel X86';
+    arIntelX64: result := 'Intel X64';
+    arArm64: result := 'ARM 64';
+    arArm32: result := 'ARM 32';
+    else
+      result := 'Unknown';
   end;
 end;
 
